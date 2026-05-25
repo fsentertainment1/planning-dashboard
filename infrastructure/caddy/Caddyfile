@@ -1,0 +1,82 @@
+# ============================================================
+# NullPoint — Caddyfile
+# Handles: HTTPS termination, security headers, compression,
+# Ghost reverse proxy, www redirect
+# ============================================================
+
+{
+    email {$ACME_EMAIL}
+    # Uncomment for Let's Encrypt staging (testing):
+    # acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+# Redirect www → apex
+www.{$DOMAIN} {
+    redir https://{$DOMAIN}{uri} permanent
+}
+
+{$DOMAIN} {
+    # Proxy all requests to Ghost
+    reverse_proxy ghost:2368 {
+        # Health check
+        health_uri  /ghost/api/admin/site/
+        health_interval 30s
+    }
+
+    # Gzip + Zstd compression
+    encode zstd gzip
+
+    # Security headers
+    header {
+        # Remove server identification
+        -Server
+        -X-Powered-By
+
+        # Security
+        X-Content-Type-Options        "nosniff"
+        X-Frame-Options               "SAMEORIGIN"
+        Referrer-Policy               "strict-origin-when-cross-origin"
+        Permissions-Policy            "camera=(), microphone=(), geolocation=(), payment=(self)"
+        X-XSS-Protection              "1; mode=block"
+
+        # HSTS — only enable after confirming HTTPS works correctly
+        # Strict-Transport-Security   "max-age=31536000; includeSubDomains; preload"
+
+        # Content Security Policy — adjust per Ghost theme requirements
+        # Start permissive, tighten after testing
+        Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://js.stripe.com; connect-src 'self' https://api.stripe.com;"
+    }
+
+    # Cache static assets aggressively — Ghost handles cache-busting via content hash
+    @static {
+        path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.webp *.woff *.woff2 *.ttf *.eot
+    }
+    header @static Cache-Control "public, max-age=31536000, immutable"
+
+    # Cache HTML with short TTL — Cloudflare will handle CDN caching
+    @html {
+        path /
+        path *.html
+    }
+    header @html Cache-Control "public, max-age=300, s-maxage=3600"
+
+    # Block access to Ghost admin from non-local networks via Cloudflare
+    # Add your Cloudflare IP ranges or set up Cloudflare Access for /ghost/
+    # Uncomment and configure if needed:
+    # @ghost_admin {
+    #     path /ghost/*
+    # }
+    # handle @ghost_admin {
+    #     remote_ip 103.21.244.0/22 103.22.200.0/22 # Cloudflare IPs
+    #     reverse_proxy ghost:2368
+    # }
+
+    # Logging
+    log {
+        output file /var/log/caddy/access.log {
+            roll_size 50mb
+            roll_keep 5
+        }
+        format json
+    }
+}

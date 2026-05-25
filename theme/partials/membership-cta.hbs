@@ -1,0 +1,79 @@
+{{!-- Homepage membership tier block --}}
+{{#unless @member.paid}}
+
+<section id="membership" class="py-16">
+  <div class="text-center mb-12">
+    <p class="text-accent-orange text-xs font-mono uppercase tracking-widest mb-3">Membership</p>
+    <h2 class="text-3xl font-bold text-text-primary mb-4">Engineering-Grade Content</h2>
+    <p class="text-text-muted max-w-xl mx-auto">
+      Join engineers who take their craft seriously. Free access to all articles, premium tiers for templates, presets and community.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+
+    {{!-- Free Tier --}}
+    <div class="bg-base-700 border border-base-500 rounded-2xl p-6 flex flex-col">
+      <p class="text-lg font-bold text-text-primary mb-1">Free</p>
+      <div class="flex items-baseline gap-1 mb-4">
+        <span class="text-3xl font-bold text-text-primary">€0</span>
+        <span class="text-text-muted text-sm">/forever</span>
+      </div>
+      <ul class="space-y-2 mb-6 flex-1">
+        {{#each "All public articles, Weekly newsletter, Discord community, Free downloads" split=","}}
+          <li class="text-text-secondary text-sm flex gap-2">
+            <span class="text-text-muted">✓</span>{{this}}
+          </li>
+        {{/each}}
+      </ul>
+      <a href="#/portal/signup" data-portal="signup" class="w-full text-center border border-base-400 hover:border-base-300 text-text-secondary hover:text-text-primary font-medium py-2.5 rounded-xl transition-colors text-sm">
+        Join Free
+      </a>
+    </div>
+
+    {{!-- Professional Tier --}}
+    <div class="bg-base-700 border border-accent-blue/30 rounded-2xl p-6 flex flex-col">
+      <p class="text-lg font-bold text-text-primary mb-1">Professional</p>
+      <div class="flex items-baseline gap-1 mb-1">
+        <span class="text-3xl font-bold text-accent-blue">€9</span>
+        <span class="text-text-muted text-sm">/month</span>
+      </div>
+      <p class="text-text-muted text-xs mb-4">or €79/year (save 27%)</p>
+      <ul class="space-y-2 mb-6 flex-1">
+        {{#each "Everything in Free, Premium deep-dive articles, Case study library, Equipment comparison guides, Priority newsletter, Private Discord channels" split=","}}
+          <li class="text-text-secondary text-sm flex gap-2">
+            <span class="text-accent-blue">✓</span>{{this}}
+          </li>
+        {{/each}}
+      </ul>
+      <a href="#/portal/signup/professional" data-portal="signup/professional" class="w-full text-center bg-accent-blue hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition-colors text-sm">
+        Start Professional
+      </a>
+    </div>
+
+    {{!-- Engineering Tier --}}
+    <div class="bg-base-700 border border-accent-orange/40 rounded-2xl p-6 flex flex-col relative">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+        <span class="bg-accent-orange text-white text-xs font-semibold px-3 py-1 rounded-full">Most Popular</span>
+      </div>
+      <p class="text-lg font-bold text-text-primary mb-1">Engineering</p>
+      <div class="flex items-baseline gap-1 mb-1">
+        <span class="text-3xl font-bold text-accent-orange">€29</span>
+        <span class="text-text-muted text-sm">/month</span>
+      </div>
+      <p class="text-text-muted text-xs mb-4">or €249/year (save 29%)</p>
+      <ul class="space-y-2 mb-6 flex-1">
+        {{#each "Everything in Professional, Template & preset library, Dante network worksheets, d&b preset files, Monthly live Q&A, System design reviews, Engineering Discord lab" split=","}}
+          <li class="text-text-secondary text-sm flex gap-2">
+            <span class="text-accent-orange">✓</span>{{this}}
+          </li>
+        {{/each}}
+      </ul>
+      <a href="#/portal/signup/engineering" data-portal="signup/engineering" class="w-full text-center bg-accent-orange hover:bg-orange-600 text-white font-semibold py-2.5 rounded-xl transition-colors text-sm">
+        Join Engineering →
+      </a>
+    </div>
+
+  </div>
+</section>
+{{/unless}}

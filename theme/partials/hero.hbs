@@ -1,0 +1,68 @@
+{{!-- Homepage hero section --}}
+
+<section class="relative min-h-[85vh] flex items-center overflow-hidden bg-base-950">
+
+  {{!-- Engineering grid background --}}
+  <div class="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
+
+  {{!-- Subtle radial gradient --}}
+  <div class="absolute inset-0 bg-radial-hero pointer-events-none"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 z-10">
+    <div class="max-w-3xl">
+
+      {{!-- Eyebrow label --}}
+      <div class="flex items-center gap-2 mb-6">
+        <div class="w-1.5 h-1.5 rounded-full bg-accent-orange animate-pulse"></div>
+        <span class="text-accent-orange text-xs font-mono uppercase tracking-widest">
+          Pro Audio Engineering Platform
+        </span>
+      </div>
+
+      {{!-- Main headline --}}
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-tight mb-6">
+        Pro Audio.<br>
+        <span class="text-accent-orange">No Bullshit.</span>
+      </h1>
+
+      {{!-- Subheadline --}}
+      <p class="text-xl text-text-secondary leading-relaxed mb-10 max-w-2xl">
+        Deep technical content for system engineers, touring professionals and live sound specialists. d&b systems, Dante networks, RF engineering, festival workflows — written by engineers, for engineers.
+      </p>
+
+      {{!-- CTAs --}}
+      <div class="flex flex-wrap gap-4">
+        {{#if @member}}
+          <a href="/articles/" class="bg-accent-orange hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-base">
+            Read Latest →
+          </a>
+          {{#unless @member.paid}}
+            <a href="#/portal/upgrade" data-portal="upgrade" class="border border-base-400 hover:border-base-300 text-text-secondary hover:text-text-primary font-medium px-6 py-3 rounded-xl transition-colors text-base">
+              Upgrade to Engineering
+            </a>
+          {{/unless}}
+        {{else}}
+          <a href="#/portal/signup" data-portal="signup" class="bg-accent-orange hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-base">
+            Start Reading Free →
+          </a>
+          <a href="/membership/" class="border border-base-400 hover:border-base-300 text-text-secondary hover:text-text-primary font-medium px-6 py-3 rounded-xl transition-colors text-base">
+            View Membership Plans
+          </a>
+        {{/if}}
+      </div>
+
+      {{!-- Social proof --}}
+      <div class="flex flex-wrap items-center gap-6 mt-10 text-sm text-text-dim">
+        <span>🔊 d&b Audiotechnik specialists</span>
+        <span>🌐 Dante certified workflows</span>
+        <span>📡 RF coordination expertise</span>
+        <span>🎪 Festival & touring systems</span>
+      </div>
+
+    </div>
+  </div>
+
+  {{!-- Decorative waveform (SVG, rendered via CSS/JS) --}}
+  <div class="absolute right-0 top-1/2 -translate-y-1/2 w-1/3 h-96 opacity-10 pointer-events-none hidden lg:block" id="waveform-decoration"></div>
+
+</section>

@@ -1,0 +1,128 @@
+{{!-- Single article/post template --}}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+    {{!-- Main content column --}}
+    <article class="lg:col-span-8">
+
+      {{!-- Article header --}}
+      <header class="mb-8">
+        {{#primary_tag}}
+          <a href="{{url}}" class="tag-orange text-xs mb-3 inline-block">{{name}}</a>
+        {{/primary_tag}}
+
+        <h1 class="text-3xl md:text-4xl font-bold text-text-primary leading-tight mb-4">
+          {{title}}
+        </h1>
+
+        {{#if custom_excerpt}}
+          <p class="text-lg text-text-secondary leading-relaxed mb-6">{{custom_excerpt}}</p>
+        {{/if}}
+
+        <div class="flex items-center gap-4 text-sm text-text-muted border-b border-base-500 pb-6">
+          {{#primary_author}}
+            <div class="flex items-center gap-2">
+              {{#if profile_image}}
+                <img src="{{profile_image}}" alt="{{name}}" class="w-8 h-8 rounded-full">
+              {{/if}}
+              <span>{{name}}</span>
+            </div>
+          {{/primary_author}}
+          <span>{{date published_at format="DD MMM YYYY"}}</span>
+          <span>{{reading_time}}</span>
+          {{#if access}}{{else}}
+            <span class="tag-orange text-xs">Premium</span>
+          {{/if}}
+        </div>
+      </header>
+
+      {{!-- Feature image --}}
+      {{#if feature_image}}
+        <figure class="mb-8">
+          <img
+            src="{{feature_image}}"
+            alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+            class="w-full rounded-xl"
+            loading="lazy"
+          >
+          {{#if feature_image_caption}}
+            <figcaption class="text-xs text-text-muted text-center mt-2">
+              {{feature_image_caption}}
+            </figcaption>
+          {{/if}}
+        </figure>
+      {{/if}}
+
+      {{!-- Post content (gated if premium) --}}
+      <div class="gh-content prose-dark">
+        {{#if access}}
+          {{content}}
+        {{else}}
+          {{!-- Free preview then paywall --}}
+          {{content}}
+          {{> paywall}}
+        {{/if}}
+      </div>
+
+      {{!-- Tags --}}
+      {{#if tags}}
+        <div class="flex flex-wrap gap-2 mt-10 pt-6 border-t border-base-500">
+          {{#foreach tags}}
+            <a href="{{url}}" class="pill hover:bg-base-500 transition-colors">{{name}}</a>
+          {{/foreach}}
+        </div>
+      {{/if}}
+
+      {{!-- Author bio --}}
+      {{#primary_author}}
+        <div class="card mt-10 flex gap-4">
+          {{#if profile_image}}
+            <img src="{{profile_image}}" alt="{{name}}" class="w-16 h-16 rounded-full flex-shrink-0">
+          {{/if}}
+          <div>
+            <p class="font-semibold text-text-primary">{{name}}</p>
+            {{#if bio}}<p class="text-text-muted text-sm mt-1">{{bio}}</p>{{/if}}
+          </div>
+        </div>
+      {{/primary_author}}
+
+      {{!-- Related posts --}}
+      {{#get "posts" filter="tags:[{{primary_tag.slug}}]+id:-{{id}}" limit="3" include="tags"}}
+        {{#if posts}}
+          <section class="mt-12">
+            <h3 class="text-lg font-semibold text-text-primary mb-4">Related Articles</h3>
+            <div class="space-y-3">
+              {{#foreach posts}}
+                {{> post-card-mini}}
+              {{/foreach}}
+            </div>
+          </section>
+        {{/if}}
+      {{/get}}
+
+    </article>
+
+    {{!-- Sidebar --}}
+    <aside class="lg:col-span-4">
+      <div class="sticky top-20 space-y-6">
+
+        {{!-- Table of contents (populated by JS) --}}
+        <div id="toc-container" class="card hidden">
+          <p class="text-xs font-mono text-text-muted mb-3">TABLE OF CONTENTS</p>
+          <nav id="toc" class="space-y-1 text-sm"></nav>
+        </div>
+
+        {{!-- Membership upsell if not a member --}}
+        {{#unless @member}}
+          {{> sidebar-membership-cta}}
+        {{/unless}}
+
+        {{!-- Newsletter subscribe --}}
+        {{> sidebar-newsletter}}
+
+      </div>
+    </aside>
+
+  </div>
+</div>

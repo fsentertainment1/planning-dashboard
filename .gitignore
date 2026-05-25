@@ -1,0 +1,37 @@
+# ---- Environment & secrets ----
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ---- Node.js ----
+node_modules/
+npm-debug.log*
+.npm
+
+# ---- Next.js build output ----
+.next/
+out/
+
+# ---- Ghost generated ----
+infrastructure/caddy/data/
+infrastructure/caddy/logs/
+infrastructure/caddy/config/
+
+# ---- Backups (never commit backups) ----
+*.sql
+*.sql.gz
+*.tar.gz
+/tmp/
+
+# ---- OS files ----
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ---- IDE ----
+.vscode/settings.json
+.idea/
+*.iml

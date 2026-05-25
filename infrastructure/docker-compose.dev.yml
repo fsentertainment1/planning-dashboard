@@ -1,0 +1,50 @@
+# ============================================================
+# Development override — use with:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+#
+# Differences from production:
+#   - Ghost runs in development mode (full errors, no caching)
+#   - Ghost port 2368 exposed to localhost for direct access
+#   - SQLite instead of MySQL (faster dev setup)
+#   - Theme hot-reload via volume mount (already in base compose)
+#   - No Caddy needed — access via http://localhost:2368
+# ============================================================
+
+version: '3.9'
+
+services:
+  ghost:
+    image: ghost:5-alpine
+    container_name: nullpoint_ghost_dev
+    ports:
+      - '2368:2368'
+    environment:
+      url: http://localhost:2368
+      NODE_ENV: development
+      # Use SQLite for dev — no MySQL needed
+      database__client: sqlite3
+      database__connection__filename: /var/lib/ghost/content/data/ghost-dev.db
+      # Disable mail in dev (logs to console instead)
+      mail__transport: Direct
+    volumes:
+      - ghost_content_dev:/var/lib/ghost/content
+      - ../theme:/var/lib/ghost/content/themes/nullpoint
+    networks:
+      - dev
+
+  # Adminer — MySQL GUI for dev inspection (not in production)
+  adminer:
+    image: adminer:4
+    container_name: nullpoint_adminer
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    networks:
+      - dev
+
+volumes:
+  ghost_content_dev:
+
+networks:
+  dev:
+    driver: bridge

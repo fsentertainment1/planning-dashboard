@@ -1,0 +1,56 @@
+{{!-- Reusable post card partial --}}
+{{!-- Usage: {{> post-card}} or {{> post-card style="large"}} --}}
+
+<article class="group bg-base-700 border border-base-500 rounded-xl overflow-hidden hover:border-base-400 transition-all duration-200 hover:shadow-lg hover:shadow-black/20 flex flex-col">
+
+  {{!-- Feature image --}}
+  {{#if feature_image}}
+    <a href="{{url}}" class="block overflow-hidden {{#if (eq style "large")}}h-56{{else}}h-44{{/if}} bg-base-600">
+      <img
+        src="{{img_url feature_image size="m"}}"
+        alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        loading="lazy"
+      >
+    </a>
+  {{/if}}
+
+  <div class="p-5 flex flex-col flex-1">
+
+    {{!-- Tags + reading time --}}
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center gap-2">
+        {{#primary_tag}}
+          <a href="{{url}}" class="tag-orange text-xs hover:bg-accent-orange/20 transition-colors">{{name}}</a>
+        {{/primary_tag}}
+      </div>
+      <div class="flex items-center gap-2 text-xs text-text-muted">
+        {{#if access}}{{else}}
+          <span class="tag-amber text-xs">Premium</span>
+        {{/if}}
+        <span>{{reading_time}}</span>
+      </div>
+    </div>
+
+    {{!-- Title --}}
+    <h3 class="font-semibold text-text-primary leading-snug mb-2 group-hover:text-accent-orange transition-colors {{#if (eq style "large")}}text-xl{{else}}text-base{{/if}}">
+      <a href="{{url}}">{{title}}</a>
+    </h3>
+
+    {{!-- Excerpt --}}
+    {{#if custom_excerpt}}
+      <p class="text-text-muted text-sm leading-relaxed line-clamp-2 flex-1">{{custom_excerpt}}</p>
+    {{/if}}
+
+    {{!-- Footer: author + date --}}
+    <div class="flex items-center justify-between mt-4 pt-4 border-t border-base-600 text-xs text-text-dim">
+      {{#primary_author}}
+        <span>{{name}}</span>
+      {{/primary_author}}
+      <time datetime="{{date published_at format="YYYY-MM-DD"}}">
+        {{date published_at format="DD MMM YYYY"}}
+      </time>
+    </div>
+
+  </div>
+</article>

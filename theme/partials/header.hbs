@@ -1,0 +1,77 @@
+{{!-- Site header with navigation --}}
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-base-950/95 backdrop-blur border-b border-base-600">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center h-16 gap-8">
+
+      {{!-- Logo / Brand --}}
+      <a href="{{@site.url}}" class="flex items-center gap-2.5 flex-shrink-0">
+        {{#if @site.logo}}
+          <img src="{{@site.logo}}" alt="{{@site.title}}" class="h-8">
+        {{else}}
+          <div class="w-7 h-7 bg-accent-orange rounded-sm flex items-center justify-center">
+            <span class="text-white text-xs font-bold">N</span>
+          </div>
+          <span class="font-bold text-text-primary tracking-tight">{{@site.title}}</span>
+        {{/if}}
+      </a>
+
+      {{!-- Primary navigation --}}
+      <nav class="hidden md:flex items-center gap-1 flex-1">
+        {{#foreach @site.navigation}}
+          <a
+            href="{{url absolute="true"}}"
+            class="px-3 py-2 rounded-md text-sm text-text-muted hover:text-text-primary hover:bg-base-700 transition-colors {{#if current}}text-text-primary bg-base-700{{/if}}"
+          >
+            {{label}}
+          </a>
+        {{/foreach}}
+      </nav>
+
+      {{!-- Right: member actions --}}
+      <div class="flex items-center gap-3 ml-auto">
+        {{#if @member}}
+          {{!-- Logged in --}}
+          <span class="text-xs text-text-muted hidden sm:inline">{{@member.name}}</span>
+          <a href="/account/" class="pill text-xs hover:bg-base-500 transition-colors">Account</a>
+        {{else}}
+          {{!-- Logged out --}}
+          <a href="#/portal/signin" data-portal="signin" class="text-sm text-text-muted hover:text-text-primary transition-colors hidden sm:inline">
+            Sign In
+          </a>
+          <a
+            href="#/portal/signup"
+            data-portal="signup"
+            class="bg-accent-orange hover:bg-orange-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          >
+            Join Free →
+          </a>
+        {{/if}}
+
+        {{!-- Mobile menu toggle --}}
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-text-muted hover:text-text-primary" aria-label="Menu">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Mobile menu --}}
+  <div id="mobile-menu" class="hidden md:hidden border-t border-base-600 bg-base-900">
+    <div class="px-4 py-3 space-y-1">
+      {{#foreach @site.navigation}}
+        <a href="{{url absolute="true"}}" class="block px-3 py-2 rounded-md text-sm text-text-muted hover:text-text-primary hover:bg-base-700">
+          {{label}}
+        </a>
+      {{/foreach}}
+    </div>
+  </div>
+</header>
+
+{{!-- Spacer for fixed header --}}
+<div class="h-16"></div>
+
+{{!-- Reading progress bar --}}
+<div id="reading-progress" class="fixed top-16 left-0 h-0.5 bg-accent-orange z-40 transition-all duration-100" style="width: 0%"></div>

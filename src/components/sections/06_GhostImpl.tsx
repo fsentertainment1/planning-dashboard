@@ -1,4 +1,14 @@
 export default function GhostImpl() {
+  const ghostGitHubInfo = {
+    repo: 'https://github.com/TryGhost/Ghost',
+    dockerImage: 'ghost:5-alpine',
+    dockerHub: 'https://hub.docker.com/_/ghost',
+    latestRelease: 'github.com/TryGhost/Ghost/releases',
+    license: 'MIT',
+    stack: 'Node.js 20, Express, Knex, Bookshelf',
+  }
+
+
   const membershipTiers = [
     {
       name: 'Free',
@@ -141,8 +151,86 @@ taxonomies:
           <span className="text-accent-orange">06.</span> Ghost Implementatie
         </h1>
         <p className="section-subtitle">
-          Memberships, premium content, custom routes, email automation, SEO-configuratie en integraties.
+          Ghost open source (GitHub), memberships, premium content, custom routes, email automation en integraties.
         </p>
+      </div>
+
+      {/* Ghost from GitHub */}
+      <div className="card border-accent-blue/30">
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 bg-accent-blue/10 border border-accent-blue/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span className="text-lg">👻</span>
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-2">
+              <p className="font-semibold text-text-primary">Ghost Open Source</p>
+              <span className="tag-blue text-xs">MIT License</span>
+              <span className="tag-green text-xs">Self-hosted</span>
+            </div>
+            <p className="text-text-muted text-sm leading-relaxed mb-3">
+              Ghost is volledig open source op GitHub. De officiële Docker image (<code className="font-mono text-xs bg-base-600 px-1 rounded text-accent-amber">ghost:5-alpine</code>) wordt
+              automatisch gebouwd vanuit elke GitHub release tag. Je gebruikt altijd de laatste stabiele versie van de source code.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {[
+                { label: 'GitHub Repo', value: 'TryGhost/Ghost', link: true },
+                { label: 'Docker Image', value: 'ghost:5-alpine', link: false },
+                { label: 'License', value: 'MIT (volledig vrij)', link: false },
+                { label: 'Stack', value: 'Node.js 20, Express, Knex', link: false },
+                { label: 'Releases', value: 'github.com/TryGhost/Ghost/releases', link: true },
+                { label: 'Docker Hub', value: 'hub.docker.com/_/ghost', link: true },
+              ].map((item) => (
+                <div key={item.label} className="bg-base-800 rounded-lg p-3">
+                  <p className="text-xs text-text-muted mb-1">{item.label}</p>
+                  <p className={`text-xs font-mono ${item.link ? 'text-accent-blue' : 'text-accent-amber'}`}>{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Repo structure */}
+      <div>
+        <h2 className="h2">
+          <span className="text-accent-orange">⟶</span> Repository Structuur (Dit Project)
+        </h2>
+        <pre className="code-block text-xs leading-relaxed">{`planning-dashboard/
+├── infrastructure/          # Server deployment configuratie
+│   ├── docker-compose.yml   # Ghost + MySQL + Caddy + Backup stack
+│   ├── docker-compose.dev.yml  # Dev override (SQLite, poort exposed)
+│   ├── .env.example         # Alle required environment variabelen
+│   ├── caddy/
+│   │   └── Caddyfile        # Reverse proxy + HTTPS + security headers
+│   ├── mysql/
+│   │   └── my.cnf           # MySQL tuning voor Ghost workload
+│   ├── backup/
+│   │   └── backup.sh        # Dagelijkse backup → Cloudflare R2/S3
+│   └── ghost/
+│       └── routes.yaml      # Ghost URL routing configuratie
+│
+├── theme/                   # Custom Ghost Handlebars theme
+│   ├── package.json         # Ghost theme manifest (versie, config)
+│   ├── default.hbs          # Base HTML shell
+│   ├── index.hbs            # Homepage template
+│   ├── post.hbs             # Enkel artikel template
+│   ├── partials/            # Herbruikbare template componenten
+│   │   ├── header.hbs
+│   │   ├── footer.hbs
+│   │   ├── hero.hbs
+│   │   ├── post-card.hbs
+│   │   ├── paywall.hbs
+│   │   ├── membership-cta.hbs
+│   │   └── newsletter-cta.hbs
+│   └── assets/
+│       ├── css/screen.css   # Alle styling (dark engineering UI)
+│       └── js/main.js       # TOC, reading progress, code copy, etc.
+│
+├── scripts/
+│   └── setup.sh             # VPS bootstrap script (Ubuntu 22.04)
+│
+└── src/                     # Planning dashboard (dit Next.js dashboard)
+    └── ...`}</pre>
       </div>
 
       {/* Membership tiers */}

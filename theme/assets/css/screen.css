@@ -1,0 +1,284 @@
+/* ============================================================
+   NullPoint Ghost Theme — Main Stylesheet
+   Engineering-first dark UI for pro audio platform
+   ============================================================ */
+
+/* ---- Variables ------------------------------------------- */
+:root {
+  --color-base-950:   #060608;
+  --color-base-900:   #0A0A0E;
+  --color-base-800:   #0F0F14;
+  --color-base-700:   #161619;
+  --color-base-600:   #1C1C22;
+  --color-base-500:   #252529;
+  --color-base-400:   #36363D;
+  --color-base-300:   #52525B;
+  --color-orange:     #F97316;
+  --color-orange-dim: #C2410C;
+  --color-blue:       #3B82F6;
+  --color-green:      #22C55E;
+  --color-amber:      #F59E0B;
+  --color-red:        #EF4444;
+  --color-text-1:     #F1F5F9;
+  --color-text-2:     #CBD5E1;
+  --color-text-muted: #64748B;
+  --color-text-dim:   #475569;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --ghost-accent-color: #F97316;
+}
+
+/* ---- Base ------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--color-base-900);
+  color: var(--color-text-1);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body { margin: 0; min-height: 100vh; }
+
+/* ---- Utility classes (mirrors Tailwind where we can't use it) */
+.bg-base-950  { background-color: var(--color-base-950); }
+.bg-base-900  { background-color: var(--color-base-900); }
+.bg-base-800  { background-color: var(--color-base-800); }
+.bg-base-700  { background-color: var(--color-base-700); }
+.bg-base-600  { background-color: var(--color-base-600); }
+.text-accent-orange { color: var(--color-orange); }
+.text-accent-blue   { color: var(--color-blue); }
+.text-accent-green  { color: var(--color-green); }
+.text-text-primary  { color: var(--color-text-1); }
+.text-text-secondary { color: var(--color-text-2); }
+.text-text-muted    { color: var(--color-text-muted); }
+.text-text-dim      { color: var(--color-text-dim); }
+.border-base-400    { border-color: var(--color-base-400); }
+.border-base-500    { border-color: var(--color-base-500); }
+.border-base-600    { border-color: var(--color-base-600); }
+
+.font-mono { font-family: var(--font-mono); }
+
+/* Grid pattern background */
+.bg-grid-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23252529' fill-opacity='0.6'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Radial gradient for hero */
+.bg-radial-hero {
+  background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(249, 115, 22, 0.08) 0%, transparent 60%);
+}
+
+/* ---- Tags ------------------------------------------------- */
+.tag-orange {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: rgba(249, 115, 22, 0.1);
+  color: var(--color-orange);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+}
+.tag-blue   { @extend .tag-orange; background-color: rgba(59, 130, 246, 0.1); color: var(--color-blue); border-color: rgba(59, 130, 246, 0.2); }
+.tag-amber  { @extend .tag-orange; background-color: rgba(245, 158, 11, 0.1); color: var(--color-amber); border-color: rgba(245, 158, 11, 0.2); }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: var(--color-base-600);
+  color: var(--color-text-2);
+  border: 1px solid var(--color-base-500);
+}
+
+/* ---- Card ------------------------------------------------- */
+.card {
+  background-color: var(--color-base-700);
+  border: 1px solid var(--color-base-500);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+/* ---- Ghost Content Prose ---------------------------------- */
+.gh-content {
+  max-width: 72ch;
+  color: var(--color-text-2);
+  line-height: 1.75;
+}
+
+.gh-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-1);
+  margin: 2.5rem 0 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-base-500);
+  scroll-margin-top: 5rem;
+}
+
+.gh-content h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-1);
+  margin: 2rem 0 0.75rem;
+  scroll-margin-top: 5rem;
+}
+
+.gh-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-2);
+  margin: 1.5rem 0 0.5rem;
+}
+
+.gh-content p { margin: 0 0 1.25rem; }
+
+.gh-content a {
+  color: var(--color-orange);
+  text-decoration: underline;
+  text-decoration-color: rgba(249, 115, 22, 0.4);
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.15s;
+}
+.gh-content a:hover { text-decoration-color: var(--color-orange); }
+
+.gh-content ul, .gh-content ol {
+  margin: 0 0 1.25rem 1.25rem;
+  padding: 0;
+}
+.gh-content li { margin-bottom: 0.375rem; }
+
+.gh-content blockquote {
+  border-left: 3px solid var(--color-orange);
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  background: rgba(249, 115, 22, 0.04);
+  border-radius: 0 0.5rem 0.5rem 0;
+  color: var(--color-text-2);
+  font-style: italic;
+}
+
+.gh-content code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-base-600);
+  border: 1px solid var(--color-base-500);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  color: var(--color-orange);
+}
+
+.gh-content pre {
+  background: var(--color-base-950);
+  border: 1px solid var(--color-base-500);
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.gh-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-green);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.gh-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+.gh-content th {
+  background: var(--color-base-800);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  text-align: left;
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--color-base-500);
+}
+.gh-content td {
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--color-base-600);
+  color: var(--color-text-2);
+}
+.gh-content tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+.gh-content img {
+  max-width: 100%;
+  border-radius: 0.75rem;
+  margin: 1.5rem auto;
+  display: block;
+}
+
+.gh-content figure { margin: 1.5rem 0; }
+.gh-content figcaption {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+  margin-top: 0.5rem;
+}
+
+/* ---- Ghost callout card ----------------------------------- */
+.kg-callout-card {
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  display: flex;
+  gap: 0.75rem;
+}
+.kg-callout-card-blue    { background: rgba(59, 130, 246, 0.07); border-left: 3px solid var(--color-blue); }
+.kg-callout-card-orange  { background: rgba(249, 115, 22, 0.07); border-left: 3px solid var(--color-orange); }
+.kg-callout-card-yellow  { background: rgba(245, 158, 11, 0.07); border-left: 3px solid var(--color-amber); }
+.kg-callout-card-red     { background: rgba(239, 68, 68, 0.07);  border-left: 3px solid var(--color-red); }
+.kg-callout-card-green   { background: rgba(34, 197, 94, 0.07);  border-left: 3px solid var(--color-green); }
+
+/* ---- Scrollbar ------------------------------------------- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-base-800); }
+::-webkit-scrollbar-thumb { background: var(--color-base-400); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-base-300); }
+
+/* ---- Animations ------------------------------------------ */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+/* ---- Reading progress bar -------------------------------- */
+#reading-progress {
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  height: 2px;
+  background: var(--color-orange);
+  z-index: 40;
+  transition: width 0.1s linear;
+}
+
+/* ---- Responsive ------------------------------------------ */
+@media (max-width: 768px) {
+  .gh-content h2 { font-size: 1.25rem; }
+  .gh-content h3 { font-size: 1.1rem; }
+}
+
+/* ---- Print ----------------------------------------------- */
+@media print {
+  header, footer, #toc-container, .sidebar-membership-cta, #reading-progress { display: none !important; }
+  body { background: white; color: black; font-size: 12pt; }
+  .gh-content a { color: black; text-decoration: underline; }
+  .gh-content pre, .gh-content code { background: #f5f5f5; color: #333; }
+}

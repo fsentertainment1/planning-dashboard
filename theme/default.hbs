@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{{@site.locale}}" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{meta_title}}</title>
+
+  {{ghost_head}}
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Theme stylesheet -->
+  <link rel="stylesheet" href="{{asset "css/screen.css"}}">
+
+  <!-- Plausible analytics (privacy-first, no cookie banner needed) -->
+  {{!-- Replace yourdomain.com with your actual domain --}}
+  <script defer data-domain="{{@site.url}}" src="https://plausible.io/js/script.js"></script>
+</head>
+
+<body class="{{body_class}} bg-base-900 text-text-primary font-sans antialiased">
+
+  {{> header}}
+
+  <main id="main-content">
+    {{{body}}}
+  </main>
+
+  {{> footer}}
+
+  <!-- Ghost Portal (membership modal) -->
+  {{#if @site.members_enabled}}
+    <script defer src="https://unpkg.com/@tryghost/portal@~2.36/umd/portal.min.js" data-ghost="{{@site.url}}" data-key="{{@site.members_public_token}}" data-api="{{@site.api_url}}"></script>
+    <style>:root { --ghost-accent-color: #F97316; }</style>
+  {{/if}}
+
+  {{ghost_foot}}
+  <script src="{{asset "js/main.js"}}"></script>
+</body>
+</html>

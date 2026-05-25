@@ -1,0 +1,191 @@
+# ============================================================
+# NullPoint Pro Audio Platform — Production Stack
+#
+# Ghost CMS open source: https://github.com/TryGhost/Ghost
+# Image: ghost:5-alpine (official, built from GitHub source)
+#
+# Services:
+#   ghost   — Ghost CMS v5 (Node.js)
+#   mysql   — MySQL 8 database
+#   caddy   — Reverse proxy with auto HTTPS (Let's Encrypt)
+#   backup  — Daily automated backups to S3/R2
+#
+# Usage:
+#   cp .env.example .env && nano .env
+#   docker compose up -d
+# ============================================================
+
+version: '3.9'
+
+services:
+
+  # ----------------------------------------------------------
+  # Ghost CMS — https://github.com/TryGhost/Ghost
+  # Official Docker image is built directly from the GitHub
+  # source on every release tag.
+  # Check releases: https://github.com/TryGhost/Ghost/releases
+  # ----------------------------------------------------------
+  ghost:
+    image: ghost:${GHOST_VERSION:-5}-alpine
+    container_name: nullpoint_ghost
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      # Core
+      url: ${GHOST_URL}
+      NODE_ENV: production
+
+      # Database
+      database__client: mysql
+      database__connection__host: mysql
+      database__connection__port: 3306
+      database__connection__user: ${MYSQL_USER}
+      database__connection__password: ${MYSQL_PASSWORD}
+      database__connection__database: ${MYSQL_DATABASE}
+      database__connection__ssl: 'false'
+
+      # Mail
+      mail__transport: SMTP
+      mail__options__host: ${MAILGUN_SMTP_HOST}
+      mail__options__port: ${MAILGUN_SMTP_PORT}
+      mail__options__auth__user: ${MAILGUN_SMTP_USER}
+      mail__options__auth__pass: ${MAILGUN_SMTP_PASS}
+      mail__from: ${MAIL_FROM}
+
+      # Storage — S3-compatible (Cloudflare R2 / Hetzner)
+      storage__active: s3
+      storage__s3__accessKeyId: ${S3_ACCESS_KEY_ID}
+      storage__s3__secretAccessKey: ${S3_SECRET_ACCESS_KEY}
+      storage__s3__bucket: ${S3_BUCKET}
+      storage__s3__region: ${S3_REGION:-auto}
+      storage__s3__endpoint: ${S3_ENDPOINT}
+      storage__s3__forcePathStyle: ${S3_PATH_STYLE:-true}
+
+      # Stripe (memberships)
+      stripe__publishableKey: ${STRIPE_PUBLISHABLE_KEY}
+      stripe__secretKey: ${STRIPE_SECRET_KEY}
+      stripe__webhookSecret: ${STRIPE_WEBHOOK_SECRET}
+
+      # Performance
+      privacy__useUpdateCheck: 'false'
+      privacy__useGravatar: 'false'
+      privacy__useRpcPing: 'false'
+
+    volumes:
+      # Ghost content directory (themes, images if not using S3, data)
+      - ghost_content:/var/lib/ghost/content
+      # Custom theme — mount from repo so changes take effect immediately
+      - ../theme:/var/lib/ghost/content/themes/nullpoint:ro
+
+    networks:
+      - internal
+      - web
+
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:2368/ghost/api/admin/site/']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ----------------------------------------------------------
+  # MySQL 8 — Ghost database
+  # ----------------------------------------------------------
+  mysql:
+    image: mysql:8.0
+    container_name: nullpoint_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/ghost.cnf:ro
+    networks:
+      - internal
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p${MYSQL_ROOT_PASSWORD}']
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ----------------------------------------------------------
+  # Caddy — Reverse proxy with automatic HTTPS
+  # Simpler than Nginx for Ghost: auto Let's Encrypt renewal,
+  # no certbot cron needed.
+  # ----------------------------------------------------------
+  caddy:
+    image: caddy:2-alpine
+    container_name: nullpoint_caddy
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'    # HTTP/3 (QUIC)
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - web
+    depends_on:
+      - ghost
+    environment:
+      DOMAIN: ${DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+
+  # ----------------------------------------------------------
+  # Backup — Daily automated backups to S3/R2
+  # MySQL dump + Ghost content → compressed → remote storage
+  # Retention: 30 days rolling
+  # ----------------------------------------------------------
+  backup:
+    image: alpine:3.19
+    container_name: nullpoint_backup
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      S3_ENDPOINT: ${BACKUP_S3_ENDPOINT}
+      S3_BUCKET: ${BACKUP_S3_BUCKET}
+      AWS_ACCESS_KEY_ID: ${BACKUP_S3_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY}
+      RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-30}
+    volumes:
+      - ghost_content:/ghost_content:ro
+      - ./backup/backup.sh:/backup.sh:ro
+    entrypoint: ['/bin/sh', '-c']
+    command: |
+      "apk add --no-cache mysql-client aws-cli gzip tar && \
+       echo '0 2 * * * /backup.sh >> /var/log/backup.log 2>&1' | crontab - && \
+       crond -f"
+    networks:
+      - internal
+
+volumes:
+  ghost_content:
+    name: nullpoint_ghost_content
+  mysql_data:
+    name: nullpoint_mysql_data
+  caddy_data:
+    name: nullpoint_caddy_data
+  caddy_config:
+    name: nullpoint_caddy_config
+
+networks:
+  internal:
+    name: nullpoint_internal
+    driver: bridge
+    internal: true    # MySQL not reachable from outside
+  web:
+    name: nullpoint_web
+    driver: bridge

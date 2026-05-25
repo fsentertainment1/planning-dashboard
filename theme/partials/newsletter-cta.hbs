@@ -1,0 +1,37 @@
+{{!-- Newsletter subscription CTA band --}}
+{{#unless @member}}
+
+<section class="bg-base-800 border border-base-500 rounded-2xl p-8 text-center">
+  <p class="text-accent-orange text-xs font-mono uppercase tracking-widest mb-3">Newsletter</p>
+  <h2 class="text-2xl font-bold text-text-primary mb-3">
+    Weekly engineering content. No noise.
+  </h2>
+  <p class="text-text-muted mb-6 max-w-md mx-auto">
+    Join engineers getting deep technical content every Thursday. d&b tips, Dante workflows, RF coordination, festival stories — written from the stage, not a classroom.
+  </p>
+
+  <form data-members-form="subscribe" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+    <input
+      type="email"
+      data-members-email
+      placeholder="your@email.com"
+      required
+      class="flex-1 bg-base-700 border border-base-500 rounded-xl px-4 py-3 text-text-primary placeholder-text-dim focus:outline-none focus:border-accent-orange transition-colors"
+    >
+    <button
+      type="submit"
+      class="bg-accent-orange hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors whitespace-nowrap"
+    >
+      Subscribe Free →
+    </button>
+  </form>
+
+  <p class="text-text-dim text-xs mt-3">No spam. Unsubscribe any time. GDPR compliant.</p>
+
+  {{!-- Success state --}}
+  <div class="hidden" data-members-feedback>
+    <p class="text-accent-green font-semibold mt-4">✓ You're in. Check your inbox to confirm.</p>
+  </div>
+</section>
+
+{{/unless}}

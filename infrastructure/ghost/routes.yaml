@@ -1,0 +1,90 @@
+# ============================================================
+# Ghost Routes Configuration — NullPoint Pro Audio Platform
+#
+# Deploy: copy to Ghost content/settings/routes.yaml
+# Docker: ghost volume → /var/lib/ghost/content/settings/routes.yaml
+# Apply: docker compose restart ghost
+#
+# Docs: https://ghost.org/docs/themes/routing/
+# ============================================================
+
+routes:
+
+  # Academy landing page — aggregates all tagged academy content
+  /academy/:
+    controller: channel
+    filter: tag:academy
+    data: tag.academy
+    template: academy
+
+  # Tools & Calculators
+  /tools/:
+    controller: channel
+    filter: tag:tools
+    template: tools
+
+  # Downloads library
+  /downloads/:
+    controller: channel
+    filter: tag:downloads
+    template: downloads
+
+  # Case studies
+  /cases/:
+    controller: channel
+    filter: tag:cases
+    template: cases
+
+  # Membership / pricing page
+  /membership/:
+    template: membership
+    data: page.membership
+
+  # Newsletter landing page
+  /newsletter/:
+    template: newsletter
+
+  # Consulting
+  /consulting/:
+    template: page
+    data: page.consulting
+
+  # FS Entertainment rental page
+  /rentals/:
+    template: page
+    data: page.rentals
+
+# ============================================================
+collections:
+
+  # Main articles feed (excludes premium-only, academy, cases)
+  /articles/:
+    permalink: /articles/{slug}/
+    filter: tag:-hash-premium+tag:-academy+tag:-cases+tag:-tools+tag:-downloads
+    template:
+      - articles
+      - index
+
+  # Academy course/module pages
+  /academy/:
+    permalink: /academy/{slug}/
+    filter: tag:academy
+    template:
+      - academy-post
+      - post
+
+  # Case study pages
+  /cases/:
+    permalink: /cases/{slug}/
+    filter: tag:cases
+    template:
+      - case
+      - post
+
+# ============================================================
+taxonomies:
+  # Tag archive pages — /tags/dante-network-audio/ etc.
+  tag: /tags/{slug}/
+
+  # Author pages — /author/your-name/
+  author: /author/{slug}/

@@ -1,0 +1,50 @@
+{{!-- Homepage template --}}
+{{!-- Ghost route: / --}}
+
+{{> hero}}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
+
+  {{!-- Featured / Latest Articles --}}
+  <section id="latest">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl font-bold text-text-primary">Latest Engineering Content</h2>
+      <a href="/articles/" class="text-accent-orange text-sm font-medium hover:underline">All articles →</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {{#get "posts" limit="6" include="tags,authors"}}
+        {{#foreach posts}}
+          {{> post-card}}
+        {{/foreach}}
+      {{/get}}
+    </div>
+  </section>
+
+  {{!-- Category navigator --}}
+  {{> category-nav}}
+
+  {{!-- Membership CTA --}}
+  {{> membership-cta}}
+
+  {{!-- Latest Cases --}}
+  {{#get "posts" filter="tag:cases" limit="2" include="tags,authors"}}
+    {{#if posts}}
+      <section id="cases">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-2xl font-bold text-text-primary">Recent Cases</h2>
+          <a href="/cases/" class="text-accent-orange text-sm font-medium hover:underline">All cases →</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {{#foreach posts}}
+            {{> post-card style="large"}}
+          {{/foreach}}
+        </div>
+      </section>
+    {{/if}}
+  {{/get}}
+
+  {{!-- Newsletter CTA --}}
+  {{> newsletter-cta}}
+
+</div>

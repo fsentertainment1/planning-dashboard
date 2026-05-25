@@ -1,0 +1,72 @@
+{{!-- Site footer --}}
+
+<footer class="border-t border-base-600 bg-base-950 mt-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+
+      {{!-- Brand --}}
+      <div class="col-span-2 md:col-span-1">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-7 h-7 bg-accent-orange rounded-sm flex items-center justify-center">
+            <span class="text-white text-xs font-bold">N</span>
+          </div>
+          <span class="font-bold text-text-primary">{{@site.title}}</span>
+        </div>
+        <p class="text-text-muted text-sm leading-relaxed">
+          Engineering-first pro audio platform for system engineers, touring professionals and live sound specialists.
+        </p>
+      </div>
+
+      {{!-- Platform links --}}
+      <div>
+        <p class="text-xs font-mono text-text-dim uppercase tracking-widest mb-4">Platform</p>
+        <ul class="space-y-2">
+          {{#foreach @site.navigation}}
+            <li><a href="{{url absolute="true"}}" class="text-text-muted text-sm hover:text-text-primary transition-colors">{{label}}</a></li>
+          {{/foreach}}
+        </ul>
+      </div>
+
+      {{!-- Categories --}}
+      <div>
+        <p class="text-xs font-mono text-text-dim uppercase tracking-widest mb-4">Topics</p>
+        <ul class="space-y-2">
+          {{#get "tags" limit="6" order="count.posts desc"}}
+            {{#foreach tags}}
+              <li><a href="{{url}}" class="text-text-muted text-sm hover:text-text-primary transition-colors">{{name}}</a></li>
+            {{/foreach}}
+          {{/get}}
+        </ul>
+      </div>
+
+      {{!-- FS Entertainment --}}
+      <div>
+        <p class="text-xs font-mono text-text-dim uppercase tracking-widest mb-4">FS Entertainment</p>
+        <ul class="space-y-2 text-sm text-text-muted">
+          <li><a href="/rentals/" class="hover:text-text-primary transition-colors">Rental & Systems</a></li>
+          <li><a href="/consulting/" class="hover:text-text-primary transition-colors">Consulting</a></li>
+          <li><a href="/cases/" class="hover:text-text-primary transition-colors">Case Studies</a></li>
+          <li><a href="/events/" class="hover:text-text-primary transition-colors">Events</a></li>
+        </ul>
+        <div class="mt-4">
+          <a href="/rentals/#contact" class="inline-block bg-accent-orange hover:bg-orange-600 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">
+            Request Quote
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    {{!-- Bottom bar --}}
+    <div class="border-t border-base-700 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-xs text-text-dim">
+        © {{date format="YYYY"}} {{@site.title}} — FS Entertainment. All rights reserved.
+      </p>
+      <div class="flex items-center gap-4 text-xs text-text-dim">
+        <a href="/privacy/" class="hover:text-text-muted transition-colors">Privacy</a>
+        <a href="/terms/" class="hover:text-text-muted transition-colors">Terms</a>
+        <span>Built with <a href="https://ghost.org" class="hover:text-text-muted transition-colors">Ghost</a></span>
+      </div>
+    </div>
+  </div>
+</footer>

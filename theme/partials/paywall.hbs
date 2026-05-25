@@ -1,0 +1,40 @@
+{{!-- Premium content paywall gate --}}
+{{!-- Shown when post visibility = paid and user is not a paid member --}}
+
+<div class="relative mt-8">
+  {{!-- Fade overlay --}}
+  <div class="absolute -top-24 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-base-900 pointer-events-none"></div>
+
+  {{!-- Paywall card --}}
+  <div class="border border-accent-orange/30 bg-accent-orange/5 rounded-2xl p-8 text-center">
+    <div class="w-12 h-12 bg-accent-orange/10 border border-accent-orange/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+      <svg class="w-6 h-6 text-accent-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+      </svg>
+    </div>
+
+    <h3 class="text-xl font-bold text-text-primary mb-2">Continue Reading</h3>
+    <p class="text-text-muted text-sm mb-6 max-w-md mx-auto">
+      This article is available to Professional and Engineering members. Join to access the full content, template library, and Discord community.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      {{#if @member}}
+        <a href="#/portal/upgrade" data-portal="upgrade" class="bg-accent-orange hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
+          Upgrade Your Plan →
+        </a>
+      {{else}}
+        <a href="#/portal/signup" data-portal="signup" class="bg-accent-orange hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
+          Join Free to Read →
+        </a>
+        <a href="#/portal/signin" data-portal="signin" class="border border-base-400 hover:border-base-300 text-text-secondary font-medium px-6 py-3 rounded-xl transition-colors">
+          Sign In
+        </a>
+      {{/if}}
+    </div>
+
+    <p class="text-text-dim text-xs mt-4">
+      Professional from €9/month · Engineering from €29/month · Cancel anytime
+    </p>
+  </div>
+</div>
