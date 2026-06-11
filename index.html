@@ -238,12 +238,26 @@
     }
     .s-divider { height:1px; background:var(--border); margin:0 60px; }
 
-    /* ── d&b 3D LINE ARRAY ─────────────────────────────── */
+    /* ── d&b LINE ARRAY — PHOTOGRAPHY ──────────────────── */
     #la {
       position:relative; height:115vh; overflow:hidden;
     }
-    #webgl-la {
-      position:absolute; inset:0; width:100%; height:100%; display:block;
+    .la-bg {
+      position:absolute; inset:-12% 0; z-index:1;
+      background:url('assets/gsl-detail.jpg') center/cover no-repeat;
+      opacity:.35; will-change:transform;
+    }
+    .la-bg::after {
+      content:''; position:absolute; inset:0;
+      background:
+        linear-gradient(to bottom, var(--bg) 0%, transparent 25%, transparent 70%, var(--bg) 100%),
+        linear-gradient(to right, rgba(6,6,10,.85) 0%, transparent 55%);
+    }
+    .la-array {
+      position:absolute; right:8%; top:50%; z-index:4;
+      height:96vh; transform:translateY(-50%);
+      will-change:transform;
+      filter:drop-shadow(-30px 50px 70px rgba(0,0,0,.85));
     }
     .la-overlay {
       position:absolute; top:110px; left:60px; z-index:5;
@@ -268,10 +282,39 @@
       color:var(--g2); text-align:right; line-height:2.1;
     }
     .la-cap-r b { color:var(--white); font-weight:600; }
-    .drag-hint {
-      position:absolute; bottom:60px; left:50%; transform:translateX(-50%);
-      z-index:5; font-size:9px; letter-spacing:4px; text-transform:uppercase;
-      color:var(--g2); pointer-events:none;
+
+    /* product strip below array */
+    #la-products {
+      display:grid; grid-template-columns:1.2fr 1fr 1fr;
+      gap:2px; background:var(--border);
+      border-top:1px solid var(--border);
+    }
+    .lp-cell {
+      background:var(--bg); padding:0; position:relative; overflow:hidden;
+      min-height:340px; display:flex; align-items:center; justify-content:center;
+    }
+    .lp-cell.photo {
+      background:url('assets/gsl-curve.jpg') center/cover no-repeat;
+    }
+    .lp-cell.photo::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(6,6,10,.7) 0%, transparent 50%);
+    }
+    .lp-cell img.cut {
+      max-width:68%; max-height:55%;
+      filter:drop-shadow(0 25px 35px rgba(0,0,0,.7));
+      transition:transform .5s cubic-bezier(.2,.8,.2,1);
+    }
+    .lp-cell:hover img.cut { transform:translateY(-10px) scale(1.04); }
+    .lp-tag {
+      position:absolute; bottom:24px; left:28px; z-index:2;
+      font-family:'Bebas Neue',sans-serif; font-size:19px;
+      letter-spacing:3px; color:var(--white);
+    }
+    .lp-tag small {
+      display:block; font-family:'Space Grotesk',sans-serif;
+      font-size:9px; letter-spacing:3px; text-transform:uppercase;
+      color:var(--g2); margin-top:4px;
     }
 
     /* ── SHURE — VISUAL ONLY ───────────────────────────── */
@@ -410,8 +453,11 @@
       nav::after { left:24px; right:24px; }
       .n-links { display:none; }
       #la { height:95vh; }
+      .la-array { right:-14%; height:74vh; }
       .la-overlay { left:24px; top:90px; }
       .la-caption { left:24px; right:24px; bottom:30px; flex-direction:column; align-items:flex-start; gap:16px; }
+      #la-products { grid-template-columns:1fr; }
+      .lp-cell { min-height:260px; }
       #wl { padding:100px 24px 90px; }
       .mic-row { flex-direction:column; align-items:center; gap:70px; }
       #sv { padding:100px 24px; }
@@ -508,19 +554,33 @@
   </div>
 </div>
 
-<!-- ══ d&b LINE ARRAY — 3D ════════════════════════════════════ -->
+<!-- ══ d&b LINE ARRAY — GSL SYSTEM ════════════════════════════ -->
 <section id="la">
-  <canvas id="webgl-la"></canvas>
+  <div class="la-bg" id="la-bg"></div>
+  <img class="la-array" id="la-array" src="assets/gsl-array.png" alt="d&b audiotechnik GSL line array">
   <div class="la-overlay">
     <p class="s-label rv">01 — Line Array</p>
-    <h2 class="s-title rv">d&amp;b <span class="ghost">audiotechnik</span></h2>
+    <h2 class="s-title rv">d&amp;b <span class="ghost">audiotechnik</span><br>GSL System</h2>
   </div>
   <div class="la-caption">
-    <div class="la-cap-l rv">KSL SYSTEM<small>J-Arc Configuration</small></div>
-    <div class="la-cap-r rv"><b>145 dB</b> MAX SPL &nbsp;&nbsp;·&nbsp;&nbsp; <b>70°×10°</b> COVERAGE<br><b>65 Hz – 18 kHz</b> &nbsp;&nbsp;·&nbsp;&nbsp; <b>4–24</b> ELEMENTEN</div>
+    <div class="la-cap-l rv">GSL8 · GSL12<small>SL-Series Flown Array</small></div>
+    <div class="la-cap-r rv"><b>145 dB</b> MAX SPL &nbsp;&nbsp;·&nbsp;&nbsp; <b>80°/120°</b> DISPERSION<br><b>36 Hz – 18 kHz</b> &nbsp;&nbsp;·&nbsp;&nbsp; <b>CARDIOID</b> PATTERN</div>
   </div>
-  <div class="drag-hint">← Sleep om te draaien →</div>
 </section>
+
+<div id="la-products">
+  <div class="lp-cell photo">
+    <span class="lp-tag">GSL ARRAY<small>Flown · J-Arc</small></span>
+  </div>
+  <div class="lp-cell">
+    <img class="cut" src="assets/gsl12.png" alt="d&b GSL12 loudspeaker">
+    <span class="lp-tag">GSL12<small>Loudspeaker</small></span>
+  </div>
+  <div class="lp-cell">
+    <img class="cut" src="assets/sl-sub.png" alt="d&b SL-SUB">
+    <span class="lp-tag">SL-SUB<small>Cardioid Subwoofer</small></span>
+  </div>
+</div>
 
 <div class="s-divider"></div>
 
@@ -940,137 +1000,21 @@
     tick();
   })();
 
-  // ════════════════════════════════════════════════════════════
-  //  THREE.JS SCENE 2 — 3D d&b LINE ARRAY (J-ARC, 12 BOXES)
-  // ════════════════════════════════════════════════════════════
-  (function arrayScene() {
-    const canvas = document.getElementById('webgl-la');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
-    renderer.setPixelRatio(DPR);
-
-    const scene  = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(42, 1, .1, 100);
-    camera.position.set(0, -1, 21);
-
-    // Lights — white key, purple + green rim (subtle)
-    scene.add(new THREE.AmbientLight(0xffffff, .18));
-    const key = new THREE.DirectionalLight(0xffffff, .9);
-    key.position.set(6, 8, 10);
-    scene.add(key);
-    const rimP = new THREE.PointLight(0x9b5de5, .55, 50);
-    rimP.position.set(-14, 2, 6);
-    scene.add(rimP);
-    const rimG = new THREE.PointLight(0x00ff88, .4, 50);
-    rimG.position.set(13, -6, 5);
-    scene.add(rimG);
-
-    const group = new THREE.Group();
-    scene.add(group);
-
-    // Materials
-    const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0x16161e, metalness: .55, roughness: .42,
-    });
-    const grilleMat = new THREE.MeshStandardMaterial({
-      color: 0x07070c, metalness: .3, roughness: .85,
-    });
-    const railMat = new THREE.MeshStandardMaterial({
-      color: 0x2a2a36, metalness: .8, roughness: .3,
-    });
-
-    // J-arc: 12 boxes, increasing tilt
-    const BOXES = 12;
-    const BW = 4.6, BH = 1.5, BD = 3.2;
-    const angles = [];
-    for (let i = 0; i < BOXES; i++) {
-      // Progressive splay: top boxes nearly straight, bottom curls forward
-      angles.push(-(i * i) * .55 * Math.PI / 180 - i * .8 * Math.PI / 180);
-    }
-
-    let y = 7.5, z = 0;
-    for (let i = 0; i < BOXES; i++) {
-      const box = new THREE.Group();
-
-      const body = new THREE.Mesh(new THREE.BoxGeometry(BW, BH, BD), bodyMat);
-      box.add(body);
-
-      // Front grille — slightly proud of the body
-      const grille = new THREE.Mesh(new THREE.BoxGeometry(BW * .92, BH * .8, .12), grilleMat);
-      grille.position.z = BD / 2 + .04;
-      box.add(grille);
-
-      // Side rigging rails
-      const railL = new THREE.Mesh(new THREE.BoxGeometry(.14, BH * .95, BD * .9), railMat);
-      railL.position.x = -BW / 2 - .08;
-      box.add(railL);
-      const railR = railL.clone();
-      railR.position.x = BW / 2 + .08;
-      box.add(railR);
-
-      const a = angles[i];
-      box.position.set(0, y, z);
-      box.rotation.x = -a;
-
-      group.add(box);
-
-      // Advance along the arc
-      y -= BH * Math.cos(a) + .06;
-      z += BH * Math.sin(-a);
-    }
-
-    // Rigging frame on top
-    const frame = new THREE.Mesh(new THREE.BoxGeometry(BW + .6, .22, BD + .4), railMat);
-    frame.position.set(0, 8.45, 0);
-    group.add(frame);
-    const cable = new THREE.Mesh(
-      new THREE.CylinderGeometry(.025, .025, 5, 6), railMat
-    );
-    cable.position.set(0, 11, 0);
-    group.add(cable);
-
-    // Center the group visually
-    group.position.y = -1.2;
-
-    function resize() {
-      const w = canvas.clientWidth, h = canvas.clientHeight;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    // Idle rotation + drag interaction + scroll scrub
-    let targetRotY = .5, dragVel = 0, dragging = false, lastX = 0;
-
-    canvas.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; });
-    window.addEventListener('pointermove', e => {
-      if (!dragging) return;
-      dragVel = (e.clientX - lastX) * .006;
-      targetRotY += dragVel;
-      lastX = e.clientX;
-    });
-    window.addEventListener('pointerup', () => dragging = false);
-
-    ScrollTrigger.create({
-      trigger: '#la', start: 'top bottom', end: 'bottom top', scrub: 1.2,
-      onUpdate: self => { if (!dragging) targetRotY = .5 + self.progress * 2.4; }
-    });
-
-    let laVisible = false;
-    new IntersectionObserver(e => laVisible = e[0].isIntersecting).observe(canvas);
-
-    function tick() {
-      requestAnimationFrame(tick);
-      if (!laVisible) return;
-      // Idle drift + smooth follow
-      if (!dragging) targetRotY += .0012;
-      group.rotation.y += (targetRotY - group.rotation.y) * .06;
-      group.rotation.z = Math.sin(Date.now() * .0004) * .015;
-      renderer.render(scene, camera);
-    }
-    tick();
-  })();
+  // ── d&b LINE ARRAY — PHOTO PARALLAX ─────────────────────────
+  gsap.to('#la-bg', {
+    yPercent: 14,
+    scrollTrigger: { trigger:'#la', start:'top bottom', end:'bottom top', scrub:1 }
+  });
+  gsap.fromTo('#la-array',
+    { yPercent: -56, rotation: -2 },
+    { yPercent: -44, rotation: 2, ease:'none',
+      scrollTrigger: { trigger:'#la', start:'top bottom', end:'bottom top', scrub:1.4 } }
+  );
+  gsap.fromTo('.lp-cell',
+    { y:60, opacity:0 },
+    { y:0, opacity:1, duration:.85, stagger:.14, ease:'power3.out',
+      scrollTrigger: { trigger:'#la-products', start:'top 85%' } }
+  );
 
   // ── HERO ENTRANCE ───────────────────────────────────────────
   const tl = gsap.timeline({ delay: .15 });
