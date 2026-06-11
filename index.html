@@ -6,7 +6,7 @@
   <title>DPS Audio — Professional Sound Systems</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -74,12 +74,24 @@
       content:''; position:absolute; bottom:0; left:60px; right:60px;
       height:1px; background:var(--border);
     }
-    .n-logo {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:26px; letter-spacing:5px;
-      color:var(--white); text-decoration:none;
+    /* DPS Audio logo badge — vector recreation of the supplied logo */
+    .logo-badge {
+      display:inline-flex; flex-direction:column; align-items:center;
+      border:1.5px solid var(--white); border-radius:9px;
+      padding:5px 18px 7px; text-decoration:none;
+      transition:border-color .3s;
     }
-    .n-logo em { color:var(--neon); font-style:normal; }
+    .logo-badge:hover { border-color:var(--neon); }
+    .lb-dps {
+      font-family:'Playfair Display',serif; font-weight:600;
+      font-size:24px; line-height:1; letter-spacing:1px;
+      color:var(--white);
+    }
+    .lb-audio {
+      font-family:'Space Grotesk',sans-serif; font-weight:300;
+      font-size:8px; letter-spacing:.45em; text-indent:.45em;
+      color:var(--white); margin-top:3px;
+    }
     .n-links { display:flex; gap:36px; list-style:none; }
     .n-links a {
       color:var(--g2); text-decoration:none;
@@ -412,11 +424,8 @@
       border-top:1px solid var(--border); padding:36px 60px;
       display:flex; justify-content:space-between; align-items:center;
     }
-    .f-logo {
-      font-family:'Bebas Neue',sans-serif; font-size:22px;
-      letter-spacing:4px; color:var(--g2);
-    }
-    .f-logo em { color:var(--neon); font-style:normal; }
+    footer .logo-badge { opacity:.55; transform:scale(.85); }
+    footer .logo-badge:hover { opacity:1; }
     .f-copy { font-size:11px; color:var(--g2); letter-spacing:.5px; }
     .f-links { display:flex; gap:28px; list-style:none; }
     .f-links a {
@@ -457,7 +466,7 @@
 
 <!-- ══ NAV ════════════════════════════════════════════════════ -->
 <nav id="nav">
-  <a href="#" class="n-logo">DPS<em>.</em>AUDIO</a>
+  <a href="#" class="logo-badge"><span class="lb-dps">DPS</span><span class="lb-audio">Audio</span></a>
   <ul class="n-links">
     <li><a href="#la">Line Array</a></li>
     <li><a href="#wl">Wireless</a></li>
@@ -716,7 +725,7 @@
 
 <!-- ══ FOOTER ════════════════════════════════════════════════ -->
 <footer>
-  <div class="f-logo">DPS<em>.</em>AUDIO</div>
+  <a href="#" class="logo-badge"><span class="lb-dps">DPS</span><span class="lb-audio">Audio</span></a>
   <p class="f-copy">© 2025 DPS Audio — Alle rechten voorbehouden</p>
   <ul class="f-links">
     <li><a href="#">Privacy</a></li>
