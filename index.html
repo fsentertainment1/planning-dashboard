@@ -232,6 +232,37 @@
     }
     @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
+    /* ── OVER ONS — STATEMENT ──────────────────────────── */
+    #over { padding:160px 60px 130px; max-width:1280px; margin:0 auto; }
+    .ov-statement {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(38px,5.6vw,84px);
+      line-height:1.04; letter-spacing:0; color:var(--white);
+      max-width:1080px; margin-bottom:90px;
+    }
+    .ov-statement em {
+      font-style:normal; color:transparent;
+      -webkit-text-stroke:1px rgba(255,255,255,.45);
+    }
+    .usp-grid {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:1px; background:var(--border); border:1px solid var(--border);
+    }
+    .usp {
+      background:var(--bg); padding:34px 28px;
+    }
+    .usp-num {
+      font-family:'Bebas Neue',sans-serif; font-size:15px;
+      letter-spacing:2px; color:var(--neon); margin-bottom:16px;
+    }
+    .usp-t {
+      font-size:15px; font-weight:600; color:var(--white);
+      margin-bottom:8px; letter-spacing:.2px;
+    }
+    .usp-d {
+      font-size:12.5px; line-height:1.7; color:var(--g2); font-weight:300;
+    }
+
     /* ── SECTION COMMONS ───────────────────────────────── */
     .s-label {
       font-size:10px; letter-spacing:5px; text-transform:uppercase;
@@ -339,8 +370,18 @@
       font-weight:500; min-width:34px;
       transition:color .4s;
     }
-    .sv-head {
+    .sv-main {
       position:relative; z-index:2; flex:1;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .sv-line {
+      font-size:13px; line-height:1.6; color:var(--g2); font-weight:300;
+      max-width:560px;
+      opacity:.7; transition:opacity .4s, transform .5s cubic-bezier(.2,.8,.2,1);
+    }
+    .sv-row:hover .sv-line { opacity:1; transform:translateX(24px); }
+    .sv-head {
+      position:relative; z-index:2;
       font-family:'Bebas Neue',sans-serif;
       font-size:clamp(46px,8.5vw,120px);
       line-height:.95; letter-spacing:0;
@@ -418,6 +459,17 @@
       padding-bottom:2px; transition:border-color .3s;
     }
     .cta-mail a:hover { border-color:var(--neon); }
+    .cta-info {
+      display:flex; justify-content:center; gap:60px;
+      margin-top:70px; flex-wrap:wrap;
+    }
+    .ci {
+      font-size:14px; color:var(--g1); font-weight:400;
+    }
+    .ci span {
+      display:block; font-size:9px; letter-spacing:3px;
+      text-transform:uppercase; color:var(--g2); margin-bottom:7px;
+    }
 
     /* ── FOOTER ────────────────────────────────────────── */
     footer {
@@ -446,10 +498,15 @@
       .la-array { right:50%; transform:translate(50%,-50%); height:70vh; }
       #wl { padding:100px 24px 90px; }
       .mic-row { flex-direction:column; align-items:center; gap:70px; }
+      #over { padding:100px 24px 80px; }
+      .ov-statement { margin-bottom:60px; }
+      .usp-grid { grid-template-columns:1fr 1fr; }
       #sv { padding:100px 0 80px; }
       .sv-toplabel { padding:0 24px; }
       .sv-row { padding:26px 24px; }
+      .sv-line { display:none; }
       .sv-preview { display:none; }
+      .cta-info { gap:28px; flex-direction:column; }
       #stats { grid-template-columns:repeat(2,1fr); }
       .s-item { border-right:none; border-bottom:1px solid var(--border); }
       #cta { padding:120px 24px; }
@@ -468,9 +525,9 @@
 <nav id="nav">
   <a href="#" class="logo-badge"><span class="lb-dps">DPS</span><span class="lb-audio">Audio</span></a>
   <ul class="n-links">
-    <li><a href="#la">Line Array</a></li>
+    <li><a href="#over">Over ons</a></li>
+    <li><a href="#sv">Diensten</a></li>
     <li><a href="#wl">Wireless</a></li>
-    <li><a href="#sv">Services</a></li>
     <li><a href="#cta">Contact</a></li>
   </ul>
   <a href="#cta" class="n-btn">Offerte aanvragen</a>
@@ -487,7 +544,7 @@
       <span class="ln"><span>DPS</span></span>
       <span class="ln"><span>AUDIO</span></span>
     </h1>
-    <p class="h-sub">Professionele geluidssystemen voor festivals, events en vaste installaties. Powered by d&amp;b audiotechnik &amp; Shure Axient Digital.</p>
+    <p class="h-sub">Wij vertalen techniek naar beleving. Geluid voor events, verhuur en vaste installaties — ontworpen, gebouwd en bediend door eigen specialisten.</p>
     <div class="h-btns">
       <a href="#la" class="btn-w">Ontdek ons systeem</a>
       <a href="#cta" class="btn-o">Neem contact op</a>
@@ -537,6 +594,38 @@
     <span class="mq-item">Crown Audio</span><span class="mq-item">·</span>
   </div>
 </div>
+
+<!-- ══ OVER ONS ═══════════════════════════════════════════════ -->
+<section id="over">
+  <p class="s-label rv">Wie wij zijn</p>
+  <h2 class="ov-statement rv">
+    Wij vertalen <em>techniek</em> naar <em>beleving</em> —
+    van het eerste ontwerp tot de laatste soundcheck,
+    alles in eigen huis.
+  </h2>
+  <div class="usp-grid">
+    <div class="usp rv">
+      <div class="usp-num">01</div>
+      <div class="usp-t">Turn-key aanpak</div>
+      <div class="usp-d">Ontwerp, levering, installatie en programmering door eigen technici. Eén aanspreekpunt, geen onderaannemers.</div>
+    </div>
+    <div class="usp rv">
+      <div class="usp-num">02</div>
+      <div class="usp-t">Alleen A-merken</div>
+      <div class="usp-d">d&amp;b audiotechnik, Shure Axient Digital en DiGiCo. Apparatuur waar riders om vragen.</div>
+    </div>
+    <div class="usp rv">
+      <div class="usp-num">03</div>
+      <div class="usp-t">15+ jaar ervaring</div>
+      <div class="usp-d">Van clubshow tot festivalpodium en van horecazaak tot theater — wij kennen elke ruimte en elk genre.</div>
+    </div>
+    <div class="usp rv">
+      <div class="usp-num">04</div>
+      <div class="usp-t">Service &amp; support</div>
+      <div class="usp-d">Onderhoud, storingsdienst en advies, ook ná de oplevering. Wij blijven betrokken bij uw installatie.</div>
+    </div>
+  </div>
+</section>
 
 <!-- ══ d&b LINE ARRAY — PURE VISUAL ═══════════════════════════ -->
 <section id="la">
@@ -671,32 +760,50 @@
   <div class="sv-list" id="svlist">
     <a href="#cta" class="sv-row" data-img="assets/gsl-array.png">
       <span class="sv-idx">01</span>
-      <span class="sv-head">Verhuur</span>
+      <span class="sv-main">
+        <span class="sv-head">Verhuur</span>
+        <span class="sv-line">Complete d&amp;b geluidssets — droge verhuur of inclusief technicus, altijd showklaar.</span>
+      </span>
       <span class="sv-arrow">→</span>
     </a>
     <a href="#cta" class="sv-row" data-img="assets/gsl-curve.jpg">
       <span class="sv-idx">02</span>
-      <span class="sv-head">Events</span>
+      <span class="sv-main">
+        <span class="sv-head">Events</span>
+        <span class="sv-line">Festivals, corporate events en producties. Van rider-check tot afbouw volledig ontzorgd.</span>
+      </span>
       <span class="sv-arrow">→</span>
     </a>
     <a href="#cta" class="sv-row" data-img="assets/gsl-detail.jpg">
       <span class="sv-idx">03</span>
-      <span class="sv-head">Vaste Installaties</span>
+      <span class="sv-main">
+        <span class="sv-head">Vaste Installaties</span>
+        <span class="sv-line">Turn-key geluidsinstallaties voor horeca, theaters en clubs. Ontwerp, montage en inmeting in eigen beheer.</span>
+      </span>
       <span class="sv-arrow">→</span>
     </a>
     <a href="#cta" class="sv-row" data-img="assets/gsl12.png">
       <span class="sv-idx">04</span>
-      <span class="sv-head">Smart Systems</span>
+      <span class="sv-main">
+        <span class="sv-head">Smart Systems</span>
+        <span class="sv-line">Netwerkgestuurde AV-systemen: één bediening voor geluid, licht en media in uw pand.</span>
+      </span>
       <span class="sv-arrow">→</span>
     </a>
     <a href="#cta" class="sv-row" data-img="assets/sl-sub.png">
       <span class="sv-idx">05</span>
-      <span class="sv-head">Band Shows</span>
+      <span class="sv-main">
+        <span class="sv-head">Band Shows</span>
+        <span class="sv-line">FOH, monitoring en draadloze rigs voor live bands — van clubpodium tot mainstage.</span>
+      </span>
       <span class="sv-arrow">→</span>
     </a>
     <a href="#cta" class="sv-row" data-img="assets/gsl-curve.jpg">
       <span class="sv-idx">06</span>
-      <span class="sv-head">Tape Shows</span>
+      <span class="sv-main">
+        <span class="sv-head">Tape Shows</span>
+        <span class="sv-line">Strakke playback-producties en hybride shows, naadloos geïntegreerd met live elementen.</span>
+      </span>
       <span class="sv-arrow">→</span>
     </a>
   </div>
@@ -720,6 +827,11 @@
   <div class="h-btns rv">
     <a href="mailto:info@dps-audio.nl" class="btn-w">Verstuur een bericht</a>
     <a href="tel:+31612345678"         class="btn-o">Bel ons direct</a>
+  </div>
+  <div class="cta-info rv">
+    <div class="ci"><span>Telefoon</span>+31 (0)6 12 34 56 78</div>
+    <div class="ci"><span>Bereikbaar</span>Ma – Vr · 08:30 – 17:30</div>
+    <div class="ci"><span>Service &amp; storing</span>24/7 voor installatieklanten</div>
   </div>
 </section>
 
