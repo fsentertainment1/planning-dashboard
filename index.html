@@ -74,7 +74,9 @@
       content:''; position:absolute; bottom:0; left:60px; right:60px;
       height:1px; background:var(--border);
     }
-    /* DPS Audio logo badge — vector recreation of the supplied logo */
+    /* DPS Audio logo — drop your file at assets/dps-logo.png to use it.
+       The text badge below is a fallback shown only if that file is missing. */
+    .logo-img { height:44px; width:auto; display:block; }
     .logo-badge {
       display:inline-flex; flex-direction:column; align-items:center;
       border:1.5px solid var(--white); border-radius:9px;
@@ -518,8 +520,9 @@
       border-top:1px solid var(--border); padding:36px 60px;
       display:flex; justify-content:space-between; align-items:center;
     }
-    footer .logo-badge { opacity:.55; transform:scale(.85); }
-    footer .logo-badge:hover { opacity:1; }
+    footer .logo-badge, footer .logo-link { opacity:.55; transform:scale(.85); transition:opacity .3s; }
+    footer .logo-badge:hover, footer .logo-link:hover { opacity:1; }
+    footer .logo-img { height:38px; }
     .f-copy { font-size:11px; color:var(--g2); letter-spacing:.5px; }
     .f-links { display:flex; gap:28px; list-style:none; }
     .f-links a {
@@ -567,7 +570,7 @@
 
 <!-- ══ NAV ════════════════════════════════════════════════════ -->
 <nav id="nav">
-  <a href="#" class="logo-badge"><span class="lb-dps">DPS</span><span class="lb-audio">Audio</span></a>
+  <a href="#" class="logo-link"><img src="assets/dps-logo.png" alt="DPS Audio" class="logo-img" onerror="this.outerHTML='&lt;span class=\'logo-badge\'&gt;&lt;span class=\'lb-dps\'&gt;DPS&lt;/span&gt;&lt;span class=\'lb-audio\'&gt;Audio&lt;/span&gt;&lt;/span&gt;'"></a>
   <ul class="n-links">
     <li><a href="#over">Over ons</a></li>
     <li><a href="#sv">Diensten</a></li>
@@ -818,7 +821,7 @@
 
 <!-- ══ FOOTER ════════════════════════════════════════════════ -->
 <footer>
-  <a href="#" class="logo-badge"><span class="lb-dps">DPS</span><span class="lb-audio">Audio</span></a>
+  <a href="#" class="logo-link"><img src="assets/dps-logo.png" alt="DPS Audio" class="logo-img" onerror="this.outerHTML='&lt;span class=\'logo-badge\'&gt;&lt;span class=\'lb-dps\'&gt;DPS&lt;/span&gt;&lt;span class=\'lb-audio\'&gt;Audio&lt;/span&gt;&lt;/span&gt;'"></a>
   <p class="f-copy">© 2025 DPS Audio — Alle rechten voorbehouden</p>
   <ul class="f-links">
     <li><a href="#">Privacy</a></li>
