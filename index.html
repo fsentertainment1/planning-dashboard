@@ -349,6 +349,43 @@
       max-width:520px; margin:26px auto 0; line-height:1.75;
     }
 
+    /* ── TECHNIEK / GEAR — CONTROL ROOM ────────────────── */
+    #gear { padding:150px 60px 120px; max-width:1400px; margin:0 auto; }
+    .gear-hdr { margin-bottom:52px; }
+    .gear-hdr .s-title { margin-top:14px; }
+    .gear-intro {
+      font-size:14px; line-height:1.85; color:var(--g2); font-weight:300;
+      margin-top:26px; max-width:560px;
+    }
+    .gear-feature {
+      position:relative; height:54vh; min-height:360px;
+      overflow:hidden; margin-bottom:2px;
+    }
+    .gear-row { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+    .gear-cell {
+      position:relative; overflow:hidden; min-height:250px; background:var(--bg2);
+    }
+    .gear-ph {
+      position:absolute; inset:0;
+      background-size:cover; background-position:center;
+      transition:transform .9s cubic-bezier(.2,.8,.2,1);
+      will-change:transform;
+    }
+    .gear-feature:hover .gear-ph, .gear-cell:hover .gear-ph { transform:scale(1.06); }
+    .gear-feature::after, .gear-cell::after {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(to top, rgba(6,6,10,.88) 0%, transparent 58%);
+    }
+    .gear-cap { position:absolute; left:28px; bottom:26px; z-index:2; }
+    .gear-cap .gc-k {
+      display:block; font-size:9px; letter-spacing:3px; text-transform:uppercase;
+      color:var(--purple); margin-bottom:7px;
+    }
+    .gear-cap .gc-t {
+      font-family:'Bebas Neue',sans-serif; font-size:28px;
+      letter-spacing:1px; color:var(--white); line-height:1;
+    }
+
     /* ── SERVICES — HEADLINE LIST ──────────────────────── */
     #sv { padding:140px 0 120px; position:relative; }
     .sv-toplabel { padding:0 60px; margin-bottom:50px; }
@@ -581,6 +618,9 @@
       #la { height:80vh; }
       .la-array { right:50%; transform:translate(50%,-50%); height:70vh; }
       #live { height:72vh; }
+      #gear { padding:100px 24px 80px; }
+      .gear-row { grid-template-columns:1fr; }
+      .gear-feature { height:42vh; min-height:280px; }
       #over { padding:100px 24px 80px; }
       .ov-statement { margin-bottom:60px; }
       .usp-grid { grid-template-columns:1fr 1fr; }
@@ -710,6 +750,37 @@
       <div class="usp-num">04</div>
       <div class="usp-t">Service &amp; support</div>
       <div class="usp-d">Onderhoud, storingsdienst en advies, ook ná de oplevering. Wij blijven betrokken bij uw installatie.</div>
+    </div>
+  </div>
+</section>
+
+<div class="s-divider"></div>
+
+<!-- ══ TECHNIEK / GEAR — CONTROL ROOM ═════════════════════════ -->
+<section id="gear">
+  <div class="gear-hdr">
+    <p class="s-label rv">Achter de knoppen</p>
+    <h2 class="s-title rv">Onze <span class="ghost">controlekamer</span></h2>
+    <p class="gear-intro rv">Achter elke perfecte mix staat doordachte techniek. Wij draaien op digitale consoles en processing van studioniveau — voor een geluid dat klopt, elke avond opnieuw.</p>
+  </div>
+
+  <div class="gear-feature rv">
+    <span class="gear-ph" style="background-image:url('assets/gear-waves-lv1-classix-3.webp')"></span>
+    <span class="gear-cap"><span class="gc-k">Mixing console</span><span class="gc-t">Waves LV1</span></span>
+  </div>
+
+  <div class="gear-row">
+    <div class="gear-cell rv">
+      <span class="gear-ph" style="background-image:url('assets/gear-uad-apollo.png')"></span>
+      <span class="gear-cap"><span class="gc-k">I/O &amp; processing</span><span class="gc-t">UAD Apollo Rack</span></span>
+    </div>
+    <div class="gear-cell rv">
+      <span class="gear-ph" style="background-image:url('assets/gear-waves-lv1-classix.webp')"></span>
+      <span class="gear-cap"><span class="gc-k">Emotion mixing</span><span class="gc-t">LV1 Classic</span></span>
+    </div>
+    <div class="gear-cell rv">
+      <span class="gear-ph" style="background-image:url('assets/-gear-UAD-Apollo-2-Console-Explained-XNQy-original.jpeg'); background-position:center top"></span>
+      <span class="gear-cap"><span class="gc-k">Console software</span><span class="gc-t">Apollo Console</span></span>
     </div>
   </div>
 </section>
