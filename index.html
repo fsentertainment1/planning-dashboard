@@ -401,6 +401,51 @@
       background:linear-gradient(to bottom, rgba(6,6,10,.3) 0%, rgba(6,6,10,.55) 100%);
     }
 
+    /* ── SOCIAL PROOF — VERTROUWD DOOR ─────────────────── */
+    #trust {
+      padding:78px 60px; text-align:center; background:var(--bg);
+      border-bottom:1px solid var(--border);
+    }
+    .trust-eye {
+      font-size:10px; letter-spacing:5px; text-transform:uppercase;
+      color:var(--g2); margin-bottom:34px;
+    }
+    .trust-eye b { color:var(--white); font-weight:600; }
+    .trust-names {
+      display:flex; flex-wrap:wrap; justify-content:center;
+      align-items:center; gap:16px 46px;
+    }
+    .trust-names span {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(22px,3vw,40px); letter-spacing:1px; line-height:1;
+      color:transparent; -webkit-text-stroke:1px rgba(255,255,255,.3);
+      transition:color .4s, -webkit-text-stroke-color .4s;
+      cursor:default;
+    }
+    .trust-names span:hover { color:var(--white); -webkit-text-stroke-color:transparent; }
+
+    /* ── PROCES — ZO WERKEN WIJ ────────────────────────── */
+    #proces { padding:140px 60px; max-width:1280px; margin:0 auto; }
+    .pr-hdr { margin-bottom:62px; }
+    .pr-hdr .s-title { margin-top:14px; }
+    .pr-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+      background:var(--border); border:1px solid var(--border);
+    }
+    .pr-step { background:var(--bg); padding:42px 30px; transition:background .4s; }
+    .pr-step:hover { background:var(--bg2); }
+    .pr-num {
+      font-family:'Bebas Neue',sans-serif; font-size:56px; line-height:1;
+      color:transparent; -webkit-text-stroke:1px rgba(255,255,255,.22);
+      margin-bottom:26px; transition:-webkit-text-stroke-color .4s;
+    }
+    .pr-step:hover .pr-num { -webkit-text-stroke-color:var(--neon); }
+    .pr-t {
+      font-size:16px; font-weight:600; color:var(--white);
+      margin-bottom:10px; letter-spacing:.2px;
+    }
+    .pr-d { font-size:13px; line-height:1.75; color:var(--g2); font-weight:300; }
+
     /* ── SERVICES — HEADLINE LIST ──────────────────────── */
     #sv { padding:140px 0 120px; position:relative; }
     .sv-toplabel { padding:0 60px; margin-bottom:50px; }
@@ -633,9 +678,13 @@
       #la { height:80vh; }
       .la-array { right:50%; transform:translate(50%,-50%); height:70vh; }
       #live { height:72vh; }
-      #gear { padding:100px 24px 80px; }
+      #gear { padding:0; }
       .gear-row { grid-template-columns:1fr; }
       .gear-feature { height:42vh; min-height:280px; }
+      #trust { padding:54px 24px; }
+      .trust-names { gap:10px 26px; }
+      #proces { padding:90px 24px; }
+      .pr-grid { grid-template-columns:1fr 1fr; }
       #over { padding:100px 24px 80px; }
       .ov-statement { margin-bottom:60px; }
       .usp-grid { grid-template-columns:1fr 1fr; }
@@ -669,6 +718,7 @@
   <ul class="n-links">
     <li><a href="#over">Over ons</a></li>
     <li><a href="#sv">Diensten</a></li>
+    <li><a href="#proces">Werkwijze</a></li>
     <li><a href="#werk">Projecten</a></li>
     <li><a href="#cta">Contact</a></li>
   </ul>
@@ -719,6 +769,18 @@
   </div>
 </div>
 
+<!-- ══ SOCIAL PROOF — VERTROUWD DOOR ══════════════════════════ -->
+<section id="trust">
+  <p class="trust-eye rv">Vertrouwd door <b>artiesten &amp; producties</b></p>
+  <div class="trust-names rv">
+    <span>Wolter Kroes</span>
+    <span>Emma Heesters</span>
+    <span>Rolf Sanchez</span>
+    <span>Joël Borelli</span>
+    <span>Mara Julia</span>
+  </div>
+</section>
+
 <!-- ══ MARQUEE ════════════════════════════════════════════════ -->
 <div id="marquee">
   <div class="mq-track">
@@ -765,26 +827,6 @@
       <div class="usp-num">04</div>
       <div class="usp-t">Service &amp; support</div>
       <div class="usp-d">Onderhoud, storingsdienst en advies, ook ná de oplevering. Wij blijven betrokken bij uw installatie.</div>
-    </div>
-  </div>
-</section>
-
-<div class="s-divider"></div>
-
-<!-- ══ GEAR — ATMOSPHERIC VISUAL BAND (pure visual) ═══════════ -->
-<section id="gear">
-  <div class="gear-feature">
-    <span class="gear-ph" style="background-image:url('assets/gear-waves-lv1-classix-3.webp')"></span>
-  </div>
-  <div class="gear-row">
-    <div class="gear-cell">
-      <span class="gear-ph" style="background-image:url('assets/gear-uad-apollo.png')"></span>
-    </div>
-    <div class="gear-cell">
-      <span class="gear-ph" style="background-image:url('assets/gear-waves-lv1-classix.webp')"></span>
-    </div>
-    <div class="gear-cell">
-      <span class="gear-ph" style="background-image:url('assets/-gear-UAD-Apollo-2-Console-Explained-XNQy-original.jpeg'); background-position:center top"></span>
     </div>
   </div>
 </section>
@@ -853,6 +895,58 @@
   </div>
 
   <div class="sv-preview" id="svpreview"><img src="" alt=""></div>
+</section>
+
+<div class="s-divider"></div>
+
+<!-- ══ GEAR — ATMOSPHERIC VISUAL BAND (pure visual) ═══════════ -->
+<section id="gear">
+  <div class="gear-feature">
+    <span class="gear-ph" style="background-image:url('assets/gear-waves-lv1-classix-3.webp')"></span>
+  </div>
+  <div class="gear-row">
+    <div class="gear-cell">
+      <span class="gear-ph" style="background-image:url('assets/gear-uad-apollo.png')"></span>
+    </div>
+    <div class="gear-cell">
+      <span class="gear-ph" style="background-image:url('assets/gear-waves-lv1-classix.webp')"></span>
+    </div>
+    <div class="gear-cell">
+      <span class="gear-ph" style="background-image:url('assets/-gear-UAD-Apollo-2-Console-Explained-XNQy-original.jpeg'); background-position:center top"></span>
+    </div>
+  </div>
+</section>
+
+<div class="s-divider"></div>
+
+<!-- ══ PROCES — ZO WERKEN WIJ ═════════════════════════════════ -->
+<section id="proces">
+  <div class="pr-hdr">
+    <p class="s-label rv">Zo werken wij</p>
+    <h2 class="s-title rv">U heeft een idee.<br><span class="ghost">Wij maken het concreet.</span></h2>
+  </div>
+  <div class="pr-grid">
+    <div class="pr-step rv">
+      <div class="pr-num">01</div>
+      <div class="pr-t">Advies &amp; intake</div>
+      <div class="pr-d">We luisteren naar uw event of ruimte, denken mee over budget en ambitie, en vertalen dat naar een helder plan.</div>
+    </div>
+    <div class="pr-step rv">
+      <div class="pr-num">02</div>
+      <div class="pr-t">Ontwerp &amp; engineering</div>
+      <div class="pr-d">Een akoestisch onderbouwd systeemontwerp, ingemeten en uitgewerkt — zodat techniek en ruimte naadloos samenvallen.</div>
+    </div>
+    <div class="pr-step rv">
+      <div class="pr-num">03</div>
+      <div class="pr-t">Realisatie &amp; show</div>
+      <div class="pr-d">Levering, opbouw en bediening door eigen technici. Strakke afstemming, op tijd showklaar — elke keer weer.</div>
+    </div>
+    <div class="pr-step rv">
+      <div class="pr-num">04</div>
+      <div class="pr-t">Service &amp; support</div>
+      <div class="pr-d">Onderhoud, storingsdienst en advies, ook ná de oplevering. Eén aanspreekpunt voor het hele traject.</div>
+    </div>
+  </div>
 </section>
 
 <div class="s-divider"></div>
