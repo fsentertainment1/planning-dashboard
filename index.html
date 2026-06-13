@@ -310,6 +310,45 @@
       background:radial-gradient(ellipse at center, transparent 55%, rgba(6,6,10,.55) 100%);
     }
 
+    /* ── LIVE / SFEER — FULL-BLEED PARALLAX ─────────────── */
+    #live {
+      position:relative; height:92vh; overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .live-bg {
+      position:absolute; inset:-14% 0; z-index:1;
+      background:url('assets/artist-mara-julia.webp') center 30%/cover no-repeat;
+      opacity:.5; will-change:transform;
+      filter:grayscale(.35) contrast(1.06);
+    }
+    .live-bg::after {
+      content:''; position:absolute; inset:0;
+      background:
+        linear-gradient(to bottom, var(--bg) 0%, transparent 28%, transparent 64%, var(--bg) 100%),
+        radial-gradient(ellipse at center, transparent 38%, rgba(6,6,10,.72) 100%);
+    }
+    .live-content {
+      position:relative; z-index:3; text-align:center;
+      padding:0 40px; pointer-events:none;
+    }
+    .live-eye {
+      font-size:11px; letter-spacing:6px; text-transform:uppercase;
+      color:var(--neon); margin-bottom:22px;
+    }
+    .live-t {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(64px,15vw,250px); line-height:.86;
+      letter-spacing:-2px; color:var(--white); will-change:transform;
+    }
+    .live-t .ghost {
+      -webkit-text-stroke:1px rgba(255,255,255,.3);
+      -webkit-text-fill-color:transparent;
+    }
+    .live-sub {
+      font-size:clamp(13px,1.4vw,16px); color:var(--g1); font-weight:300;
+      max-width:520px; margin:26px auto 0; line-height:1.75;
+    }
+
     /* ── SERVICES — HEADLINE LIST ──────────────────────── */
     #sv { padding:140px 0 120px; position:relative; }
     .sv-toplabel { padding:0 60px; margin-bottom:50px; }
@@ -541,6 +580,7 @@
       .n-links { display:none; }
       #la { height:80vh; }
       .la-array { right:50%; transform:translate(50%,-50%); height:70vh; }
+      #live { height:72vh; }
       #over { padding:100px 24px 80px; }
       .ov-statement { margin-bottom:60px; }
       .usp-grid { grid-template-columns:1fr 1fr; }
@@ -628,13 +668,13 @@
 <div id="marquee">
   <div class="mq-track">
     <span class="mq-item">d&amp;b audiotechnik</span><span class="mq-item">·</span>
-    <span class="mq-item">Shure Axient Digital</span><span class="mq-item">·</span>
+    <span class="mq-item">Sennheiser Digital 6000</span><span class="mq-item">·</span>
     <span class="mq-item">Yamaha CL Series</span><span class="mq-item">·</span>
     <span class="mq-item">DiGiCo SD Range</span><span class="mq-item">·</span>
     <span class="mq-item">Lab.gruppen</span><span class="mq-item">·</span>
     <span class="mq-item">Crown Audio</span><span class="mq-item">·</span>
     <span class="mq-item">d&amp;b audiotechnik</span><span class="mq-item">·</span>
-    <span class="mq-item">Shure Axient Digital</span><span class="mq-item">·</span>
+    <span class="mq-item">Sennheiser Digital 6000</span><span class="mq-item">·</span>
     <span class="mq-item">Yamaha CL Series</span><span class="mq-item">·</span>
     <span class="mq-item">DiGiCo SD Range</span><span class="mq-item">·</span>
     <span class="mq-item">Lab.gruppen</span><span class="mq-item">·</span>
@@ -659,7 +699,7 @@
     <div class="usp rv">
       <div class="usp-num">02</div>
       <div class="usp-t">Alleen A-merken</div>
-      <div class="usp-d">d&amp;b audiotechnik, Shure Axient Digital en DiGiCo. Apparatuur waar riders om vragen.</div>
+      <div class="usp-d">d&amp;b audiotechnik, DiGiCo en Sennheiser. Apparatuur waar riders om vragen.</div>
     </div>
     <div class="usp rv">
       <div class="usp-num">03</div>
@@ -742,6 +782,18 @@
 
 <div class="s-divider"></div>
 
+<!-- ══ LIVE / SFEER — FULL-BLEED PARALLAX ═════════════════════ -->
+<section id="live">
+  <div class="live-bg" id="live-bg"></div>
+  <div class="live-content">
+    <p class="live-eye rv">Van clubpodium tot mainstage</p>
+    <h2 class="live-t rv">WAAR HET<br><span class="ghost">LIVE</span> GEBEURT</h2>
+    <p class="live-sub rv">Achter elke show staat techniek die je niet ziet, maar wél voelt. Wij bouwen het podium waarop artiesten kunnen schitteren.</p>
+  </div>
+</section>
+
+<div class="s-divider"></div>
+
 <!-- ══ PROJECTEN ══════════════════════════════════════════════ -->
 <section id="werk">
   <div class="wk-hdr">
@@ -750,15 +802,23 @@
   </div>
   <div class="wk-grid">
     <a href="#cta" class="wk-card">
-      <span class="wk-img" style="background-image:url('assets/gsl-curve.jpg')"></span>
+      <span class="wk-img" style="background-image:url('assets/artist-rolf-sanchez.jpg')"></span>
       <span class="wk-info">
         <span class="wk-tag">Festival · Events</span>
         <span class="wk-t" style="display:block">Mainstage Festivalproductie</span>
-        <span class="wk-m">24× d&amp;b GSL · FOH &amp; monitoring · Shure Axient RF</span>
+        <span class="wk-m">24× d&amp;b GSL · FOH &amp; monitoring · draadloze RF-rigs</span>
       </span>
     </a>
     <a href="#cta" class="wk-card">
-      <span class="wk-img" style="background-image:url('assets/gsl-detail.jpg')"></span>
+      <span class="wk-img" style="background-image:url('assets/artist-joel-borelli.jpg')"></span>
+      <span class="wk-info">
+        <span class="wk-tag">Band show · Live</span>
+        <span class="wk-t" style="display:block">Live Bandproductie</span>
+        <span class="wk-m">FOH, monitoring &amp; backline · van soundcheck tot encore</span>
+      </span>
+    </a>
+    <a href="#cta" class="wk-card">
+      <span class="wk-img" style="background-image:url('assets/artist-wolter-kroes.jpg')"></span>
       <span class="wk-info">
         <span class="wk-tag">Theater · Vaste installatie</span>
         <span class="wk-t" style="display:block">Theaterzaal Turn-key</span>
@@ -766,15 +826,7 @@
       </span>
     </a>
     <a href="#cta" class="wk-card">
-      <img class="wk-cut" src="assets/gsl12.png" alt="">
-      <span class="wk-info">
-        <span class="wk-tag">Club · Smart system</span>
-        <span class="wk-t" style="display:block">Clubinstallatie</span>
-        <span class="wk-m">Eén bediening voor geluid, licht en media</span>
-      </span>
-    </a>
-    <a href="#cta" class="wk-card">
-      <img class="wk-cut" src="assets/sl-sub.png" alt="">
+      <span class="wk-img" style="background-image:url('assets/artist-emma-heesters.jpg')"></span>
       <span class="wk-info">
         <span class="wk-tag">Tape show · Productie</span>
         <span class="wk-t" style="display:block">Hybride Tape Show</span>
@@ -995,6 +1047,17 @@
     { yPercent: -44, rotation: 2, ease:'none',
       scrollTrigger: { trigger:'#la', start:'top bottom', end:'bottom top', scrub:1.4 } }
   );
+
+  // ── LIVE / SFEER — PHOTO PARALLAX ───────────────────────────
+  gsap.fromTo('#live-bg',
+    { yPercent: -10 },
+    { yPercent: 14, ease:'none',
+      scrollTrigger: { trigger:'#live', start:'top bottom', end:'bottom top', scrub:1 } }
+  );
+  gsap.to('.live-t', {
+    yPercent: -16, ease:'none',
+    scrollTrigger: { trigger:'#live', start:'top bottom', end:'bottom top', scrub:1.3 }
+  });
   // ── SERVICES — HEADLINE LIST + CURSOR PREVIEW ──────────────
   const preview = document.getElementById('svpreview');
   const pImg = preview.querySelector('img');
