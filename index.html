@@ -523,6 +523,32 @@
     }
     .sv-preview img.cover { object-fit:cover; padding:0; }
 
+    /* ── SERVICES — THREE DIVISIONS ────────────────────── */
+    .sv-division {
+      border-top:1px solid var(--border);
+    }
+    .sv-div-header {
+      display:grid;
+      grid-template-columns:60px 1fr auto;
+      align-items:center; gap:clamp(20px,4vw,60px);
+      padding:clamp(22px,3vh,34px) 60px;
+      border-bottom:1px solid var(--border);
+      background:var(--bg2);
+    }
+    .sv-div-num {
+      font-size:10px; letter-spacing:4px; color:var(--neon);
+      font-weight:600; text-transform:uppercase;
+    }
+    .sv-div-title {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(13px,1.4vw,18px);
+      letter-spacing:5px; color:var(--white); text-transform:uppercase;
+    }
+    .sv-div-tag {
+      font-size:10px; letter-spacing:3px; text-transform:uppercase;
+      color:var(--g2); text-align:right;
+    }
+
     /* ── PROJECTEN ─────────────────────────────────────── */
     #werk { padding:140px 60px; }
     .wk-hdr { margin-bottom:70px; }
@@ -693,6 +719,8 @@
       .sv-row { padding:26px 24px; }
       .sv-line { display:none; }
       .sv-preview { display:none; }
+      .sv-div-header { padding:18px 24px; grid-template-columns:40px 1fr; }
+      .sv-div-tag { display:none; }
       .cta-info { gap:28px; flex-direction:column; }
       #werk { padding:100px 24px; }
       .wk-grid { grid-template-columns:1fr; }
@@ -839,56 +867,86 @@
 
 <div class="s-divider"></div>
 
-<!-- ══ SERVICES — BIG HEADLINE LIST ═══════════════════════════ -->
+<!-- ══ SERVICES — THREE DIVISIONS ═════════════════════════════ -->
 <section id="sv">
   <p class="s-label sv-toplabel rv">Wat wij doen</p>
 
-  <div class="sv-list" id="svlist">
-    <a href="#cta" class="sv-row" data-img="assets/gsl-array.png">
+  <!-- ── DIVISIE 1: LIVE AUDIO ── -->
+  <div class="sv-division" id="svlist">
+
+    <div class="sv-div-header rv">
+      <span class="sv-div-num">A</span>
+      <span class="sv-div-title">Live Audio voor de Artiest</span>
+      <span class="sv-div-tag">Band · Tape · Verhuur</span>
+    </div>
+
+    <a href="#cta" class="sv-row" data-img="assets/artist-rolf-sanchez.jpg">
       <span class="sv-idx">01</span>
       <span class="sv-main">
-        <span class="sv-head">Verhuur</span>
-        <span class="sv-line">Complete d&amp;b geluidssets — droge verhuur of inclusief technicus, altijd showklaar.</span>
+        <span class="sv-head">Band Shows</span>
+        <span class="sv-line">FOH, monitoring en draadloze rigs voor live bands — van clubpodium tot mainstage. Strak, snel en rider-proof.</span>
       </span>
       <span class="sv-arrow">→</span>
     </a>
-    <a href="#cta" class="sv-row" data-img="assets/gsl-curve.jpg">
+    <a href="#cta" class="sv-row" data-img="assets/artist-emma-heesters.jpg">
       <span class="sv-idx">02</span>
       <span class="sv-main">
-        <span class="sv-head">Events</span>
-        <span class="sv-line">Festivals, corporate events en producties. Van rider-check tot afbouw volledig ontzorgd.</span>
+        <span class="sv-head">Tape Shows</span>
+        <span class="sv-line">Strakke playback-producties en hybride shows, naadloos geïntegreerd met live elementen en professionele RF-coördinatie.</span>
       </span>
       <span class="sv-arrow">→</span>
     </a>
-    <a href="#cta" class="sv-row" data-img="assets/gsl-detail.jpg">
+    <a href="#cta" class="sv-row" data-img="assets/gsl-array.png">
       <span class="sv-idx">03</span>
       <span class="sv-main">
+        <span class="sv-head">Verhuur</span>
+        <span class="sv-line">Complete d&amp;b geluidssets — droge verhuur of inclusief technicus, altijd showklaar voor uw productie.</span>
+      </span>
+      <span class="sv-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- ── DIVISIE 2: TOTAAL EVENT ── -->
+  <div class="sv-division">
+
+    <div class="sv-div-header rv">
+      <span class="sv-div-num">B</span>
+      <span class="sv-div-title">Totaal Licht &amp; Geluid op Locatie</span>
+      <span class="sv-div-tag">Events · Festivals · Corporate</span>
+    </div>
+
+    <a href="#cta" class="sv-row" data-img="assets/festival-mainstage.jpg">
+      <span class="sv-idx">04</span>
+      <span class="sv-main">
+        <span class="sv-head">Events</span>
+        <span class="sv-line">Volledige audio- en lichtproducties voor festivals, corporate events en ceremonies. Van rider-check tot afbouw volledig ontzorgd.</span>
+      </span>
+      <span class="sv-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- ── DIVISIE 3: INSTALLATIE & SMART ── -->
+  <div class="sv-division">
+
+    <div class="sv-div-header rv">
+      <span class="sv-div-num">C</span>
+      <span class="sv-div-title">Theater, Installatie &amp; Smart Systems</span>
+      <span class="sv-div-tag">Permanent · Turn-key · AV</span>
+    </div>
+
+    <a href="#cta" class="sv-row" data-img="assets/gsl-detail.jpg">
+      <span class="sv-idx">05</span>
+      <span class="sv-main">
         <span class="sv-head">Vaste Installaties</span>
-        <span class="sv-line">Turn-key geluidsinstallaties voor horeca, theaters en clubs. Ontwerp, montage en inmeting in eigen beheer.</span>
+        <span class="sv-line">Turn-key geluidsinstallaties voor horeca, theaters en clubs. Ontwerp, montage en akoestische inmeting in eigen beheer.</span>
       </span>
       <span class="sv-arrow">→</span>
     </a>
     <a href="#cta" class="sv-row" data-img="assets/gsl12.png">
-      <span class="sv-idx">04</span>
-      <span class="sv-main">
-        <span class="sv-head">Smart Systems</span>
-        <span class="sv-line">Netwerkgestuurde AV-systemen: één bediening voor geluid, licht en media in uw pand.</span>
-      </span>
-      <span class="sv-arrow">→</span>
-    </a>
-    <a href="#cta" class="sv-row" data-img="assets/sl-sub.png">
-      <span class="sv-idx">05</span>
-      <span class="sv-main">
-        <span class="sv-head">Band Shows</span>
-        <span class="sv-line">FOH, monitoring en draadloze rigs voor live bands — van clubpodium tot mainstage.</span>
-      </span>
-      <span class="sv-arrow">→</span>
-    </a>
-    <a href="#cta" class="sv-row" data-img="assets/gsl-curve.jpg">
       <span class="sv-idx">06</span>
       <span class="sv-main">
-        <span class="sv-head">Tape Shows</span>
-        <span class="sv-line">Strakke playback-producties en hybride shows, naadloos geïntegreerd met live elementen.</span>
+        <span class="sv-head">Smart Systems</span>
+        <span class="sv-line">Netwerkgestuurde AV-systemen: één bediening voor geluid, licht en media in uw pand — schaalbaar en toekomstbestendig.</span>
       </span>
       <span class="sv-arrow">→</span>
     </a>
