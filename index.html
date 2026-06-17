@@ -340,7 +340,7 @@
     }
     .live-bg {
       position:absolute; inset:-14% 0; z-index:1;
-      background:url('assets/artist-mara-julia.webp') center 30%/cover no-repeat;
+      background:url('assets/artist-Mara-Julia.webp') center 30%/cover no-repeat;
       opacity:.5; will-change:transform;
       filter:grayscale(.35) contrast(1.06);
     }
@@ -415,21 +415,15 @@
       display:flex; flex-wrap:wrap; justify-content:center;
       align-items:center; gap:16px 46px;
     }
-    .trust-names span {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(22px,3vw,40px); letter-spacing:1px; line-height:1;
-      color:transparent; -webkit-text-stroke:1px rgba(255,255,255,.3);
-      transition:color .4s, -webkit-text-stroke-color .4s;
-      cursor:default;
-    }
-    .trust-names span:hover { color:var(--white); -webkit-text-stroke-color:transparent; }
-    .trust-names a {
+    .trust-names span, .trust-names a {
       font-family:'Bebas Neue',sans-serif;
       font-size:clamp(22px,3vw,40px); letter-spacing:1px; line-height:1;
       color:transparent; -webkit-text-stroke:1px rgba(255,255,255,.3);
       text-decoration:none;
       transition:color .4s, -webkit-text-stroke-color .4s;
+      cursor:default;
     }
+    .trust-names span:hover { color:var(--white); -webkit-text-stroke-color:transparent; }
     .trust-names a:hover { color:var(--neon); -webkit-text-stroke-color:transparent; }
 
     /* ── PROCES — ZO WERKEN WIJ ────────────────────────── */
@@ -457,7 +451,7 @@
     /* ── SERVICES — HEADLINE LIST ──────────────────────── */
     #sv { padding:140px 0 120px; position:relative; }
     .sv-toplabel { padding:0 60px; margin-bottom:50px; }
-    .sv-list { border-top:1px solid var(--border); }
+    .sv-division { border-top:1px solid var(--border); }
     .sv-row {
       position:relative; display:flex; align-items:center;
       gap:clamp(20px,4vw,60px);
@@ -599,6 +593,7 @@
       margin-bottom:12px;
     }
     .wk-t {
+      display:block;
       font-family:'Bebas Neue',sans-serif; font-size:36px;
       letter-spacing:1.5px; color:var(--white); line-height:1;
       margin-bottom:8px;
@@ -1040,15 +1035,15 @@
       <span class="wk-img" style="background-image:url('assets/festival-mainstage.jpg'); background-position:center 32%"></span>
       <span class="wk-info">
         <span class="wk-tag">Festival · Events</span>
-        <span class="wk-t" style="display:block">Mainstage Festivalproductie</span>
+        <span class="wk-t">Mainstage Festivalproductie</span>
         <span class="wk-m">24× d&amp;b GSL · FOH &amp; monitoring · draadloze RF-rigs</span>
       </span>
     </a>
     <a href="#cta" class="wk-card">
-      <span class="wk-img" style="background-image:url('assets/artist-joel-borelli.jpg')"></span>
+      <span class="wk-img" style="background-image:url('assets/artist-Joel-Borelli.jpg')"></span>
       <span class="wk-info">
         <span class="wk-tag">Band show · Live</span>
-        <span class="wk-t" style="display:block">Live Bandproductie</span>
+        <span class="wk-t">Live Bandproductie</span>
         <span class="wk-m">FOH, monitoring &amp; backline · van soundcheck tot encore</span>
       </span>
     </a>
@@ -1056,7 +1051,7 @@
       <span class="wk-img" style="background-image:url('assets/artist-wolter-kroes.jpg')"></span>
       <span class="wk-info">
         <span class="wk-tag">Theater · Vaste installatie</span>
-        <span class="wk-t" style="display:block">Theaterzaal Turn-key</span>
+        <span class="wk-t">Theaterzaal Turn-key</span>
         <span class="wk-m">Ontwerp t/m inmeting · in eigen beheer</span>
       </span>
     </a>
@@ -1064,7 +1059,7 @@
       <span class="wk-img" style="background-image:url('assets/artist-rolf-sanchez.jpg')"></span>
       <span class="wk-info">
         <span class="wk-tag">Tape show · Productie</span>
-        <span class="wk-t" style="display:block">Hybride Tape Show</span>
+        <span class="wk-t">Hybride Tape Show</span>
         <span class="wk-m">Playback-productie · naadloos met live elementen</span>
       </span>
     </a>
@@ -1322,7 +1317,7 @@
   gsap.fromTo('.sv-row',
     { y:60, opacity:0 },
     { y:0, opacity:1, duration:.8, stagger:.09, ease:'power3.out',
-      scrollTrigger: { trigger:'.sv-list', start:'top 85%' } }
+      scrollTrigger: { trigger:'.sv-division', start:'top 85%' } }
   );
 
   // ── HERO ENTRANCE ───────────────────────────────────────────
