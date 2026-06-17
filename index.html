@@ -602,6 +602,37 @@
       font-size:12px; color:var(--g2); letter-spacing:.5px;
     }
 
+    /* ── TESTIMONIALS — WAT OPDRACHTGEVERS ZEGGEN ──────── */
+    #quotes { padding:140px 60px; max-width:1280px; margin:0 auto; }
+    .q-hdr { margin-bottom:62px; }
+    .q-hdr .s-title { margin-top:14px; }
+    .q-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+      background:var(--border); border:1px solid var(--border);
+    }
+    .q-card {
+      background:var(--bg); padding:46px 38px;
+      display:flex; flex-direction:column; transition:background .4s;
+    }
+    .q-card:hover { background:var(--bg2); }
+    .q-mark {
+      font-family:'Playfair Display',serif; font-weight:600;
+      font-size:80px; line-height:.5; color:var(--neon);
+      height:34px; margin-bottom:22px;
+    }
+    .q-text {
+      font-size:15px; line-height:1.85; color:var(--g1);
+      font-weight:300; flex:1; margin-bottom:30px;
+    }
+    .q-name {
+      font-family:'Bebas Neue',sans-serif; font-size:24px;
+      letter-spacing:1px; color:var(--white); line-height:1;
+    }
+    .q-role {
+      font-size:10px; letter-spacing:2.5px; text-transform:uppercase;
+      color:var(--g2); margin-top:8px;
+    }
+
     /* ── CONTACTFORMULIER ──────────────────────────────── */
     .cform {
       max-width:680px; margin:80px auto 0; text-align:left;
@@ -637,13 +668,27 @@
       padding:190px 60px; text-align:center; position:relative;
       overflow:hidden;
     }
+    .cta-bg {
+      position:absolute; inset:-12% 0; z-index:0;
+      background:url('assets/cta-crowd.jpg') center 40%/cover no-repeat;
+      opacity:.34; filter:grayscale(.2) contrast(1.05);
+      will-change:transform;
+    }
+    .cta-bg::after {
+      content:''; position:absolute; inset:0;
+      background:
+        linear-gradient(to bottom, var(--bg) 0%, transparent 30%, transparent 60%, var(--bg) 100%),
+        radial-gradient(ellipse at center, transparent 30%, rgba(6,6,10,.78) 100%);
+    }
     #cta::before {
       content:''; position:absolute; top:50%; left:50%;
       transform:translate(-50%,-50%);
-      width:700px; height:700px;
-      background:radial-gradient(circle,rgba(155,93,229,.05) 0%,transparent 65%);
+      width:700px; height:700px; z-index:1;
+      background:radial-gradient(circle,rgba(155,93,229,.10) 0%,transparent 65%);
       pointer-events:none;
     }
+    #cta > * { position:relative; z-index:2; }
+    #cta > .cta-bg { z-index:0; }
     .cta-eye {
       font-size:11px; letter-spacing:6px; text-transform:uppercase;
       color:var(--purple); margin-bottom:20px;
@@ -788,6 +833,8 @@
       #werk { padding:100px 24px; }
       .wk-grid { grid-template-columns:1fr; }
       .wk-card { min-height:320px; }
+      #quotes { padding:90px 24px; }
+      .q-grid { grid-template-columns:1fr; }
       .cf-row { grid-template-columns:1fr; gap:0; }
       #stats { grid-template-columns:repeat(2,1fr); }
       .s-item { border-right:none; border-bottom:1px solid var(--border); }
@@ -1130,8 +1177,46 @@
 
 <div class="s-divider"></div>
 
+<!-- ══ TESTIMONIALS — WAT OPDRACHTGEVERS ZEGGEN ═══════════════ -->
+<!-- VOORBEELDQUOTES — vervang de teksten/namen hieronder door echte klantcitaten -->
+<section id="quotes">
+  <div class="q-hdr">
+    <p class="s-label rv">Wat opdrachtgevers zeggen</p>
+    <h2 class="s-title rv">Geluid dat <span class="ghost">blijft hangen</span></h2>
+  </div>
+  <div class="q-grid">
+    <div class="q-card rv">
+      <div class="q-mark">&ldquo;</div>
+      <p class="q-text">DPS denkt mee vanaf het eerste gesprek. Op de showdag stond alles strak, op tijd en precies zoals afgesproken — wij hoefden ons nergens druk om te maken. Dát is ontzorgen.</p>
+      <div>
+        <div class="q-name">Mark Verhoeven</div>
+        <div class="q-role">Productieleider · Festival</div>
+      </div>
+    </div>
+    <div class="q-card rv">
+      <div class="q-mark">&ldquo;</div>
+      <p class="q-text">De vaste installatie in onze zaal is precies wat we voor ogen hadden: onzichtbaar netjes, maar je hóórt het verschil meteen. Bediening is voor ons team in vijf minuten te leren.</p>
+      <div>
+        <div class="q-name">Linda de Groot</div>
+        <div class="q-role">Manager · Theater &amp; Evenementen</div>
+      </div>
+    </div>
+    <div class="q-card rv">
+      <div class="q-mark">&ldquo;</div>
+      <p class="q-text">Rider-proof, betrouwbaar en geen gedoe. Of het nu een clubshow of een mainstage is — de technici van DPS leveren elke keer dezelfde kwaliteit. Een partner waar je op kunt bouwen.</p>
+      <div>
+        <div class="q-name">Tom Bakker</div>
+        <div class="q-role">Tourmanager · Live productie</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="s-divider"></div>
+
 <!-- ══ CTA ════════════════════════════════════════════════════ -->
 <section id="cta">
+  <div class="cta-bg" id="cta-bg"></div>
   <p class="cta-eye rv">Klaar om samen te werken?</p>
   <h2 class="cta-t rv">
     LET'S<br>
@@ -1469,6 +1554,11 @@
     yPercent: -18,
     scrollTrigger: { trigger:'#cta', start:'top bottom', end:'bottom top', scrub:1 }
   });
+  gsap.fromTo('#cta-bg',
+    { yPercent: -8 },
+    { yPercent: 10, ease:'none',
+      scrollTrigger: { trigger:'#cta', start:'top bottom', end:'bottom top', scrub:1 } }
+  );
 
   // ── NAV BLUR ────────────────────────────────────────────────
   const nav = document.getElementById('nav');
