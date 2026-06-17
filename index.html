@@ -720,6 +720,32 @@
     footer .logo-badge, footer .logo-link { opacity:.55; transform:scale(.85); transition:opacity .3s; }
     footer .logo-badge:hover, footer .logo-link:hover { opacity:1; }
     footer .logo-img { height:38px; }
+    .f-partners {
+      width:100%; text-align:center; padding:20px 0 28px;
+      border-bottom:1px solid var(--border); margin-bottom:28px;
+    }
+    .f-partners-label {
+      font-size:9px; letter-spacing:4px; text-transform:uppercase;
+      color:var(--g2); margin-bottom:16px;
+    }
+    .f-partners-logos {
+      display:flex; justify-content:center; align-items:center;
+      gap:40px; flex-wrap:wrap;
+    }
+    .f-partners-logos a { display:block; transition:opacity .4s; opacity:.3; }
+    .f-partners-logos a:hover { opacity:.8; }
+    .f-partners-logos img {
+      height:32px; width:auto;
+      filter:grayscale(1) brightness(.7);
+      transition:filter .4s;
+    }
+    .f-partners-logos a:hover img { filter:grayscale(0) brightness(1); }
+    .f-partners-logos span {
+      font-family:'Bebas Neue',sans-serif; font-size:18px;
+      letter-spacing:2px; color:rgba(255,255,255,.2);
+      transition:color .4s;
+    }
+    .f-partners-logos a:hover span { color:rgba(255,255,255,.7); }
     .f-copy { font-size:11px; color:var(--g2); letter-spacing:.5px; }
     .f-links { display:flex; gap:28px; list-style:none; }
     .f-links a {
@@ -1167,6 +1193,13 @@
 
 <!-- ══ FOOTER ════════════════════════════════════════════════ -->
 <footer>
+  <div class="f-partners">
+    <p class="f-partners-label">Preferred partners</p>
+    <div class="f-partners-logos">
+      <!-- Zet partner-logo's in assets/ (bijv. partner-tef.png) en vervang de <span> door <img> -->
+      <a href="https://www.theentertainmentfactory.nl" target="_blank" rel="noopener"><img src="assets/partner-tef.png" alt="TEF — The Entertainment Factory" onerror="this.outerHTML='<span>TEF</span>'"></a>
+    </div>
+  </div>
   <a href="#" class="logo-link"><img src="assets/dps-logo.png" alt="DPS Audio" class="logo-img" onerror="this.outerHTML='&lt;span class=\'logo-badge\'&gt;&lt;span class=\'lb-dps\'&gt;DPS&lt;/span&gt;&lt;span class=\'lb-audio\'&gt;Audio&lt;/span&gt;&lt;/span&gt;'"></a>
   <p class="f-copy">© 2025 DPS Audio — Alle rechten voorbehouden</p>
   <ul class="f-links">
