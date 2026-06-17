@@ -423,6 +423,14 @@
       cursor:default;
     }
     .trust-names span:hover { color:var(--white); -webkit-text-stroke-color:transparent; }
+    .trust-names a {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(22px,3vw,40px); letter-spacing:1px; line-height:1;
+      color:transparent; -webkit-text-stroke:1px rgba(255,255,255,.3);
+      text-decoration:none;
+      transition:color .4s, -webkit-text-stroke-color .4s;
+    }
+    .trust-names a:hover { color:var(--neon); -webkit-text-stroke-color:transparent; }
 
     /* ── PROCES — ZO WERKEN WIJ ────────────────────────── */
     #proces { padding:140px 60px; max-width:1280px; margin:0 auto; }
@@ -801,11 +809,11 @@
 <section id="trust">
   <p class="trust-eye rv">Vertrouwd door <b>artiesten &amp; producties</b></p>
   <div class="trust-names rv">
-    <span>Wolter Kroes</span>
-    <span>Emma Heesters</span>
-    <span>Rolf Sanchez</span>
-    <span>Joël Borelli</span>
-    <span>Mara Julia</span>
+    <a href="https://www.wolterkroes.nl" target="_blank" rel="noopener">Wolter Kroes</a>
+    <a href="https://www.emmaheesters.com" target="_blank" rel="noopener">Emma Heesters</a>
+    <a href="https://www.instagram.com/rolfsanchez" target="_blank" rel="noopener">Rolf Sanchez</a>
+    <a href="https://www.joelborelli.nl" target="_blank" rel="noopener">Joël Borelli</a>
+    <a href="https://www.marajuliamusic.com" target="_blank" rel="noopener">Mara Julia</a>
   </div>
 </section>
 
@@ -899,7 +907,7 @@
     <a href="#cta" class="sv-row" data-img="assets/gsl-array.png">
       <span class="sv-idx">03</span>
       <span class="sv-main">
-        <span class="sv-head">Verhuur</span>
+        <span class="sv-head">Verhuur / Dry Hire</span>
         <span class="sv-line">Complete d&amp;b geluidssets — droge verhuur of inclusief technicus, altijd showklaar voor uw productie.</span>
       </span>
       <span class="sv-arrow">→</span>
