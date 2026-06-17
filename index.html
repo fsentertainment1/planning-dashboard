@@ -680,6 +680,38 @@
       text-transform:uppercase; color:var(--g2); margin-bottom:7px;
     }
 
+    /* ── CLIENT LOGOS — SCROLLING STRIP ──────────────── */
+    #clients {
+      border-top:1px solid var(--border);
+      padding:40px 0 38px; overflow:hidden; background:var(--bg);
+    }
+    .cl-label {
+      text-align:center; font-size:10px; letter-spacing:5px;
+      text-transform:uppercase; color:var(--g2); margin-bottom:28px;
+    }
+    .cl-track {
+      display:flex; align-items:center; gap:56px;
+      animation:clscroll 28s linear infinite;
+    }
+    .cl-track:hover { animation-play-state:paused; }
+    .cl-item {
+      flex-shrink:0; white-space:nowrap;
+      font-family:'Bebas Neue',sans-serif; font-size:22px;
+      letter-spacing:3px; color:rgba(255,255,255,.18);
+      text-transform:uppercase;
+      padding:12px 28px;
+      border:1px solid rgba(255,255,255,.06);
+      transition:color .4s, border-color .4s;
+    }
+    .cl-item:hover { color:rgba(255,255,255,.5); border-color:rgba(255,255,255,.15); }
+    .cl-item img {
+      height:30px; width:auto; display:block;
+      filter:grayscale(1) brightness(.5); opacity:.35;
+      transition:filter .4s, opacity .4s;
+    }
+    .cl-item:hover img { filter:grayscale(0) brightness(1); opacity:.8; }
+    @keyframes clscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
     /* ── FOOTER ────────────────────────────────────────── */
     footer {
       border-top:1px solid var(--border); padding:36px 60px;
@@ -1099,6 +1131,38 @@
     <button type="submit">Verstuur aanvraag</button>
     <p class="cf-note">Uw bericht opent in uw eigen mailprogramma — wij reageren binnen één werkdag.</p>
   </form>
+</section>
+
+<!-- ══ CLIENT LOGOS — SCROLLING STRIP ═════════════════════════ -->
+<section id="clients">
+  <p class="cl-label">DPS Audio werkt in opdracht van</p>
+  <div class="cl-track" id="cl-track">
+    <span class="cl-item">Ziggo Dome</span>
+    <span class="cl-item">AFAS Live</span>
+    <span class="cl-item">Rotterdam Ahoy</span>
+    <span class="cl-item">TivoliVredenburg</span>
+    <span class="cl-item">Paradiso</span>
+    <span class="cl-item">013 Tilburg</span>
+    <span class="cl-item">Lowlands</span>
+    <span class="cl-item">Pinkpop</span>
+    <span class="cl-item">North Sea Jazz</span>
+    <span class="cl-item">Patronaat</span>
+    <span class="cl-item">Melkweg</span>
+    <span class="cl-item">Muziekgebouw</span>
+    <!-- duplicaat voor naadloze loop -->
+    <span class="cl-item">Ziggo Dome</span>
+    <span class="cl-item">AFAS Live</span>
+    <span class="cl-item">Rotterdam Ahoy</span>
+    <span class="cl-item">TivoliVredenburg</span>
+    <span class="cl-item">Paradiso</span>
+    <span class="cl-item">013 Tilburg</span>
+    <span class="cl-item">Lowlands</span>
+    <span class="cl-item">Pinkpop</span>
+    <span class="cl-item">North Sea Jazz</span>
+    <span class="cl-item">Patronaat</span>
+    <span class="cl-item">Melkweg</span>
+    <span class="cl-item">Muziekgebouw</span>
+  </div>
 </section>
 
 <!-- ══ FOOTER ════════════════════════════════════════════════ -->
