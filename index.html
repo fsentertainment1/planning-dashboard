@@ -714,15 +714,19 @@
 
     /* ── FOOTER ────────────────────────────────────────── */
     footer {
-      border-top:1px solid var(--border); padding:36px 60px;
-      display:flex; justify-content:space-between; align-items:center;
+      border-top:1px solid var(--border); padding:0;
+      display:flex; flex-direction:column; align-items:center; text-align:center;
     }
     footer .logo-badge, footer .logo-link { opacity:.55; transform:scale(.85); transition:opacity .3s; }
     footer .logo-badge:hover, footer .logo-link:hover { opacity:1; }
     footer .logo-img { height:38px; }
     .f-partners {
-      width:100%; text-align:center; padding:30px 40px 36px;
-      border-bottom:1px solid var(--border); margin-bottom:28px;
+      width:100%; text-align:center; padding:40px 40px 36px;
+      border-bottom:1px solid var(--border);
+    }
+    .f-bottom {
+      display:flex; flex-direction:column; align-items:center; gap:16px;
+      padding:32px 40px 36px; width:100%;
     }
     .f-partners-label {
       font-size:9px; letter-spacing:4px; text-transform:uppercase;
@@ -734,18 +738,18 @@
     }
     .f-partners-logos a {
       display:flex; align-items:center; justify-content:center;
-      transition:opacity .4s; opacity:.55;
+      transition:opacity .4s; opacity:.6;
     }
     .f-partners-logos a:hover { opacity:1; }
     .f-partners-logos img {
       height:50px; width:auto; max-width:140px;
       object-fit:contain;
-      filter:brightness(0) invert(1) opacity(.7);
+      filter:brightness(1.1);
       transition:filter .4s;
     }
-    .f-partners-logos a:hover img { filter:brightness(0) invert(1) opacity(1); }
+    .f-partners-logos a:hover img { filter:brightness(1.3); }
     .f-copy { font-size:11px; color:var(--g2); letter-spacing:.5px; }
-    .f-links { display:flex; gap:28px; list-style:none; }
+    .f-links { display:flex; gap:28px; list-style:none; justify-content:center; }
     .f-links a {
       font-size:11px; color:var(--g2); text-decoration:none;
       letter-spacing:1px; transition:color .3s;
@@ -788,7 +792,9 @@
       #stats { grid-template-columns:repeat(2,1fr); }
       .s-item { border-right:none; border-bottom:1px solid var(--border); }
       #cta { padding:120px 24px; }
-      footer { flex-direction:column; gap:20px; text-align:center; padding:36px 24px; }
+      footer { padding:0; }
+      .f-bottom { padding:24px 24px 28px; }
+      .f-partners { padding:30px 24px; }
       .s-divider { margin:0 24px; }
     }
   </style>
@@ -1200,13 +1206,15 @@
       <a href="https://www.shure.com" target="_blank" rel="noopener"><img src="assets/partner-shure.png" alt="Shure"></a>
     </div>
   </div>
-  <a href="#" class="logo-link"><img src="assets/dps-logo.png" alt="DPS Audio" class="logo-img" onerror="this.outerHTML='&lt;span class=\'logo-badge\'&gt;&lt;span class=\'lb-dps\'&gt;DPS&lt;/span&gt;&lt;span class=\'lb-audio\'&gt;Audio&lt;/span&gt;&lt;/span&gt;'"></a>
-  <p class="f-copy">© 2025 DPS Audio — Alle rechten voorbehouden</p>
-  <ul class="f-links">
-    <li><a href="#">Privacy</a></li>
-    <li><a href="#">Voorwaarden</a></li>
-    <li><a href="#">Instagram</a></li>
-  </ul>
+  <div class="f-bottom">
+    <a href="#" class="logo-link"><img src="assets/dps-logo.png" alt="DPS Audio" class="logo-img" onerror="this.outerHTML='&lt;span class=\'logo-badge\'&gt;&lt;span class=\'lb-dps\'&gt;DPS&lt;/span&gt;&lt;span class=\'lb-audio\'&gt;Audio&lt;/span&gt;&lt;/span&gt;'"></a>
+    <p class="f-copy">© 2026 DPS Audio — Alle rechten voorbehouden</p>
+    <ul class="f-links">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Voorwaarden</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+  </div>
 </footer>
 
 <!-- ══ SCRIPTS ═══════════════════════════════════════════════ -->
