@@ -721,31 +721,29 @@
     footer .logo-badge:hover, footer .logo-link:hover { opacity:1; }
     footer .logo-img { height:38px; }
     .f-partners {
-      width:100%; text-align:center; padding:20px 0 28px;
+      width:100%; text-align:center; padding:30px 40px 36px;
       border-bottom:1px solid var(--border); margin-bottom:28px;
     }
     .f-partners-label {
       font-size:9px; letter-spacing:4px; text-transform:uppercase;
-      color:var(--g2); margin-bottom:16px;
+      color:var(--g2); margin-bottom:24px;
     }
     .f-partners-logos {
       display:flex; justify-content:center; align-items:center;
-      gap:40px; flex-wrap:wrap;
+      gap:52px; flex-wrap:wrap;
     }
-    .f-partners-logos a { display:block; transition:opacity .4s; opacity:.3; }
-    .f-partners-logos a:hover { opacity:.8; }
+    .f-partners-logos a {
+      display:flex; align-items:center; justify-content:center;
+      transition:opacity .4s; opacity:.55;
+    }
+    .f-partners-logos a:hover { opacity:1; }
     .f-partners-logos img {
-      height:32px; width:auto;
-      filter:grayscale(1) brightness(.7);
+      height:50px; width:auto; max-width:140px;
+      object-fit:contain;
+      filter:brightness(0) invert(1) opacity(.7);
       transition:filter .4s;
     }
-    .f-partners-logos a:hover img { filter:grayscale(0) brightness(1); }
-    .f-partners-logos span {
-      font-family:'Bebas Neue',sans-serif; font-size:18px;
-      letter-spacing:2px; color:rgba(255,255,255,.2);
-      transition:color .4s;
-    }
-    .f-partners-logos a:hover span { color:rgba(255,255,255,.7); }
+    .f-partners-logos a:hover img { filter:brightness(0) invert(1) opacity(1); }
     .f-copy { font-size:11px; color:var(--g2); letter-spacing:.5px; }
     .f-links { display:flex; gap:28px; list-style:none; }
     .f-links a {
