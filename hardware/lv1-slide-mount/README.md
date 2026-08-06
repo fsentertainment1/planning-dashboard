@@ -78,8 +78,12 @@ Het model is parametrisch; deze vijf maten staan nu op een aanname
 4. **`tripod_from_bottom`** — hoogte van het 1/4"-draadgat vanaf de onderrand
    van de monitor (nu 113,5 mm = precies het midden).
 5. **Vrije vlakke hoogte** op het achterpaneel onder de boutenrij: er is
-   **292 mm** nodig. Ook checken: de flightcase moet ~30 mm ruimte achter het
-   paneel hebben (zoveel bouwt het geheel + monitor naar achteren uit).
+   **292 mm** nodig, specifiek op ±80 tot ±95 mm links en rechts van het
+   midden (daar lopen de rails). Let op de strip met de 12V-lampaansluiting
+   (XLR4) en USB-poorten onderaan het schermdeel — de rails en voetjes moeten
+   daar vrij van blijven. Ook checken: de flightcase moet ~30 mm ruimte
+   achter het paneel hebben (zoveel bouwt het geheel + monitor naar achteren
+   uit).
 
 Daarna:
 
