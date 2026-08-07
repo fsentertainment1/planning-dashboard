@@ -122,10 +122,10 @@ def build_scene(base_bot):
     m_chassis = material("chassis", (0.015, 0.015, 0.017), rough=0.55)
     m_face = material("face", (0.03, 0.03, 0.034), rough=0.45)
     m_screen = material("lv1screen", (0.01, 0.02, 0.05), rough=0.25,
-                        emission=(0.12, 0.35, 0.9), e_str=5.0)
+                        emission=(0.10, 0.30, 0.85), e_str=1.1)
     m_mon = material("monbody", (0.02, 0.02, 0.022), rough=0.5)
     m_mons = material("monscreen", (0.01, 0.03, 0.05), rough=0.2,
-                      emission=(0.15, 0.5, 0.85), e_str=6.0)
+                      emission=(0.12, 0.42, 0.8), e_str=1.4)
     m_orange = material("petg", (0.75, 0.25, 0.03), rough=0.4)
     m_floor = material("floor", (0.62, 0.62, 0.64), rough=0.85)
 
