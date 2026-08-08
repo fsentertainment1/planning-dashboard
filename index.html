@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO ─────────────────────────────────────────────── -->
+  <title>DPS Audio — Geluid voor events, verhuur &amp; vaste installaties</title>
+  <meta name="description" content="DPS Audio levert professioneel geluid voor events, bands en vaste installaties. Verhuur, smart systems en turn-key installaties met d&amp;b audiotechnik — ontworpen, gebouwd en bediend door eigen specialisten.">
+  <meta name="keywords" content="geluidsverhuur, line array, d&amp;b audiotechnik, event geluid, vaste geluidsinstallatie, PA verhuur, live sound, bandshow, festival geluid, Nederland">
+  <meta name="author" content="DPS Audio">
+  <meta name="theme-color" content="#06060a">
+  <link rel="canonical" href="https://www.dps-audio.nl/">
+  <link rel="icon" type="image/png" href="assets/dps-logo.png">
+  <link rel="apple-touch-icon" href="assets/dps-logo.png">
+
+  <!-- ── Open Graph / social sharing (update URL's naar je domein) ── -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:site_name" content="DPS Audio">
+  <meta property="og:title" content="DPS Audio — Geluid voor events, verhuur &amp; vaste installaties">
+  <meta property="og:description" content="Professioneel geluid voor events, bands en vaste installaties. d&amp;b audiotechnik, turn-key en bediend door eigen specialisten.">
+  <meta property="og:url" content="https://www.dps-audio.nl/">
+  <meta property="og:image" content="https://www.dps-audio.nl/assets/festival-mainstage.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DPS Audio — Geluid voor events, verhuur &amp; vaste installaties">
+  <meta name="twitter:description" content="Professioneel geluid voor events, bands en vaste installaties. d&amp;b audiotechnik, turn-key en bediend door eigen specialisten.">
+  <meta name="twitter:image" content="https://www.dps-audio.nl/assets/festival-mainstage.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <style>
+    :root {
+      --bg:      #06060a;
+      --bg2:     #0d0d14;
+      --white:   #f0f0f6;
+      --g1:      #c0c0cc;
+      --g2:      #555566;
+      --g3:      #1a1a24;
+      --neon:    #00ff88;
+      --purple:  #9b5de5;
+      --border:  rgba(255,255,255,0.07);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { overflow-x:hidden; }
+    html.lenis, html.lenis body { height:auto; }
+    .lenis.lenis-smooth { scroll-behavior:auto !important; }
+
+    body {
+      background:var(--bg);
+      color:var(--white);
+      font-family:'Space Grotesk', sans-serif;
+      overflow-x:hidden;
+      cursor:none;
+    }
+    @media (hover:none) { body { cursor:auto; } #cur,#cur-ring { display:none; } }
+
+    /* ── GRAIN ─────────────────────────────────────────── */
+    #grain {
+      position:fixed; inset:0; pointer-events:none; z-index:9990;
+      opacity:.025;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ── CURSOR ────────────────────────────────────────── */
+    #cur {
+      position:fixed; width:10px; height:10px;
+      background:var(--neon); border-radius:50%;
+      pointer-events:none; z-index:9999;
+      transform:translate(-50%,-50%);
+      mix-blend-mode:difference;
+      transition:width .25s,height .25s;
+    }
+    #cur-ring {
+      position:fixed; width:38px; height:38px;
+      border:1px solid rgba(255,255,255,.25); border-radius:50%;
+      pointer-events:none; z-index:9998;
+      transform:translate(-50%,-50%);
+      transition:width .3s,height .3s,border-color .3s;
+    }
+
+    /* ── NAV ───────────────────────────────────────────── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      padding:22px 60px;
+      display:flex; align-items:center; justify-content:space-between;
+      transition:background .4s,backdrop-filter .4s;
+    }
+    nav::after {
+      content:''; position:absolute; bottom:0; left:60px; right:60px;
+      height:1px; background:var(--border);
+    }
+    /* DPS Audio logo — drop your file at assets/dps-logo.png to use it.
+       The text badge below is a fallback shown only if that file is missing. */
+    .logo-img { height:44px; width:auto; display:block; }
+    .logo-badge {
+      display:inline-flex; flex-direction:column; align-items:center;
+      border:1.5px solid var(--white); border-radius:9px;
+      padding:5px 18px 7px; text-decoration:none;
+      transition:border-color .3s;
+    }
+    .logo-badge:hover { border-color:var(--neon); }
+    .lb-dps {
+      font-family:'Playfair Display',serif; font-weight:600;
+      font-size:24px; line-height:1; letter-spacing:1px;
+      color:var(--white);
+    }
+    .lb-audio {
+      font-family:'Space Grotesk',sans-serif; font-weight:300;
+      font-size:8px; letter-spacing:.45em; text-indent:.45em;
+      color:var(--white); margin-top:3px;
+    }
+    .n-links { display:flex; gap:36px; list-style:none; }
+    .n-links a {
+      color:var(--g2); text-decoration:none;
+      font-size:11px; font-weight:500;
+      letter-spacing:2.5px; text-transform:uppercase;
+      transition:color .3s;
+    }
+    .n-links a:hover { color:var(--white); }
+    .n-btn {
+      padding:9px 22px;
+      border:1px solid var(--border); color:var(--white);
+      text-decoration:none; font-size:11px;
+      letter-spacing:2px; text-transform:uppercase; font-weight:500;
+      transition:all .3s;
+    }
+    .n-btn:hover { border-color:var(--neon); color:var(--neon); }
+
+    /* ── HERO ──────────────────────────────────────────── */
+    #hero {
+      position:relative; height:100vh;
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
+    }
+    #webgl-hero {
+      position:absolute; inset:0; width:100%; height:100%; z-index:1;
+      display:block;
+    }
+    .h-bgtext {
+      position:absolute; left:50%; top:50%;
+      transform:translate(-50%,-50%);
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(160px,28vw,460px);
+      color:rgba(255,255,255,.018);
+      letter-spacing:-8px; white-space:nowrap;
+      pointer-events:none; user-select:none;
+      z-index:3; will-change:transform;
+    }
+    .h-content {
+      position:relative; z-index:10;
+      text-align:center; max-width:1100px; padding:0 40px;
+      pointer-events:none;
+    }
+    .h-content a { pointer-events:auto; }
+    .h-eye {
+      font-size:11px; letter-spacing:6px; text-transform:uppercase;
+      color:var(--neon); margin-bottom:20px;
+      opacity:0; transform:translateY(10px);
+    }
+    .h-title {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(80px,15vw,230px);
+      line-height:.88; letter-spacing:-3px;
+      color:var(--white); margin-bottom:28px;
+    }
+    .h-title .ln { display:block; overflow:hidden; }
+    .h-title .ln span { display:block; transform:translateY(110%); }
+    .h-sub {
+      font-size:clamp(13px,1.4vw,17px); color:var(--g2);
+      font-weight:300; letter-spacing:.5px;
+      max-width:480px; margin:0 auto 44px; line-height:1.75;
+      opacity:0; transform:translateY(16px);
+    }
+    .h-btns {
+      display:flex; gap:18px; justify-content:center;
+      opacity:0; transform:translateY(16px);
+    }
+    .btn-w {
+      padding:15px 38px; background:var(--white); color:var(--bg);
+      font-size:11px; letter-spacing:3px; text-transform:uppercase;
+      font-weight:700; text-decoration:none;
+      transition:background .3s,color .3s;
+    }
+    .btn-w:hover { background:var(--neon); }
+    .btn-o {
+      padding:15px 38px; border:1px solid rgba(255,255,255,.18);
+      color:var(--g1); font-size:11px; letter-spacing:3px;
+      text-transform:uppercase; font-weight:500; text-decoration:none;
+      transition:all .3s;
+    }
+    .btn-o:hover { border-color:var(--white); color:var(--white); }
+    .scroll-hint {
+      position:absolute; bottom:36px; left:50%;
+      transform:translateX(-50%); z-index:10;
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+      opacity:0;
+    }
+    .scroll-hint span {
+      font-size:9px; letter-spacing:4px;
+      text-transform:uppercase; color:var(--g2);
+    }
+    .scroll-line {
+      width:1px; height:56px;
+      background:linear-gradient(to bottom,var(--white),transparent);
+      animation:sline 2s ease-in-out infinite;
+    }
+    @keyframes sline {
+      0%   { transform:scaleY(0); transform-origin:top; }
+      50%  { transform:scaleY(1); transform-origin:top; }
+      51%  { transform:scaleY(1); transform-origin:bottom; }
+      100% { transform:scaleY(0); transform-origin:bottom; }
+    }
+
+    /* ── STATS ─────────────────────────────────────────── */
+    #stats {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      position:relative; z-index:5; background:var(--bg);
+    }
+    .s-item {
+      padding:44px 30px; text-align:center;
+      border-right:1px solid var(--border);
+    }
+    .s-item:last-child { border-right:none; }
+    .s-num {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:70px; line-height:1; letter-spacing:-2px; color:var(--white);
+    }
+    .s-lbl {
+      font-size:10px; letter-spacing:3px; text-transform:uppercase;
+      color:var(--g2); margin-top:6px;
+    }
+
+    /* ── MARQUEE ───────────────────────────────────────── */
+    #marquee {
+      border-bottom:1px solid var(--border);
+      padding:26px 0; overflow:hidden;
+      background:var(--bg);
+    }
+    .mq-track {
+      display:flex; gap:70px; white-space:nowrap;
+      animation:mq 22s linear infinite;
+    }
+    .mq-item {
+      font-family:'Bebas Neue',sans-serif; font-size:16px;
+      letter-spacing:4px; color:var(--g3); flex-shrink:0;
+      text-transform:uppercase;
+    }
+    @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── OVER ONS — STATEMENT ──────────────────────────── */
+    #over { padding:160px 60px 130px; max-width:1280px; margin:0 auto; }
+    .ov-statement {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(38px,5.6vw,84px);
+      line-height:1.04; letter-spacing:0; color:var(--white);
+      max-width:1080px; margin-bottom:90px;
+    }
+    .ov-statement em {
+      font-style:normal; color:transparent;
+      -webkit-text-stroke:1px rgba(255,255,255,.45);
+    }
+    .usp-grid {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:1px; background:var(--border); border:1px solid var(--border);
+    }
+    .usp {
+      background:var(--bg); padding:34px 28px;
+    }
+    .usp-num {
+      font-family:'Bebas Neue',sans-serif; font-size:15px;
+      letter-spacing:2px; color:var(--neon); margin-bottom:16px;
+    }
+    .usp-t {
+      font-size:15px; font-weight:600; color:var(--white);
+      margin-bottom:8px; letter-spacing:.2px;
+    }
+    .usp-d {
+      font-size:12.5px; line-height:1.7; color:var(--g2); font-weight:300;
+    }
+
+    /* ── SECTION COMMONS ───────────────────────────────── */
+    .s-label {
+      font-size:10px; letter-spacing:5px; text-transform:uppercase;
+      color:var(--g2); margin-bottom:18px;
+      display:flex; align-items:center; gap:14px;
+    }
+    .s-label::before { content:''; width:28px; height:1px; background:var(--g2); }
+    .s-title {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(48px,8vw,118px);
+      line-height:.93; letter-spacing:-1px; color:var(--white);
+    }
+    .s-title .ghost {
+      -webkit-text-stroke:1px rgba(255,255,255,.25);
+      -webkit-text-fill-color:transparent;
+    }
+    .s-divider { height:1px; background:var(--border); margin:0 60px; }
+
+    /* ── d&b LINE ARRAY — PHOTOGRAPHY ──────────────────── */
+    #la {
+      position:relative; height:115vh; overflow:hidden;
+    }
+    .la-bg {
+      position:absolute; inset:-12% 0; z-index:1;
+      background:url('assets/gsl-detail.jpg') center/cover no-repeat;
+      opacity:.35; will-change:transform;
+    }
+    .la-bg::after {
+      content:''; position:absolute; inset:0;
+      background:
+        linear-gradient(to bottom, var(--bg) 0%, transparent 25%, transparent 70%, var(--bg) 100%),
+        linear-gradient(to right, rgba(6,6,10,.85) 0%, transparent 55%);
+    }
+    .la-array {
+      position:absolute; right:8%; top:50%; z-index:4;
+      height:96vh; transform:translateY(-50%);
+      will-change:transform;
+      filter:drop-shadow(-30px 50px 70px rgba(0,0,0,.85));
+    }
+    /* subtle vignette so the pure-visual section breathes */
+    #la::after {
+      content:''; position:absolute; inset:0; z-index:3; pointer-events:none;
+      background:radial-gradient(ellipse at center, transparent 55%, rgba(6,6,10,.55) 100%);
+    }
+
+    /* ── LIVE / SFEER — FULL-BLEED PARALLAX ─────────────── */
+    #live {
+      position:relative; height:92vh; overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .live-bg {
+      position:absolute; inset:-14% 0; z-index:0;
+      background:url('assets/live-crowd-poster.jpg') center 40%/cover no-repeat;
+      opacity:.5; will-change:transform;
+      filter:grayscale(.35) contrast(1.06);
+    }
+    .live-vid {
+      position:absolute; inset:-14% 0; z-index:1;
+      width:100%; height:128%; object-fit:cover;
+      opacity:0; transition:opacity 1.4s ease;
+      filter:grayscale(.28) contrast(1.05);
+      will-change:transform; pointer-events:none;
+    }
+    .live-vid.on { opacity:.62; }
+    #live::after {
+      content:''; position:absolute; inset:0; z-index:2; pointer-events:none;
+      background:
+        linear-gradient(to bottom, var(--bg) 0%, transparent 28%, transparent 64%, var(--bg) 100%),
+        radial-gradient(ellipse at center, transparent 38%, rgba(6,6,10,.72) 100%);
+    }
+    .live-content {
+      position:relative; z-index:3; text-align:center;
+      padding:0 40px; pointer-events:none;
+    }
+    .live-eye {
+      font-size:11px; letter-spacing:6px; text-transform:uppercase;
+      color:var(--neon); margin-bottom:22px;
+    }
+    .live-t {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(64px,15vw,250px); line-height:.86;
+      letter-spacing:-2px; color:var(--white); will-change:transform;
+    }
+    .live-t .ghost {
+      -webkit-text-stroke:1px rgba(255,255,255,.3);
+      -webkit-text-fill-color:transparent;
+    }
+    .live-sub {
+      font-size:clamp(13px,1.4vw,16px); color:var(--g1); font-weight:300;
+      max-width:520px; margin:26px auto 0; line-height:1.75;
+    }
+
+    /* ── GEAR — ATMOSPHERIC VISUAL BAND ────────────────── */
+    #gear { padding:0; }
+    .gear-feature {
+      position:relative; height:58vh; min-height:380px;
+      overflow:hidden; margin-bottom:2px;
+    }
+    .gear-row { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+    .gear-cell {
+      position:relative; overflow:hidden; min-height:270px; background:var(--bg2);
+    }
+    .gear-ph {
+      position:absolute; inset:0;
+      background-size:cover; background-position:center;
+      opacity:.8; filter:grayscale(.15) contrast(1.04);
+      transition:transform 1.1s cubic-bezier(.2,.8,.2,1), opacity .6s;
+      will-change:transform;
+    }
+    .gear-feature:hover .gear-ph, .gear-cell:hover .gear-ph { transform:scale(1.06); opacity:.95; }
+    .gear-feature::after {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background:
+        linear-gradient(to bottom, var(--bg) 0%, transparent 22%, transparent 80%, var(--bg) 100%),
+        radial-gradient(ellipse at center, transparent 50%, rgba(6,6,10,.55) 100%);
+    }
+    .gear-cell::after {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(to bottom, rgba(6,6,10,.3) 0%, rgba(6,6,10,.55) 100%);
+    }
+
+    /* ── SOCIAL PROOF — VERTROUWD DOOR ─────────────────── */
+    #trust {
+      padding:78px 60px; text-align:center; background:var(--bg);
+      border-bottom:1px solid var(--border);
+    }
+    .trust-eye {
+      font-size:10px; letter-spacing:5px; text-transform:uppercase;
+      color:var(--g2); margin-bottom:34px;
+    }
+    .trust-eye b { color:var(--white); font-weight:600; }
+    .trust-names {
+      display:flex; flex-wrap:wrap; justify-content:center;
+      align-items:center; gap:16px 46px;
+    }
+    .trust-names span, .trust-names a {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(22px,3vw,40px); letter-spacing:1px; line-height:1;
+      color:transparent; -webkit-text-stroke:1px rgba(255,255,255,.3);
+      text-decoration:none;
+      transition:color .4s, -webkit-text-stroke-color .4s;
+      cursor:default;
+    }
+    .trust-names span:hover { color:var(--white); -webkit-text-stroke-color:transparent; }
+    .trust-names a:hover { color:var(--neon); -webkit-text-stroke-color:transparent; }
+
+    /* ── PROCES — ZO WERKEN WIJ ────────────────────────── */
+    #proces { padding:140px 60px; max-width:1280px; margin:0 auto; }
+    .pr-hdr { margin-bottom:62px; }
+    .pr-hdr .s-title { margin-top:14px; }
+    .pr-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+      background:var(--border); border:1px solid var(--border);
+    }
+    .pr-step { background:var(--bg); padding:42px 30px; transition:background .4s; }
+    .pr-step:hover { background:var(--bg2); }
+    .pr-num {
+      font-family:'Bebas Neue',sans-serif; font-size:56px; line-height:1;
+      color:transparent; -webkit-text-stroke:1px rgba(255,255,255,.22);
+      margin-bottom:26px; transition:-webkit-text-stroke-color .4s;
+    }
+    .pr-step:hover .pr-num { -webkit-text-stroke-color:var(--neon); }
+    .pr-t {
+      font-size:16px; font-weight:600; color:var(--white);
+      margin-bottom:10px; letter-spacing:.2px;
+    }
+    .pr-d { font-size:13px; line-height:1.75; color:var(--g2); font-weight:300; }
+
+    /* ── SERVICES — HEADLINE LIST ──────────────────────── */
+    #sv { padding:140px 0 120px; position:relative; }
+    .sv-toplabel { padding:0 60px; margin-bottom:50px; }
+    .sv-division { border-top:1px solid var(--border); }
+    .sv-row {
+      position:relative; display:flex; align-items:center;
+      gap:clamp(20px,4vw,60px);
+      padding:clamp(28px,4.5vh,52px) 60px;
+      border-bottom:1px solid var(--border);
+      text-decoration:none; overflow:hidden;
+    }
+    .sv-row::before {
+      content:''; position:absolute; inset:0;
+      background:var(--bg2);
+      transform:scaleY(0); transform-origin:bottom;
+      transition:transform .5s cubic-bezier(.76,0,.24,1);
+    }
+    .sv-row:hover::before { transform:scaleY(1); transform-origin:top; }
+    .sv-idx {
+      position:relative; z-index:2;
+      font-size:11px; letter-spacing:3px; color:var(--g2);
+      font-weight:500; min-width:34px;
+      transition:color .4s;
+    }
+    .sv-main {
+      position:relative; z-index:2; flex:1;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .sv-line {
+      font-size:13px; line-height:1.6; color:var(--g2); font-weight:300;
+      max-width:560px;
+      opacity:.7; transition:opacity .4s, transform .5s cubic-bezier(.2,.8,.2,1);
+    }
+    .sv-row:hover .sv-line { opacity:1; transform:translateX(24px); }
+    .sv-head {
+      position:relative; z-index:2;
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(46px,8.5vw,120px);
+      line-height:.95; letter-spacing:0;
+      color:transparent;
+      -webkit-text-stroke:1px rgba(255,255,255,.3);
+      transition:color .45s, -webkit-text-stroke-color .45s, transform .5s cubic-bezier(.2,.8,.2,1);
+    }
+    .sv-row:hover .sv-head {
+      color:var(--white);
+      -webkit-text-stroke-color:transparent;
+      transform:translateX(24px);
+    }
+    .sv-arrow {
+      position:relative; z-index:2;
+      font-size:clamp(28px,3.4vw,46px); color:var(--g2);
+      transform:translateX(-18px); opacity:0;
+      transition:transform .45s cubic-bezier(.2,.8,.2,1), opacity .45s, color .45s;
+    }
+    .sv-row:hover .sv-arrow {
+      transform:translateX(0); opacity:1; color:var(--neon);
+    }
+    .sv-row:hover .sv-idx { color:var(--neon); }
+
+    /* floating image preview that follows cursor */
+    .sv-preview {
+      position:fixed; z-index:90;
+      width:300px; height:380px;
+      pointer-events:none;
+      opacity:0; transform:scale(.85);
+      transition:opacity .35s, transform .35s;
+      overflow:hidden;
+      background:var(--bg2);
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .sv-preview.on { opacity:1; transform:scale(1); }
+    .sv-preview img {
+      width:100%; height:100%; object-fit:contain;
+      padding:24px;
+    }
+    .sv-preview img.cover { object-fit:cover; padding:0; }
+
+    /* ── SERVICES — THREE DIVISIONS ────────────────────── */
+    .sv-division {
+      border-top:1px solid var(--border);
+    }
+    .sv-div-header {
+      display:grid;
+      grid-template-columns:60px 1fr auto;
+      align-items:center; gap:clamp(20px,4vw,60px);
+      padding:clamp(22px,3vh,34px) 60px;
+      border-bottom:1px solid var(--border);
+      background:var(--bg2);
+    }
+    .sv-div-num {
+      font-size:10px; letter-spacing:4px; color:var(--neon);
+      font-weight:600; text-transform:uppercase;
+    }
+    .sv-div-title {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(13px,1.4vw,18px);
+      letter-spacing:5px; color:var(--white); text-transform:uppercase;
+    }
+    .sv-div-tag {
+      font-size:10px; letter-spacing:3px; text-transform:uppercase;
+      color:var(--g2); text-align:right;
+    }
+
+    /* ── PROJECTEN ─────────────────────────────────────── */
+    #werk { padding:140px 60px; }
+    .wk-hdr { margin-bottom:70px; }
+    .wk-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:2px;
+      background:var(--border);
+    }
+    .wk-card {
+      position:relative; background:var(--bg2);
+      min-height:420px; overflow:hidden;
+      display:flex; align-items:flex-end;
+      text-decoration:none;
+    }
+    .wk-img {
+      position:absolute; inset:0;
+      background-size:cover; background-position:center;
+      opacity:.45; transition:opacity .5s, transform .8s cubic-bezier(.2,.8,.2,1);
+      will-change:transform;
+    }
+    .wk-card:hover .wk-img { opacity:.7; transform:scale(1.06); }
+    .wk-card::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(6,6,10,.88) 0%, transparent 55%);
+    }
+    .wk-cut {
+      position:absolute; top:50%; left:50%;
+      transform:translate(-50%,-58%);
+      max-width:54%; max-height:46%;
+      filter:drop-shadow(0 25px 35px rgba(0,0,0,.7));
+      transition:transform .6s cubic-bezier(.2,.8,.2,1);
+    }
+    .wk-card:hover .wk-cut { transform:translate(-50%,-64%) scale(1.05); }
+    .wk-info {
+      position:relative; z-index:2; padding:34px 38px;
+      width:100%;
+    }
+    .wk-tag {
+      display:inline-block; font-size:9px; letter-spacing:3px;
+      text-transform:uppercase; color:var(--neon);
+      margin-bottom:12px;
+    }
+    .wk-t {
+      display:block;
+      font-family:'Bebas Neue',sans-serif; font-size:36px;
+      letter-spacing:1.5px; color:var(--white); line-height:1;
+      margin-bottom:8px;
+    }
+    .wk-m {
+      font-size:12px; color:var(--g2); letter-spacing:.5px;
+    }
+
+    /* ── TESTIMONIALS — WAT OPDRACHTGEVERS ZEGGEN ──────── */
+    #quotes { padding:140px 60px; max-width:1280px; margin:0 auto; }
+    .q-hdr { margin-bottom:62px; }
+    .q-hdr .s-title { margin-top:14px; }
+    .q-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+      background:var(--border); border:1px solid var(--border);
+    }
+    .q-card {
+      background:var(--bg); padding:46px 38px;
+      display:flex; flex-direction:column; transition:background .4s;
+    }
+    .q-card:hover { background:var(--bg2); }
+    .q-mark {
+      font-family:'Playfair Display',serif; font-weight:600;
+      font-size:80px; line-height:.5; color:var(--neon);
+      height:34px; margin-bottom:22px;
+    }
+    .q-text {
+      font-size:15px; line-height:1.85; color:var(--g1);
+      font-weight:300; flex:1; margin-bottom:30px;
+    }
+    .q-name {
+      font-family:'Bebas Neue',sans-serif; font-size:24px;
+      letter-spacing:1px; color:var(--white); line-height:1;
+    }
+    .q-role {
+      font-size:10px; letter-spacing:2.5px; text-transform:uppercase;
+      color:var(--g2); margin-top:8px;
+    }
+
+    /* ── CONTACTFORMULIER ──────────────────────────────── */
+    .cform {
+      max-width:680px; margin:80px auto 0; text-align:left;
+      position:relative; z-index:2;
+    }
+    .cf-row { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .cform input, .cform textarea {
+      width:100%; background:rgba(255,255,255,.02);
+      border:1px solid var(--border); color:var(--white);
+      font-family:'Space Grotesk',sans-serif; font-size:14px;
+      font-weight:300; padding:17px 20px; margin-bottom:18px;
+      outline:none; resize:vertical;
+      transition:border-color .3s, background .3s;
+    }
+    .cform input::placeholder, .cform textarea::placeholder { color:var(--g2); }
+    .cform input:focus, .cform textarea:focus {
+      border-color:rgba(0,255,136,.45); background:rgba(255,255,255,.04);
+    }
+    .cform button {
+      width:100%; padding:17px; background:var(--white); color:var(--bg);
+      border:none; font-family:'Space Grotesk',sans-serif;
+      font-size:11px; letter-spacing:3px; text-transform:uppercase;
+      font-weight:700; cursor:none; transition:background .3s;
+    }
+    .cform button:hover { background:var(--neon); }
+    .cf-note {
+      margin-top:14px; font-size:11px; color:var(--g2);
+      text-align:center; letter-spacing:.5px;
+    }
+
+    /* ── CTA ───────────────────────────────────────────── */
+    #cta {
+      padding:190px 60px; text-align:center; position:relative;
+      overflow:hidden;
+    }
+    .cta-bg {
+      position:absolute; inset:-12% 0; z-index:0;
+      background:url('assets/cta-crowd.jpg') center 40%/cover no-repeat;
+      opacity:.34; filter:grayscale(.2) contrast(1.05);
+      will-change:transform;
+    }
+    .cta-bg::after {
+      content:''; position:absolute; inset:0;
+      background:
+        linear-gradient(to bottom, var(--bg) 0%, transparent 30%, transparent 60%, var(--bg) 100%),
+        radial-gradient(ellipse at center, transparent 30%, rgba(6,6,10,.78) 100%);
+    }
+    #cta::before {
+      content:''; position:absolute; top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      width:700px; height:700px; z-index:1;
+      background:radial-gradient(circle,rgba(155,93,229,.10) 0%,transparent 65%);
+      pointer-events:none;
+    }
+    #cta > * { position:relative; z-index:2; }
+    #cta > .cta-bg { z-index:0; }
+    .cta-eye {
+      font-size:11px; letter-spacing:6px; text-transform:uppercase;
+      color:var(--purple); margin-bottom:20px;
+    }
+    .cta-t {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(60px,11vw,170px);
+      line-height:.9; letter-spacing:-2px; color:var(--white);
+      margin-bottom:46px;
+    }
+    .cta-t .ghost {
+      -webkit-text-stroke:1px rgba(255,255,255,.2);
+      -webkit-text-fill-color:transparent;
+    }
+    .cta-mail {
+      font-size:24px; font-weight:300; color:var(--g1);
+      margin-bottom:44px; letter-spacing:-.3px;
+    }
+    .cta-mail a {
+      color:var(--white); text-decoration:none;
+      border-bottom:1px solid rgba(255,255,255,.18);
+      padding-bottom:2px; transition:border-color .3s;
+    }
+    .cta-mail a:hover { border-color:var(--neon); }
+    .cta-info {
+      display:flex; justify-content:center; gap:60px;
+      margin-top:70px; flex-wrap:wrap;
+    }
+    .ci {
+      font-size:14px; color:var(--g1); font-weight:400;
+    }
+    .ci span {
+      display:block; font-size:9px; letter-spacing:3px;
+      text-transform:uppercase; color:var(--g2); margin-bottom:7px;
+    }
+
+    /* ── CLIENT LOGOS — SCROLLING STRIP ──────────────── */
+    #clients {
+      border-top:1px solid var(--border);
+      padding:40px 0 38px; overflow:hidden; background:var(--bg);
+    }
+    .cl-label {
+      text-align:center; font-size:10px; letter-spacing:5px;
+      text-transform:uppercase; color:var(--g2); margin-bottom:28px;
+    }
+    .cl-track {
+      display:flex; align-items:center; gap:56px;
+      animation:clscroll 28s linear infinite;
+    }
+    .cl-track:hover { animation-play-state:paused; }
+    .cl-item {
+      flex-shrink:0; white-space:nowrap;
+      font-family:'Bebas Neue',sans-serif; font-size:22px;
+      letter-spacing:3px; color:rgba(255,255,255,.18);
+      text-transform:uppercase;
+      padding:12px 28px;
+      border:1px solid rgba(255,255,255,.06);
+      transition:color .4s, border-color .4s;
+    }
+    .cl-item:hover { color:rgba(255,255,255,.5); border-color:rgba(255,255,255,.15); }
+    .cl-item img {
+      height:30px; width:auto; display:block;
+      filter:grayscale(1) brightness(.5); opacity:.35;
+      transition:filter .4s, opacity .4s;
+    }
+    .cl-item:hover img { filter:grayscale(0) brightness(1); opacity:.8; }
+    @keyframes clscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── FOOTER ────────────────────────────────────────── */
+    footer {
+      border-top:1px solid var(--border); padding:0;
+      display:flex; flex-direction:column; align-items:center; text-align:center;
+    }
+    footer .logo-badge, footer .logo-link { opacity:.55; transform:scale(.85); transition:opacity .3s; }
+    footer .logo-badge:hover, footer .logo-link:hover { opacity:1; }
+    footer .logo-img { height:38px; }
+    .f-partners {
+      width:100%; text-align:center; padding:40px 40px 36px;
+      border-bottom:1px solid var(--border);
+    }
+    .f-bottom {
+      display:flex; flex-direction:column; align-items:center; gap:16px;
+      padding:32px 40px 36px; width:100%;
+    }
+    .f-partners-label {
+      font-size:9px; letter-spacing:4px; text-transform:uppercase;
+      color:var(--g2); margin-bottom:24px;
+    }
+    .f-partners-logos {
+      display:flex; justify-content:center; align-items:center;
+      gap:52px; flex-wrap:wrap;
+    }
+    .f-partners-logos a {
+      display:flex; align-items:center; justify-content:center;
+      transition:opacity .4s; opacity:.6;
+    }
+    .f-partners-logos a:hover { opacity:1; }
+    .f-partners-logos img {
+      height:50px; width:auto; max-width:140px;
+      object-fit:contain;
+      filter:brightness(1.1);
+      transition:filter .4s;
+    }
+    .f-partners-logos a:hover img { filter:brightness(1.3); }
+    .f-copy { font-size:11px; color:var(--g2); letter-spacing:.5px; }
+    .f-links { display:flex; gap:28px; list-style:none; justify-content:center; }
+    .f-links a {
+      font-size:11px; color:var(--g2); text-decoration:none;
+      letter-spacing:1px; transition:color .3s;
+    }
+    .f-links a:hover { color:var(--white); }
+
+    /* ── REVEAL ────────────────────────────────────────── */
+    .rv { opacity:0; transform:translateY(36px); }
+
+    /* ── RESPONSIVE ────────────────────────────────────── */
+    @media(max-width:900px){
+      nav { padding:18px 24px; }
+      nav::after { left:24px; right:24px; }
+      .n-links { display:none; }
+      #la { height:80vh; }
+      .la-array { right:50%; transform:translate(50%,-50%); height:70vh; }
+      #live { height:72vh; }
+      #gear { padding:0; }
+      .gear-row { grid-template-columns:1fr; }
+      .gear-feature { height:42vh; min-height:280px; }
+      #trust { padding:54px 24px; }
+      .trust-names { gap:10px 26px; }
+      #proces { padding:90px 24px; }
+      .pr-grid { grid-template-columns:1fr 1fr; }
+      #over { padding:100px 24px 80px; }
+      .ov-statement { margin-bottom:60px; }
+      .usp-grid { grid-template-columns:1fr 1fr; }
+      #sv { padding:100px 0 80px; }
+      .sv-toplabel { padding:0 24px; }
+      .sv-row { padding:26px 24px; }
+      .sv-line { display:none; }
+      .sv-preview { display:none; }
+      .sv-div-header { padding:18px 24px; grid-template-columns:40px 1fr; }
+      .sv-div-tag { display:none; }
+      .cta-info { gap:28px; flex-direction:column; }
+      #werk { padding:100px 24px; }
+      .wk-grid { grid-template-columns:1fr; }
+      .wk-card { min-height:320px; }
+      #quotes { padding:90px 24px; }
+      .q-grid { grid-template-columns:1fr; }
+      .cf-row { grid-template-columns:1fr; gap:0; }
+      #stats { grid-template-columns:repeat(2,1fr); }
+      .s-item { border-right:none; border-bottom:1px solid var(--border); }
+      #cta { padding:120px 24px; }
+      footer { padding:0; }
+      .f-bottom { padding:24px 24px 28px; }
+      .f-partners { padding:30px 24px; }
+      .s-divider { margin:0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="grain"></div>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- ══ NAV ════════════════════════════════════════════════════ -->
+<nav id="nav">
+  <a href="#" class="logo-link"><img src="assets/dps-logo.png" alt="DPS Audio" class="logo-img" onerror="this.outerHTML='&lt;span class=\'logo-badge\'&gt;&lt;span class=\'lb-dps\'&gt;DPS&lt;/span&gt;&lt;span class=\'lb-audio\'&gt;Audio&lt;/span&gt;&lt;/span&gt;'"></a>
+  <ul class="n-links">
+    <li><a href="#over">Over ons</a></li>
+    <li><a href="#sv">Diensten</a></li>
+    <li><a href="#proces">Werkwijze</a></li>
+    <li><a href="#werk">Projecten</a></li>
+    <li><a href="#cta">Contact</a></li>
+  </ul>
+  <a href="#cta" class="n-btn">Offerte aanvragen</a>
+</nav>
+
+<!-- ══ HERO — WEBGL PARTICLE FIELD ════════════════════════════ -->
+<section id="hero">
+  <canvas id="webgl-hero"></canvas>
+  <div class="h-bgtext" id="hbgt">SOUND</div>
+
+  <div class="h-content">
+    <p class="h-eye">Professional Audio &nbsp;·&nbsp; Live Events &nbsp;·&nbsp; Sound Engineering</p>
+    <h1 class="h-title" id="htitle">
+      <span class="ln"><span>DPS</span></span>
+      <span class="ln"><span>AUDIO</span></span>
+    </h1>
+    <p class="h-sub">Wij vertalen techniek naar beleving. Geluid voor events, verhuur en vaste installaties — ontworpen, gebouwd en bediend door eigen specialisten.</p>
+    <div class="h-btns">
+      <a href="#la" class="btn-w">Ontdek ons systeem</a>
+      <a href="#cta" class="btn-o">Neem contact op</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint" id="scrollhint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══ STATS ══════════════════════════════════════════════════ -->
+<div id="stats">
+  <div class="s-item">
+    <div class="s-num"><span class="cnt" data-t="500">0</span>+</div>
+    <div class="s-lbl">Events per jaar</div>
+  </div>
+  <div class="s-item">
+    <div class="s-num"><span class="cnt" data-t="15">0</span> jr</div>
+    <div class="s-lbl">Ervaring</div>
+  </div>
+  <div class="s-item">
+    <div class="s-num"><span class="cnt" data-t="48">0</span>×</div>
+    <div class="s-lbl">d&amp;b elementen</div>
+  </div>
+  <div class="s-item">
+    <div class="s-num"><span class="cnt" data-t="100">0</span>%</div>
+    <div class="s-lbl">Klanttevredenheid</div>
+  </div>
+</div>
+
+<!-- ══ SOCIAL PROOF — VERTROUWD DOOR ══════════════════════════ -->
+<section id="trust">
+  <p class="trust-eye rv">Vertrouwd door <b>artiesten &amp; producties</b></p>
+  <div class="trust-names rv">
+    <a href="https://www.wolterkroes.nl" target="_blank" rel="noopener">Wolter Kroes</a>
+    <a href="https://www.emmaheesters.com" target="_blank" rel="noopener">Emma Heesters</a>
+    <a href="https://www.instagram.com/rolfsanchez" target="_blank" rel="noopener">Rolf Sanchez</a>
+    <a href="https://www.joelborelli.nl" target="_blank" rel="noopener">Joël Borelli</a>
+    <a href="https://www.marajuliamusic.com" target="_blank" rel="noopener">Mara Julia</a>
+  </div>
+</section>
+
+<!-- ══ MARQUEE ════════════════════════════════════════════════ -->
+<div id="marquee">
+  <div class="mq-track">
+    <span class="mq-item">d&amp;b audiotechnik</span><span class="mq-item">·</span>
+    <span class="mq-item">Sennheiser Digital 6000</span><span class="mq-item">·</span>
+    <span class="mq-item">Yamaha CL Series</span><span class="mq-item">·</span>
+    <span class="mq-item">DiGiCo SD Range</span><span class="mq-item">·</span>
+    <span class="mq-item">Lab.gruppen</span><span class="mq-item">·</span>
+    <span class="mq-item">Crown Audio</span><span class="mq-item">·</span>
+    <span class="mq-item">d&amp;b audiotechnik</span><span class="mq-item">·</span>
+    <span class="mq-item">Sennheiser Digital 6000</span><span class="mq-item">·</span>
+    <span class="mq-item">Yamaha CL Series</span><span class="mq-item">·</span>
+    <span class="mq-item">DiGiCo SD Range</span><span class="mq-item">·</span>
+    <span class="mq-item">Lab.gruppen</span><span class="mq-item">·</span>
+    <span class="mq-item">Crown Audio</span><span class="mq-item">·</span>
+  </div>
+</div>
+
+<!-- ══ OVER ONS ═══════════════════════════════════════════════ -->
+<section id="over">
+  <p class="s-label rv">Wie wij zijn</p>
+  <h2 class="ov-statement rv">
+    Wij vertalen <em>techniek</em> naar <em>beleving</em> —
+    van het eerste ontwerp tot de laatste soundcheck,
+    alles in eigen huis.
+  </h2>
+  <div class="usp-grid">
+    <div class="usp rv">
+      <div class="usp-num">01</div>
+      <div class="usp-t">Turn-key aanpak</div>
+      <div class="usp-d">Ontwerp, levering, installatie en programmering door eigen technici. Eén aanspreekpunt, geen onderaannemers.</div>
+    </div>
+    <div class="usp rv">
+      <div class="usp-num">02</div>
+      <div class="usp-t">Alleen A-merken</div>
+      <div class="usp-d">d&amp;b audiotechnik, DiGiCo en Sennheiser. Apparatuur waar riders om vragen.</div>
+    </div>
+    <div class="usp rv">
+      <div class="usp-num">03</div>
+      <div class="usp-t">15+ jaar ervaring</div>
+      <div class="usp-d">Van clubshow tot festivalpodium en van horecazaak tot theater — wij kennen elke ruimte en elk genre.</div>
+    </div>
+    <div class="usp rv">
+      <div class="usp-num">04</div>
+      <div class="usp-t">Service &amp; support</div>
+      <div class="usp-d">Onderhoud, storingsdienst en advies, ook ná de oplevering. Wij blijven betrokken bij uw installatie.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ d&b LINE ARRAY — PURE VISUAL ═══════════════════════════ -->
+<section id="la">
+  <div class="la-bg" id="la-bg"></div>
+  <img class="la-array" id="la-array" src="assets/gsl-array.png" alt="d&b audiotechnik GSL line array">
+</section>
+
+<div class="s-divider"></div>
+
+<!-- ══ SERVICES — THREE DIVISIONS ═════════════════════════════ -->
+<section id="sv">
+  <p class="s-label sv-toplabel rv">Wat wij doen</p>
+
+  <!-- ── DIVISIE 1: LIVE AUDIO ── -->
+  <div class="sv-division" id="svlist">
+
+    <div class="sv-div-header rv">
+      <span class="sv-div-num">A</span>
+      <span class="sv-div-title">Live Audio voor de Artiest</span>
+      <span class="sv-div-tag">Band · Tape · Verhuur</span>
+    </div>
+
+    <a href="#cta" class="sv-row" data-img="assets/artist-rolf-sanchez.jpg">
+      <span class="sv-idx">01</span>
+      <span class="sv-main">
+        <span class="sv-head">Band Shows</span>
+        <span class="sv-line">FOH, monitoring en draadloze rigs voor live bands — van clubpodium tot mainstage. Strak, snel en rider-proof.</span>
+      </span>
+      <span class="sv-arrow">→</span>
+    </a>
+    <a href="#cta" class="sv-row" data-img="assets/artist-emma-heesters.jpg">
+      <span class="sv-idx">02</span>
+      <span class="sv-main">
+        <span class="sv-head">Tape Shows</span>
+        <span class="sv-line">Strakke playback-producties en hybride shows, naadloos geïntegreerd met live elementen en professionele RF-coördinatie.</span>
+      </span>
+      <span class="sv-arrow">→</span>
+    </a>
+    <a href="#cta" class="sv-row" data-img="assets/gsl-array.png">
+      <span class="sv-idx">03</span>
+      <span class="sv-main">
+        <span class="sv-head">Verhuur / Dry Hire</span>
+        <span class="sv-line">Complete d&amp;b geluidssets — droge verhuur of inclusief technicus, altijd showklaar voor uw productie.</span>
+      </span>
+      <span class="sv-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- ── DIVISIE 2: TOTAAL EVENT ── -->
+  <div class="sv-division">
+
+    <div class="sv-div-header rv">
+      <span class="sv-div-num">B</span>
+      <span class="sv-div-title">Totaal Licht &amp; Geluid op Locatie</span>
+      <span class="sv-div-tag">Events · Festivals · Corporate</span>
+    </div>
+
+    <a href="#cta" class="sv-row" data-img="assets/festival-mainstage.jpg">
+      <span class="sv-idx">04</span>
+      <span class="sv-main">
+        <span class="sv-head">Events</span>
+        <span class="sv-line">Volledige audio- en lichtproducties voor festivals, corporate events en ceremonies. Van rider-check tot afbouw volledig ontzorgd.</span>
+      </span>
+      <span class="sv-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- ── DIVISIE 3: INSTALLATIE & SMART ── -->
+  <div class="sv-division">
+
+    <div class="sv-div-header rv">
+      <span class="sv-div-num">C</span>
+      <span class="sv-div-title">Theater, Installatie &amp; Smart Systems</span>
+      <span class="sv-div-tag">Permanent · Turn-key · AV</span>
+    </div>
+
+    <a href="#cta" class="sv-row" data-img="assets/gsl-detail.jpg">
+      <span class="sv-idx">05</span>
+      <span class="sv-main">
+        <span class="sv-head">Vaste Installaties</span>
+        <span class="sv-line">Turn-key geluidsinstallaties voor horeca, theaters en clubs. Ontwerp, montage en akoestische inmeting in eigen beheer.</span>
+      </span>
+      <span class="sv-arrow">→</span>
+    </a>
+    <a href="#cta" class="sv-row" data-img="assets/gsl12.png">
+      <span class="sv-idx">06</span>
+      <span class="sv-main">
+        <span class="sv-head">Smart Systems</span>
+        <span class="sv-line">Netwerkgestuurde AV-systemen: één bediening voor geluid, licht en media in uw pand — schaalbaar en toekomstbestendig.</span>
+      </span>
+      <span class="sv-arrow">→</span>
+    </a>
+  </div>
+
+  <div class="sv-preview" id="svpreview"><img src="" alt=""></div>
+</section>
+
+<div class="s-divider"></div>
+
+<!-- ══ GEAR — ATMOSPHERIC VISUAL BAND (pure visual) ═══════════ -->
+<section id="gear">
+  <div class="gear-feature">
+    <span class="gear-ph" style="background-image:url('assets/gear-waves-lv1-classix-3.webp')"></span>
+  </div>
+  <div class="gear-row">
+    <div class="gear-cell">
+      <span class="gear-ph" style="background-image:url('assets/gear-uad-apollo.png')"></span>
+    </div>
+    <div class="gear-cell">
+      <span class="gear-ph" style="background-image:url('assets/gear-waves-lv1-classix.webp')"></span>
+    </div>
+    <div class="gear-cell">
+      <span class="gear-ph" style="background-image:url('assets/-gear-UAD-Apollo-2-Console-Explained-XNQy-original.jpeg'); background-position:center top"></span>
+    </div>
+  </div>
+</section>
+
+<div class="s-divider"></div>
+
+<!-- ══ PROCES — ZO WERKEN WIJ ═════════════════════════════════ -->
+<section id="proces">
+  <div class="pr-hdr">
+    <p class="s-label rv">Zo werken wij</p>
+    <h2 class="s-title rv">U heeft een idee.<br><span class="ghost">Wij maken het concreet.</span></h2>
+  </div>
+  <div class="pr-grid">
+    <div class="pr-step rv">
+      <div class="pr-num">01</div>
+      <div class="pr-t">Advies &amp; intake</div>
+      <div class="pr-d">We luisteren naar uw event of ruimte, denken mee over budget en ambitie, en vertalen dat naar een helder plan.</div>
+    </div>
+    <div class="pr-step rv">
+      <div class="pr-num">02</div>
+      <div class="pr-t">Ontwerp &amp; engineering</div>
+      <div class="pr-d">Een akoestisch onderbouwd systeemontwerp, ingemeten en uitgewerkt — zodat techniek en ruimte naadloos samenvallen.</div>
+    </div>
+    <div class="pr-step rv">
+      <div class="pr-num">03</div>
+      <div class="pr-t">Realisatie &amp; show</div>
+      <div class="pr-d">Levering, opbouw en bediening door eigen technici. Strakke afstemming, op tijd showklaar — elke keer weer.</div>
+    </div>
+    <div class="pr-step rv">
+      <div class="pr-num">04</div>
+      <div class="pr-t">Service &amp; support</div>
+      <div class="pr-d">Onderhoud, storingsdienst en advies, ook ná de oplevering. Eén aanspreekpunt voor het hele traject.</div>
+    </div>
+  </div>
+</section>
+
+<div class="s-divider"></div>
+
+<!-- ══ LIVE / SFEER — FULL-BLEED PARALLAX ═════════════════════ -->
+<section id="live">
+  <div class="live-bg" id="live-bg"></div>
+  <video class="live-vid" id="live-vid" muted loop playsinline preload="none"
+         poster="assets/live-crowd-poster.jpg"></video>
+  <div class="live-content">
+    <p class="live-eye rv">Van clubpodium tot mainstage</p>
+    <h2 class="live-t rv">WAAR HET<br><span class="ghost">LIVE</span> GEBEURT</h2>
+    <p class="live-sub rv">Achter elke show staat techniek die je niet ziet, maar wél voelt. Wij bouwen het podium waarop artiesten kunnen schitteren.</p>
+  </div>
+</section>
+
+<div class="s-divider"></div>
+
+<!-- ══ PROJECTEN ══════════════════════════════════════════════ -->
+<section id="werk">
+  <div class="wk-hdr">
+    <p class="s-label rv">Uitgelicht werk</p>
+    <h2 class="s-title rv">Recente <span class="ghost">Projecten</span></h2>
+  </div>
+  <div class="wk-grid">
+    <a href="#cta" class="wk-card">
+      <span class="wk-img" style="background-image:url('assets/festival-mainstage.jpg'); background-position:center 32%"></span>
+      <span class="wk-info">
+        <span class="wk-tag">Festival · Events</span>
+        <span class="wk-t">Mainstage Festivalproductie</span>
+        <span class="wk-m">24× d&amp;b GSL · FOH &amp; monitoring · draadloze RF-rigs</span>
+      </span>
+    </a>
+    <a href="#cta" class="wk-card">
+      <span class="wk-img" style="background-image:url('assets/artist-Joel-Borelli.jpg')"></span>
+      <span class="wk-info">
+        <span class="wk-tag">Band show · Live</span>
+        <span class="wk-t">Live Bandproductie</span>
+        <span class="wk-m">FOH, monitoring &amp; backline · van soundcheck tot encore</span>
+      </span>
+    </a>
+    <a href="#cta" class="wk-card">
+      <span class="wk-img" style="background-image:url('assets/artist-wolter-kroes.jpg')"></span>
+      <span class="wk-info">
+        <span class="wk-tag">Theater · Vaste installatie</span>
+        <span class="wk-t">Theaterzaal Turn-key</span>
+        <span class="wk-m">Ontwerp t/m inmeting · in eigen beheer</span>
+      </span>
+    </a>
+    <a href="#cta" class="wk-card">
+      <span class="wk-img" style="background-image:url('assets/artist-rolf-sanchez.jpg')"></span>
+      <span class="wk-info">
+        <span class="wk-tag">Tape show · Productie</span>
+        <span class="wk-t">Hybride Tape Show</span>
+        <span class="wk-m">Playback-productie · naadloos met live elementen</span>
+      </span>
+    </a>
+  </div>
+</section>
+
+<div class="s-divider"></div>
+
+<!-- ══ TESTIMONIALS — WAT OPDRACHTGEVERS ZEGGEN ═══════════════ -->
+<!-- VOORBEELDQUOTES — vervang de teksten/namen hieronder door echte klantcitaten -->
+<section id="quotes">
+  <div class="q-hdr">
+    <p class="s-label rv">Wat opdrachtgevers zeggen</p>
+    <h2 class="s-title rv">Geluid dat <span class="ghost">blijft hangen</span></h2>
+  </div>
+  <div class="q-grid">
+    <div class="q-card rv">
+      <div class="q-mark">&ldquo;</div>
+      <p class="q-text">DPS denkt mee vanaf het eerste gesprek. Op de showdag stond alles strak, op tijd en precies zoals afgesproken — wij hoefden ons nergens druk om te maken. Dát is ontzorgen.</p>
+      <div>
+        <div class="q-name">Mark Verhoeven</div>
+        <div class="q-role">Productieleider · Festival</div>
+      </div>
+    </div>
+    <div class="q-card rv">
+      <div class="q-mark">&ldquo;</div>
+      <p class="q-text">De vaste installatie in onze zaal is precies wat we voor ogen hadden: onzichtbaar netjes, maar je hóórt het verschil meteen. Bediening is voor ons team in vijf minuten te leren.</p>
+      <div>
+        <div class="q-name">Linda de Groot</div>
+        <div class="q-role">Manager · Theater &amp; Evenementen</div>
+      </div>
+    </div>
+    <div class="q-card rv">
+      <div class="q-mark">&ldquo;</div>
+      <p class="q-text">Rider-proof, betrouwbaar en geen gedoe. Of het nu een clubshow of een mainstage is — de technici van DPS leveren elke keer dezelfde kwaliteit. Een partner waar je op kunt bouwen.</p>
+      <div>
+        <div class="q-name">Tom Bakker</div>
+        <div class="q-role">Tourmanager · Live productie</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="s-divider"></div>
+
+<!-- ══ CTA ════════════════════════════════════════════════════ -->
+<section id="cta">
+  <div class="cta-bg" id="cta-bg"></div>
+  <p class="cta-eye rv">Klaar om samen te werken?</p>
+  <h2 class="cta-t rv">
+    LET'S<br>
+    <span class="ghost">MAKE</span><br>
+    SOUND
+  </h2>
+  <p class="cta-mail rv">
+    <a href="mailto:info@dps-audio.nl">info@dps-audio.nl</a>
+  </p>
+  <div class="h-btns rv">
+    <a href="mailto:info@dps-audio.nl" class="btn-w">Verstuur een bericht</a>
+    <a href="tel:+31612345678"         class="btn-o">Bel ons direct</a>
+  </div>
+  <div class="cta-info rv">
+    <div class="ci"><span>Telefoon</span>+31 (0)6 12 34 56 78</div>
+    <div class="ci"><span>Bereikbaar</span>Ma – Vr · 08:30 – 17:30</div>
+    <div class="ci"><span>Service &amp; storing</span>24/7 voor installatieklanten</div>
+  </div>
+
+  <form class="cform rv" id="cform">
+    <div class="cf-row">
+      <input type="text"  id="cf-name"  placeholder="Uw naam" required>
+      <input type="email" id="cf-email" placeholder="Uw e-mailadres" required>
+    </div>
+    <input type="text" id="cf-subj" placeholder="Onderwerp — bijv. festival, installatie, verhuur">
+    <textarea id="cf-msg" rows="5" placeholder="Vertel kort over uw event of project..." required></textarea>
+    <button type="submit">Verstuur aanvraag</button>
+    <p class="cf-note">Uw bericht opent in uw eigen mailprogramma — wij reageren binnen één werkdag.</p>
+  </form>
+</section>
+
+<!-- ══ CLIENT LOGOS — SCROLLING STRIP ═════════════════════════ -->
+<section id="clients">
+  <p class="cl-label">DPS Audio werkt in opdracht van</p>
+  <div class="cl-track" id="cl-track">
+    <span class="cl-item">Ziggo Dome</span>
+    <span class="cl-item">AFAS Live</span>
+    <span class="cl-item">Rotterdam Ahoy</span>
+    <span class="cl-item">TivoliVredenburg</span>
+    <span class="cl-item">Paradiso</span>
+    <span class="cl-item">013 Tilburg</span>
+    <span class="cl-item">Lowlands</span>
+    <span class="cl-item">Pinkpop</span>
+    <span class="cl-item">North Sea Jazz</span>
+    <span class="cl-item">Patronaat</span>
+    <span class="cl-item">Melkweg</span>
+    <span class="cl-item">Muziekgebouw</span>
+    <!-- duplicaat voor naadloze loop -->
+    <span class="cl-item">Ziggo Dome</span>
+    <span class="cl-item">AFAS Live</span>
+    <span class="cl-item">Rotterdam Ahoy</span>
+    <span class="cl-item">TivoliVredenburg</span>
+    <span class="cl-item">Paradiso</span>
+    <span class="cl-item">013 Tilburg</span>
+    <span class="cl-item">Lowlands</span>
+    <span class="cl-item">Pinkpop</span>
+    <span class="cl-item">North Sea Jazz</span>
+    <span class="cl-item">Patronaat</span>
+    <span class="cl-item">Melkweg</span>
+    <span class="cl-item">Muziekgebouw</span>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════ -->
+<footer>
+  <div class="f-partners">
+    <p class="f-partners-label">Preferred partners</p>
+    <div class="f-partners-logos">
+      <a href="https://www.theentertainmentfactory.nl" target="_blank" rel="noopener"><img src="assets/partner-tef.png" alt="TEF — The Entertainment Factory"></a>
+      <a href="#" target="_blank" rel="noopener"><img src="assets/partner-m-sound.svg" alt="M-Sound"></a>
+      <a href="#" target="_blank" rel="noopener"><img src="assets/partner-oz.png" alt="OZ"></a>
+      <a href="https://www.shure.com" target="_blank" rel="noopener"><img src="assets/partner-shure.png" alt="Shure"></a>
+    </div>
+  </div>
+  <div class="f-bottom">
+    <a href="#" class="logo-link"><img src="assets/dps-logo.png" alt="DPS Audio" class="logo-img" onerror="this.outerHTML='&lt;span class=\'logo-badge\'&gt;&lt;span class=\'lb-dps\'&gt;DPS&lt;/span&gt;&lt;span class=\'lb-audio\'&gt;Audio&lt;/span&gt;&lt;/span&gt;'"></a>
+    <p class="f-copy">© 2026 DPS Audio — Alle rechten voorbehouden</p>
+    <ul class="f-links">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Voorwaarden</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+  </div>
+</footer>
+
+<!-- ══ SCRIPTS ═══════════════════════════════════════════════ -->
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+  const isMobile = window.matchMedia('(hover:none)').matches;
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+  // ── LENIS SMOOTH SCROLL ─────────────────────────────────────
+  const lenis = new Lenis({ lerp: .085, smoothWheel: true });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  // Anchor links via Lenis
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = a.getAttribute('href');
+      if (target.length > 1 && document.querySelector(target)) {
+        e.preventDefault();
+        lenis.scrollTo(target, { offset: 0, duration: 1.6 });
+      }
+    });
+  });
+
+  // ── CURSOR ──────────────────────────────────────────────────
+  const cur     = document.getElementById('cur');
+  const curRing = document.getElementById('cur-ring');
+  let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+
+  if (!isMobile) {
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cur.style.left = mx + 'px';
+      cur.style.top  = my + 'px';
+    });
+    (function trackRing() {
+      rx += (mx - rx) * .11;
+      ry += (my - ry) * .11;
+      curRing.style.left = rx + 'px';
+      curRing.style.top  = ry + 'px';
+      requestAnimationFrame(trackRing);
+    })();
+    document.querySelectorAll('a,button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cur.style.width = '18px'; cur.style.height = '18px';
+        curRing.style.width = '58px'; curRing.style.height = '58px';
+        curRing.style.borderColor = 'rgba(255,255,255,.5)';
+      });
+      el.addEventListener('mouseleave', () => {
+        cur.style.width = '10px'; cur.style.height = '10px';
+        curRing.style.width = '38px'; curRing.style.height = '38px';
+        curRing.style.borderColor = 'rgba(255,255,255,.25)';
+      });
+    });
+  }
+
+  // ════════════════════════════════════════════════════════════
+  //  THREE.JS SCENE 1 — HERO PARTICLE WAVE FIELD
+  // ════════════════════════════════════════════════════════════
+  (function heroScene() {
+    const canvas = document.getElementById('webgl-hero');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:false });
+    renderer.setPixelRatio(DPR);
+
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, 1, .1, 200);
+    camera.position.set(0, 7, 26);
+    camera.lookAt(0, 0, 0);
+
+    // Particle grid
+    const COLS = isMobile ? 90 : 150;
+    const ROWS = isMobile ? 45 : 70;
+    const COUNT = COLS * ROWS;
+    const SPREAD_X = 90, SPREAD_Z = 46;
+
+    const pos = new Float32Array(COUNT * 3);
+    const col = new Float32Array(COUNT * 3);
+
+    const cWhite  = new THREE.Color(0xf0f0f6);
+    const cDim    = new THREE.Color(0x2a2a36);
+    const cNeon   = new THREE.Color(0x00ff88);
+    const cPurple = new THREE.Color(0x9b5de5);
+
+    for (let i = 0; i < COUNT; i++) {
+      const ix = i % COLS, iz = Math.floor(i / COLS);
+      pos[i*3]   = (ix / (COLS-1) - .5) * SPREAD_X;
+      pos[i*3+1] = 0;
+      pos[i*3+2] = (iz / (ROWS-1) - .5) * SPREAD_Z;
+
+      const r = Math.random();
+      let c;
+      if      (r < .008) c = cNeon;
+      else if (r < .014) c = cPurple;
+      else if (r < .35)  c = cWhite;
+      else               c = cDim;
+      col[i*3] = c.r; col[i*3+1] = c.g; col[i*3+2] = c.b;
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
+
+    const mat = new THREE.PointsMaterial({
+      size: isMobile ? .14 : .11,
+      vertexColors: true,
+      transparent: true,
+      opacity: .85,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+
+    const points = new THREE.Points(geo, mat);
+    scene.add(points);
+
+    function resize() {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    let t = 0;
+    let heroVisible = true;
+    new IntersectionObserver(e => heroVisible = e[0].isIntersecting).observe(canvas);
+
+    function tick() {
+      requestAnimationFrame(tick);
+      if (!heroVisible) return;
+      t += .012;
+
+      const p = geo.attributes.position.array;
+      for (let i = 0; i < COUNT; i++) {
+        const x = p[i*3], z = p[i*3+2];
+        // Layered sine waves — looks like a sound field
+        p[i*3+1] =
+          Math.sin(x * .22 + t)        * 1.5 +
+          Math.sin(z * .35 + t * 1.4)  * 1.1 +
+          Math.sin((x + z) * .12 + t * .7) * 1.8 +
+          Math.sin(Math.sqrt(x*x + z*z) * .3 - t * 2) * .7;
+      }
+      geo.attributes.position.needsUpdate = true;
+
+      // Subtle camera drift toward mouse
+      const tx = ((mx / innerWidth)  - .5) * 4;
+      const ty = ((my / innerHeight) - .5) * -2;
+      camera.position.x += (tx - camera.position.x) * .03;
+      camera.position.y += (7 + ty - camera.position.y) * .03;
+      camera.lookAt(0, 0, 0);
+
+      renderer.render(scene, camera);
+    }
+    tick();
+  })();
+
+  // ── d&b LINE ARRAY — PHOTO PARALLAX ─────────────────────────
+  gsap.to('#la-bg', {
+    yPercent: 14,
+    scrollTrigger: { trigger:'#la', start:'top bottom', end:'bottom top', scrub:1 }
+  });
+  gsap.fromTo('#la-array',
+    { yPercent: -56, rotation: -2 },
+    { yPercent: -44, rotation: 2, ease:'none',
+      scrollTrigger: { trigger:'#la', start:'top bottom', end:'bottom top', scrub:1.4 } }
+  );
+
+  // ── LIVE / SFEER — PHOTO + VIDEO PARALLAX ───────────────────
+  gsap.fromTo('#live-bg, #live-vid',
+    { yPercent: -10 },
+    { yPercent: 14, ease:'none',
+      scrollTrigger: { trigger:'#live', start:'top bottom', end:'bottom top', scrub:1 } }
+  );
+  gsap.to('.live-t', {
+    yPercent: -16, ease:'none',
+    scrollTrigger: { trigger:'#live', start:'top bottom', end:'bottom top', scrub:1.3 }
+  });
+
+  // ── LIVE BACKGROUND VIDEO (desktop only, pause off-screen) ──
+  (function liveVideo() {
+    const vid = document.getElementById('live-vid');
+    if (!vid || isMobile) return;            // mobile keeps the static poster
+    vid.src = 'assets/live-crowd.mp4';
+    vid.load();
+    const reveal = () => vid.classList.add('on');
+    vid.addEventListener('playing', reveal, { once:true });
+    new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { vid.play().catch(()=>{}); }
+        else vid.pause();
+      });
+    }, { threshold:0.05 }).observe(document.getElementById('live'));
+  })();
+  // ── SERVICES — HEADLINE LIST + CURSOR PREVIEW ──────────────
+  const preview = document.getElementById('svpreview');
+  const pImg = preview.querySelector('img');
+  let pX = 0, pY = 0, pTX = 0, pTY = 0;
+
+  if (!isMobile) {
+    document.addEventListener('mousemove', e => { pTX = e.clientX; pTY = e.clientY; });
+    (function followPreview() {
+      pX += (pTX - pX) * .09;
+      pY += (pTY - pY) * .09;
+      preview.style.left = (pX + 30) + 'px';
+      preview.style.top  = (pY - 190) + 'px';
+      requestAnimationFrame(followPreview);
+    })();
+
+    document.querySelectorAll('.sv-row').forEach(row => {
+      row.addEventListener('mouseenter', () => {
+        const src = row.dataset.img;
+        pImg.src = src;
+        pImg.classList.toggle('cover', src.endsWith('.jpg'));
+        preview.classList.add('on');
+      });
+      row.addEventListener('mouseleave', () => preview.classList.remove('on'));
+    });
+  }
+
+  gsap.fromTo('.sv-row',
+    { y:60, opacity:0 },
+    { y:0, opacity:1, duration:.8, stagger:.09, ease:'power3.out',
+      scrollTrigger: { trigger:'.sv-division', start:'top 85%' } }
+  );
+
+  // ── HERO ENTRANCE ───────────────────────────────────────────
+  const tl = gsap.timeline({ delay: .15 });
+  document.querySelectorAll('.h-title .ln span').forEach((s, i) => {
+    tl.to(s, { y: 0, duration: 1.1, ease: 'power4.out' }, i * .12);
+  });
+  tl.to('.h-eye',  { opacity:1, y:0, duration:.8, ease:'power2.out' }, .1)
+    .to('.h-sub',  { opacity:1, y:0, duration:.8, ease:'power2.out' }, .4)
+    .to('.h-btns', { opacity:1, y:0, duration:.8, ease:'power2.out' }, .6)
+    .to('#scrollhint', { opacity:1, duration:1, ease:'power2.out' }, 1.3);
+
+  // ── PARALLAX BG TEXT ────────────────────────────────────────
+  gsap.to('#hbgt', {
+    y: 260,
+    scrollTrigger: { trigger:'#hero', start:'top top', end:'bottom top', scrub:.8 }
+  });
+
+  // ── GENERIC REVEALS ─────────────────────────────────────────
+  gsap.utils.toArray('.rv').forEach(el => {
+    gsap.to(el, {
+      opacity:1, y:0, duration:.95, ease:'power3.out',
+      scrollTrigger: { trigger:el, start:'top 86%', toggleActions:'play none none none' }
+    });
+  });
+
+  // ── STAT COUNTERS ───────────────────────────────────────────
+  document.querySelectorAll('.cnt').forEach(el => {
+    const target = +el.dataset.t;
+    ScrollTrigger.create({
+      trigger: el, start: 'top 85%',
+      onEnter: () => {
+        gsap.to(el, {
+          textContent: target, duration:2.2, ease:'power1.out',
+          snap: { textContent:1 },
+          onUpdate() { el.textContent = Math.round(+el.textContent); }
+        });
+      }
+    });
+  });
+
+  // ── CTA PARALLAX ────────────────────────────────────────────
+  gsap.to('.cta-t', {
+    yPercent: -18,
+    scrollTrigger: { trigger:'#cta', start:'top bottom', end:'bottom top', scrub:1 }
+  });
+  gsap.fromTo('#cta-bg',
+    { yPercent: -8 },
+    { yPercent: 10, ease:'none',
+      scrollTrigger: { trigger:'#cta', start:'top bottom', end:'bottom top', scrub:1 } }
+  );
+
+  // ── NAV BLUR ────────────────────────────────────────────────
+  const nav = document.getElementById('nav');
+  lenis.on('scroll', ({ scroll }) => {
+    if (scroll > 80) {
+      nav.style.backdropFilter = 'blur(22px) saturate(180%)';
+      nav.style.background     = 'rgba(6,6,10,.82)';
+    } else {
+      nav.style.backdropFilter = 'none';
+      nav.style.background     = 'transparent';
+    }
+  });
+
+  // ── PROJECT CARDS STAGGER ───────────────────────────────────
+  gsap.fromTo('.wk-card',
+    { y:70, opacity:0 },
+    { y:0, opacity:1, duration:.9, stagger:.13, ease:'power3.out',
+      scrollTrigger: { trigger:'.wk-grid', start:'top 80%' } }
+  );
+
+  // ── CONTACTFORMULIER (mailto) ───────────────────────────────
+  document.getElementById('cform').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('cf-name').value.trim();
+    const mail = document.getElementById('cf-email').value.trim();
+    const subj = document.getElementById('cf-subj').value.trim() || 'Aanvraag via website';
+    const msg  = document.getElementById('cf-msg').value.trim();
+    const body = `${msg}\n\n—\n${name}\n${mail}`;
+    location.href = `mailto:info@dps-audio.nl?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
+  });
+
+  // ── HERO TITLE GLITCH ───────────────────────────────────────
+  const ht = document.getElementById('htitle');
+  let gli;
+  ht.addEventListener('mouseenter', () => {
+    gli = setInterval(() => {
+      ht.style.textShadow =
+        `${(Math.random()-.5)*8}px 0 rgba(0,255,136,.25),`+
+        `${(Math.random()-.5)*8}px 0 rgba(155,93,229,.25)`;
+    }, 55);
+  });
+  ht.addEventListener('mouseleave', () => {
+    clearInterval(gli); ht.style.textShadow = 'none';
+  });
+</script>
+</body>
+</html>
