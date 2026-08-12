@@ -1,5 +1,10 @@
 # AD2 Handheld — 360° wrap voor de xTool O1 Omni + OR1 rotary
 
+> **Hoofdversie: DPS Audio-branding** (`ad2-wrap-dps-print.png`), met het
+> officiële DPS-logo klein en horizontaal onderin (rechtop leesbaar als de mic
+> verticaal staat), twee keer 180° tegenover elkaar. De FS Audio-tekstvariant
+> staat er nog naast als alternatief.
+
 Full-wrap UV-printontwerp voor de Shure Axient Digital AD2 handheld, in de stijl
 van een gekalibreerd meetinstrument: haarlijnen, een 0–360° gradenschaal (knipoog
 naar de rotary), een doorlopende golfvorm en het FS AUDIO-woordmerk in de lengte­as.
@@ -10,10 +15,38 @@ blijft kaal; je print alleen de graphics (wit + amber).
 
 | Bestand | Wat |
 |---|---|
-| `ad2-wrap-print.png` | Print-klaar bestand, 600 dpi, transparante achtergrond. Breedte = omtrek, hoogte = lengte langs de as. |
-| `ad2-wrap-mockup.png` | Preview van het ontwerp om de mic gewikkeld. |
+| `ad2-wrap-dps-print.png` | **DPS Audio-versie** — print-klaar, 600 dpi, transparante achtergrond. Breedte = omtrek, hoogte = lengte langs de as. |
+| `ad2-wrap-dps-mockup.png` | Preview van de DPS-versie om de mic gewikkeld. |
+| `ad2-wrap-print.png` | FS Audio-tekstvariant (zelfde opzet). |
+| `ad2-wrap-mockup.png` | Preview van de FS-variant. |
+| `dps_audio_logo.png` | Het DPS-logo (transparante PNG) dat de generator gebruikt. |
 | `generate_wrap.py` | Parametrische generator — pas diameter/lengte/kanaalnummer aan en genereer opnieuw. |
 | `DESIGN-PHILOSOPHY.md` | De ontwerpfilosofie achter de stijl. |
+
+De DPS-versie hergenereren (bijv. met andere maat of kanaalnummer):
+
+```bash
+python3 generate_wrap.py --logo dps_audio_logo.png \
+  --subline "DPS AUDIO  ·  AXIENT DIGITAL AD2  ·  470–616 MHz" \
+  --url dps-audio.nl --diameter 37.0 --channel 01 \
+  --out ad2-wrap-dps-print.png --mockup ad2-wrap-dps-mockup.png
+```
+
+## Het display: geen uitsparing nodig op de AD2
+
+Volgens de officiële Shure AD2-handleiding (AD2 Transmitter Overview) zitten
+het **display, de IR-poort, de menuknoppen én de aan/uit-schakelaar allemaal
+ónder de losschroefbare handle-huls** — de buitenkant van de huls is volledig
+glad. Je print dus gewoon rondom de losse huls; niets wordt afgedekt.
+
+Voor zenders die wél een extern display hebben (bijv. een ULXD2) heeft de
+generator een keep-out-optie die een venster uitspaart en er een dun
+keyline-kader omheen zet:
+
+```bash
+# frac rond de omtrek (0-1), y-centrum in mm, breedte × hoogte in mm
+python3 generate_wrap.py --window "0.5,72,28,13" ...
+```
 
 ## ⚠️ Eerst meten, dan printen
 

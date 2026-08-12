@@ -160,6 +160,46 @@ class Wrap:
             pts.append((t * self.W, yc + amp * v))
         self.draw.line(pts, fill=color, width=w, joint="curve")
 
+    def logo_axial(self, path, frac, y_top_mm, y_bot_mm):
+        """logo image reading along the mic axis (capsule -> bottom),
+        scaled to fill y_top..y_bot along the axis"""
+        logo = Image.open(path).convert("RGBA")
+        span = int(self.mm(y_bot_mm - y_top_mm))
+        across = int(span * logo.height / logo.width)
+        logo = logo.resize((span, across), Image.LANCZOS)
+        logo = logo.transpose(Image.ROTATE_270)
+        px = int(self.x_at(frac) - logo.width / 2)
+        py = int(self.mm(y_top_mm))
+        self.img.alpha_composite(logo, (px, py))
+
+    def logo_around(self, path, frac, y_center_mm, width_mm):
+        """small logo in the circling direction (upright when the mic
+        stands vertical), centered at frac"""
+        logo = Image.open(path).convert("RGBA")
+        w_px = int(self.mm(width_mm))
+        h_px = int(w_px * logo.height / logo.width)
+        logo = logo.resize((w_px, h_px), Image.LANCZOS)
+        px = int(self.x_at(frac) - w_px / 2)
+        py = int(self.mm(y_center_mm) - h_px / 2)
+        self.img.alpha_composite(logo, (px, py))
+
+    def keepout_window(self, frac, y_center_mm, w_mm, h_mm, frame=True):
+        """erase a display/control window and (optionally) draw a fine
+        keyline frame 1 mm outside it, so the opening looks intentional"""
+        cx, cy = self.x_at(frac), self.mm(y_center_mm)
+        hw, hh = self.mm(w_mm) / 2, self.mm(h_mm) / 2
+        self.draw.rounded_rectangle(
+            [cx - hw, cy - hh, cx + hw, cy + hh],
+            radius=self.mm(1.2), fill=(0, 0, 0, 0),
+        )
+        if frame:
+            g = self.mm(1.0)
+            self.draw.rounded_rectangle(
+                [cx - hw - g, cy - hh - g, cx + hw + g, cy + hh + g],
+                radius=self.mm(1.8), outline=WHITE_SOFT,
+                width=max(1, round(self.mm(0.15))),
+            )
+
     def channel_tag(self, channel, frac, y_center_mm):
         """keyline rounded box with the channel number, amber"""
         f = self.font("GeistMono-Bold.ttf", 5.2)
@@ -199,9 +239,15 @@ def build(args):
     # --- identity micro-label -----------------------------------------
     w.text_around(args.subline, 18.0, 0.50, 1.75)
 
-    # --- axial wordmarks at 90° and 270° -------------------------------
-    w.wordmark_axial(args.brand, 0.25, 25.0, L - 23.0, 8.6)
-    w.wordmark_axial(args.brand, 0.75, 25.0, L - 23.0, 8.6)
+    # --- branding -------------------------------------------------------
+    if args.logo:
+        # small horizontal logo low on the sleeve, twice, 180° apart,
+        # just above the waveform
+        w.logo_around(args.logo, 0.25, L - 27.0, 17.0)
+        w.logo_around(args.logo, 0.75, L - 27.0, 17.0)
+    else:
+        w.wordmark_axial(args.brand, 0.25, 25.0, L - 23.0, 8.6)
+        w.wordmark_axial(args.brand, 0.75, 25.0, L - 23.0, 8.6)
 
     # --- channel tag at 180° -------------------------------------------
     if args.channel:
@@ -217,6 +263,14 @@ def build(args):
     w.ring(L - 9.4, 0.12, AMBER)
     w.ring(L - 8.5, 0.25, WHITE)
     w.text_around(args.url, L - 5.6, 0.50, 1.75)
+
+    # --- optional display/control keep-out window (erased last) ---------
+    # The AD2 itself needs none: its display and controls sit UNDER the
+    # screw-off handle sleeve. Use this for transmitters with an exposed
+    # display (e.g. ULXD2), or to clear any other exterior feature.
+    if args.window:
+        frac, ycen, ww, wh = (float(v) for v in args.window.split(","))
+        w.keepout_window(frac, ycen, ww, wh)
 
     return w
 
@@ -300,6 +354,13 @@ def main():
     ap.add_argument("--channel", default="01",
                     help="channel number for the tag ('' to omit)")
     ap.add_argument("--brand", default="FS AUDIO")
+    ap.add_argument("--logo", default="",
+                    help="path to a transparent PNG logo; replaces the text "
+                         "wordmark on both sides")
+    ap.add_argument("--window", default="",
+                    help="display keep-out 'frac,y_center_mm,w_mm,h_mm' "
+                         "(e.g. '0.5,50,30,14'); not needed for the AD2 — "
+                         "its display sits under the handle sleeve")
     ap.add_argument("--subline",
                     default="FS AUDIO & TECHNOLOGY  ·  AXIENT DIGITAL AD2  ·  470–616 MHz")
     ap.add_argument("--url", default="fsaudio.nl")
