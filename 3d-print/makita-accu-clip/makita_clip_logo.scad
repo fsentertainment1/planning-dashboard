@@ -30,6 +30,7 @@ M = [[R[0],U[0],N[0],P[0]],
 
 module logoprisma() {
     multmatrix(M)
+        rotate([0, 0, 180])   // 180: knop zit ondersteboven in het basismodel
         linear_extrude(height = 14)
             resize([logo_breedte, 0], auto = true)
                 import("logo.svg", center = true);

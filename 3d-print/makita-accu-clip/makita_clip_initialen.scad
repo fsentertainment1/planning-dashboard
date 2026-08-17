@@ -37,6 +37,7 @@ M = [[R[0],U[0],N[0],P[0]],
 
 module tekstprisma() {
     multmatrix(M)
+        rotate([0, 0, 180])   // 180: knop zit ondersteboven in het basismodel
         linear_extrude(height = 14)
             text(initialen, size = letter_size, font = font,
                  halign = "center", valign = "center",
