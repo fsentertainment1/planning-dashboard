@@ -16,6 +16,7 @@ letter_size = 7;        // hoogte van de letters in mm (max ~8)
 //                     voor een print in 2 kleuren (AMS)
 mode        = "compleet";
 hoogte      = 0.8;      // mm verhoging (of graveerdiepte)
+vul_tot     = 33.1;     // paneel opvullen tot dit niveau (rand ligt op 34.1)
 font        = "DejaVu Sans:style=Bold";
 letterafstand = 1.1;    // onderlinge letterafstand (1 = normaal)
 
@@ -35,38 +36,42 @@ M = [[R[0],U[0],N[0],P[0]],
      [R[2],U[2],N[2],P[2]],
      [0,0,0,1]];
 
-module tekstprisma() {
-    multmatrix(M)
-        rotate([0, 0, 180])   // 180: knop zit ondersteboven in het basismodel
-        linear_extrude(height = 14)
-            text(initialen, size = letter_size, font = font,
-                 halign = "center", valign = "center",
-                 spacing = letterafstand, $fn = 32);
+module tekst2d() {
+    text(initialen, size = letter_size, font = font,
+         halign = "center", valign = "center",
+         spacing = letterafstand, $fn = 32);
 }
 
-// letters die de kromming van het drukvlak volgen, 'hoogte' mm verhoogd
+// vlakke vulling van het holle paneel, tot 'vul_tot' (1 mm onder de rand)
+module paneelvulling() {
+    multmatrix(M)
+        linear_extrude(height = vul_tot - basis_N)
+            offset(r = 3.5)
+                square([23.5 - 7, 13.5 - 7], center = true);
+}
+
+// letters als vlakke plak van 'hoogte' mm boven op de vulling
 module letters() {
-    difference() {
-        intersection() {
-            translate(hoogte * N) import(basis);
-            tekstprisma();
-        }
-        import(basis);
-    }
+    multmatrix(M)
+        rotate([0, 0, 180])   // 180: knop zit ondersteboven in het basismodel
+        translate([0, 0, vul_tot - basis_N - 0.2])
+        linear_extrude(height = hoogte + 0.2)
+            tekst2d();
 }
 
 if (mode == "compleet") {
-    union() { import(basis); letters(); }
+    union() { import(basis); paneelvulling(); letters(); }
 } else if (mode == "gegraveerd") {
     difference() {
-        import(basis);
-        difference() {
-            tekstprisma();
-            translate(-hoogte * N) import(basis);
-        }
+        union() { import(basis); paneelvulling(); }
+        multmatrix(M)
+            rotate([0, 0, 180])
+            translate([0, 0, vul_tot - basis_N - hoogte])
+            linear_extrude(height = hoogte + 2)
+                tekst2d();
     }
 } else if (mode == "romp") {
-    import(basis);
+    union() { import(basis); paneelvulling(); }
 } else if (mode == "letters") {
     letters();
 }

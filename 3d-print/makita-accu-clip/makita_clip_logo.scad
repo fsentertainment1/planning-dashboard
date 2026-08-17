@@ -11,6 +11,8 @@
 mode         = "compleet";
 logo_breedte = 23;      // mm, past in het verdiepte paneel (max ~24)
 hoogte       = 0.8;     // mm verhoging
+vul_tot      = 33.1;    // paneel opvullen tot dit niveau (rand ligt op 34.1,
+                        // origineel holle paneel ligt op ~27-31)
 
 basis = "button_cc0.stl";
 
@@ -28,29 +30,28 @@ M = [[R[0],U[0],N[0],P[0]],
      [R[2],U[2],N[2],P[2]],
      [0,0,0,1]];
 
-module logoprisma() {
+// vlakke vulling van het holle paneel, tot 'vul_tot' (1 mm onder de rand)
+module paneelvulling() {
+    multmatrix(M)
+        linear_extrude(height = vul_tot - basis_N)
+            offset(r = 3.5)
+                square([23.5 - 7, 13.5 - 7], center = true);
+}
+
+// logo als vlakke plak van 'hoogte' mm boven op de vulling
+module logodeel() {
     multmatrix(M)
         rotate([0, 0, 180])   // 180: knop zit ondersteboven in het basismodel
-        linear_extrude(height = 14)
+        translate([0, 0, vul_tot - basis_N - 0.2])
+        linear_extrude(height = hoogte + 0.2)
             resize([logo_breedte, 0], auto = true)
                 import("logo.svg", center = true);
 }
 
-// logo dat de kromming van het drukvlak volgt, 'hoogte' mm verhoogd
-module logodeel() {
-    difference() {
-        intersection() {
-            translate(hoogte * N) import(basis);
-            logoprisma();
-        }
-        import(basis);
-    }
-}
-
 if (mode == "compleet") {
-    union() { import(basis); logodeel(); }
+    union() { import(basis); paneelvulling(); logodeel(); }
 } else if (mode == "romp") {
-    import(basis);
+    union() { import(basis); paneelvulling(); }
 } else if (mode == "logo") {
     logodeel();
 }
