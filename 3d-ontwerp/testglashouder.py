@@ -110,7 +110,8 @@ TAB_Z0 = SNAP_CENTER - 20.25            # wortel van de lip
 TAB_Z1 = TAB_Z0 + TAB_LEN               # vrij uiteinde
 BOSS_SPHERE_R = 5.5
 BOSS_PROUD = 3.3                        # hoogte nok boven de plugkern
-BOSS_CHAMFER = True                     # onderkant nok onder 45 graden afsnijden
+BOSS_CHAMFER = False                    # True = onderkant nok afvlakken tegen doorzakken
+BOSS_MAX_OVERHANG = 45.0                # steilste overhang die de nok mag krijgen
 
 # --- steel en printhouding ---
 PRINT_FLAT = 1.5                        # kraag wordt zo diep afgevlakt op het bed
@@ -284,7 +285,9 @@ def add_tab(body: Manifold, boss_z: float, z0: float, z1: float,
         p_e = math.sqrt(max(PLUG_R ** 2 - y_e ** 2, 0.0))
         a = math.radians(angle)
         down = (math.sin(a), -math.cos(a))   # richting naar het printbed
-        nx, ny = down[0], down[1] + 1.0      # bissectrice van omlaag en naar buiten
+        th = math.radians(BOSS_MAX_OVERHANG)
+        nx = down[0] * math.sin(th)                  # normaal van het snijvlak:
+        ny = down[1] * math.sin(th) + math.cos(th)   # th graden onder horizontaal
         ln = math.hypot(nx, ny) or 1.0
         nx, ny = nx / ln, ny / ln
         k = (p_e * down[0]) * nx + (y_e + p_e * down[1]) * ny

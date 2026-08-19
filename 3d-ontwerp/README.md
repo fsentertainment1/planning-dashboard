@@ -58,7 +58,7 @@ er na het printen af en de passing in de buis blijft ongemoeid.
 | Instelling | Waarde | Waarom |
 |---|---|---|
 | Materiaal | **PETG HF** | Taaier dan PLA en blijft veren. PLA scheurt op den duur bij de veerlip, en zakt door in een warme bus. ASA als hij echt buiten leeft. |
-| Laaghoogte | 0,20 mm | 0,16 mm als je de kliknok mooier wilt. |
+| Laaghoogte | 0,20 mm | Neem 0,12 mm als je de ronding van de kliknok zo strak mogelijk wilt. |
 | Wanden | **4** | De veerlip is 2,2 mm dik; met 4 wanden is hij massief en veert netjes. |
 | Boven / onder | 4 / 4 | |
 | Infill | 15–20 % gyroid | De plug en de hals zijn dikke stukken; meer heeft geen zin. |
@@ -87,11 +87,18 @@ support nodig:
 | Dak boven de veerlip | De holte waarin de lip veert, sluit zich | Een overbrugging van ongeveer 10 mm, aan beide kanten vastgemaakt. Daar is bruggen voor uitgevonden. |
 | Onderrand van de veerlip | Een strook van 2,4 mm die 1,3 mm boven de plugwand begint | Zakt hooguit tot op de wand eronder. Loop er één keer met een mesje langs (stap 2 hieronder) en de lip beweegt vrij. |
 
-De **kliknok** zelf is bewust vlak afgesneden onder 45 graden aan de kant die
-naar het bed wijst. Zonder die afschuining loopt hij daar op tot 62 graden en
-zou hij gaan doorzakken; nu is 45 graden de steilste hoek op de hele nok. De
-insteekhelling en de klemhelling liggen langs de as van de plug en blijven dus
-ongemoeid. Zet `BOSS_CHAMFER = False` als je liever een ronde bol hebt.
+De **kliknok** is een gave bol. Aan de kant die naar het bed wijst loopt hij
+daardoor op tot 62 graden overhang, over een plekje van ongeveer 7 mm². Print
+dat gewoon zonder support: die onderflank wordt een tikje ruw en dat haal je er
+met twee halen van een vijltje af. Support is daar juist een slecht idee, want
+hij zit vlak naast de zaagsnede van 1,6 mm rond de veerlip — support die daarin
+kruipt, lijmt de lip vast en dan veert er niets meer.
+
+Wil je die flank toch strak uit de printer hebben, zet dan
+`BOSS_CHAMFER = True`. De onderkant van de nok wordt dan afgevlakt tot maximaal
+`BOSS_MAX_OVERHANG` graden (45 geeft een duidelijk vlakje, 60 een klein vlakje
+van zo'n 7 % van de bol). Op de werking maakt het niets uit: de insteekhelling
+en de klemhelling liggen langs de as van de plug en blijven altijd rond.
 
 ### Na het printen
 
