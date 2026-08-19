@@ -39,7 +39,7 @@ def build_pole() -> Manifold:
     tube = (Manifold.cylinder(length, T.POLE_OD / 2, T.POLE_OD / 2)
             - Manifold.cylinder(length + 4.0, T.POLE_ID / 2, T.POLE_ID / 2)
             .translate([0.0, 0.0, -2.0]))
-    pole = T.stem_to_world(tube)
+    pole = T.foot_to_world(tube.translate([0.0, 0.0, T.COLLAR_LEN]))
     hole = (Manifold.cylinder(60.0, T.HOLE_D / 2, T.HOLE_D / 2)
             .rotate([0.0, 90.0, 0.0])
             .translate([-30.0, T.SHOULDER_Y - T.SNAP_CENTER, T.AXIS_Z]))
@@ -47,13 +47,12 @@ def build_pole() -> Manifold:
 
 
 def main() -> None:
-    steel = T.stem_to_world(T.build_stem_local()).trim_by_plane([0.0, 0.0, 1.0], 0.0)
     glass = T.slab(T.rrect(T.GLASS_W, T.GLASS_H, 1.0, cy=T.GLASS_H / 2 + 0.4),
                    T.BACK_LIP + 0.3, T.BACK_LIP + 0.3 + T.GLASS_T)
 
     meshes = {
-        "houder": T.build_holder(),
-        "steel": steel,
+        "boven": T.build_top(),
+        "voet": T.foot_to_world(T.build_foot()),
         "klem": T.build_clip(),
         "glas": glass,
         "stok": build_pole(),
@@ -64,36 +63,48 @@ def main() -> None:
         "clipZ": round(T.AXIS_Z, 3),
         "meshes": {k: pack(v) for k, v in meshes.items()},
         "colours": {
-            "light": {"part": [.84, .22, .17], "glass": [.74, .13, .12],
+            "light": {"part": [.84, .22, .17], "part2": [.62, .16, .13],
+                      "glass": [.74, .13, .12],
                       "pole": [.36, .43, .52], "cap": [.54, .15, .12]},
-            "dark": {"part": [.90, .30, .24], "glass": [.80, .18, .16],
+            "dark": {"part": [.90, .30, .24], "part2": [.68, .21, .17],
+                     "glass": [.80, .18, .16],
                      "pole": [.50, .57, .65], "cap": [.60, .20, .16]},
         },
         "optLabel": {"glas": "Testglas", "stok": "Teststok", "snee": "Doorsnede"},
         "optSwatch": {"glas": "glass", "stok": "pole"},
         "scenes": [
-            {"key": "houder", "label": "Houder", "layers": [
-                {"m": "houder", "c": "part"},
+            {"key": "samen", "label": "Compleet", "layers": [
+                {"m": "boven", "c": "part"},
+                {"m": "voet", "c": "part2"},
                 {"m": "glas", "c": "glass", "a": .55, "opt": "glas"},
                 {"m": "stok", "c": "pole", "a": .38, "opt": "stok"}]},
-            {"key": "steel", "label": "Kraag en plug", "layers": [
-                {"m": "steel", "c": "part"},
+            {"key": "boven", "label": "Bovenkant", "layers": [
+                {"m": "boven", "c": "part"},
+                {"m": "glas", "c": "glass", "a": .55, "opt": "glas"}]},
+            {"key": "voet", "label": "Voet", "layers": [
+                {"m": "voet", "c": "part2"},
                 {"m": "stok", "c": "pole", "a": .38, "opt": "stok"}]},
             {"key": "klem", "label": "Glasklem", "layers": [
                 {"m": "klem", "c": "part"}]},
         ],
         "specs": {
-            "houder": [
-                ["Buitenmaat", "171 × 310 × 39", "mm"],
+            "samen": [
+                ["Twee delen", "gelijmd", "bovenkant + voet"],
+                ["Totale lengte", f"{T.FRAME_TOP - (T.SHOULDER_Y - T.PLUG_LEN):.0f}", "mm"],
                 ["Vrij zicht", f"{2*T.WINDOW_X:.0f} × {win_h:.0f}", "mm raamopening"],
                 ["Glassleuf", f"{T.SLOT_T:.1f}", "mm voor glas van 3"],
-                ["Printen", "plat, support uit", "PETG, ca. 100 g"],
             ],
-            "steel": [
+            "voet": [
                 ["Randje over de stok", f"{T.SKIRT_DEPTH:.0f}", f"mm, boring Ø{T.SKIRT_ID:.1f}"],
                 ["Plug in de stok", f"{T.PLUG_LEN:.1f}", f"mm, Ø{2*T.RIB_R_OUT:.2f} over ribben"],
                 ["Kliknok", f"hart {T.SNAP_CENTER:.2f}", f"mm vanaf de kop, gat Ø{T.HOLE_D}"],
-                ["Kraag", f"Ø{T.SKIRT_OD:.1f}", "mm buitenmaat"],
+                ["Print", "rechtop, plug omhoog", "geen support"],
+            ],
+            "boven": [
+                ["Print", "plat op de rug", "geen support"],
+                ["Buitenmaat", "171 × 232 × 12", "mm"],
+                ["Tong", f"{T.TONGUE_W:.0f} × {T.FRAME_T:.1f} × {T.TONGUE_LEN:.0f}", "mm, klikt vast"],
+                ["Vrij zicht", f"{2*T.WINDOW_X:.0f} × {win_h:.0f}", "mm raamopening"],
             ],
             "klem": [
                 ["Lengte", f"{T.SLOT_W - 0.4:.0f}", "mm"],

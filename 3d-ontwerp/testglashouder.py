@@ -1,8 +1,12 @@
 """
 Testglashouder voor fire-beam testglas op een Solo teststok.
 
-Het glas (150 x 150 x 3 mm) schuift van bovenaf in een lijst. De steel eindigt in
-een kraag: een kort randje valt OVER de stok, de lange plug gaat IN de stok en
+Het glas (150 x 150 x 3 mm) schuift van bovenaf in een lijst. Het geheel bestaat
+uit twee geprinte delen: de BOVENKANT (lijst met tong) print plat, de VOET
+(kraag, randje en plug) print rechtop zodat de plug echt rond wordt. De tong
+klikt in de voet en wordt vastgelijmd.
+
+Een kort randje van de voet valt OVER de stok, de lange plug gaat IN de stok en
 klikt met een geprinte veerlip in het gat van de stok.
 
 Alles in millimeters. Wereld-assenstelsel:
@@ -50,7 +54,7 @@ SNAP_CENTER = HOLE_FROM_TIP + (HOLE_D / 2 if HOLE_MEASURED_TO == "edge" else 0.0
 # --------------------------------------------------------------------------
 
 FIT_PLUG = 1.0          # speling op diameter van de plugkern (ribben doen het werk)
-FIT_RIB = 0.25          # speling op diameter over de centreerribben
+FIT_RIB = -0.15         # negatief = de ribben klemmen licht in de buis
 FIT_SKIRT = 0.8         # speling op diameter van het randje over de stok
 GLASS_FIT_XY = 1.0      # totale speling op breedte/hoogte van de glassleuf
 GLASS_FIT_T = 0.6       # extra speling op de dikte van de glassleuf
@@ -91,13 +95,15 @@ SKIRT_ID = POLE_OD + FIT_SKIRT          # randje valt over de stok
 SKIRT_WALL = 3.2
 SKIRT_OD = SKIRT_ID + 2 * SKIRT_WALL
 SKIRT_DEPTH = 12.0                      # hoe ver het randje over de stok valt
-COLLAR_SOLID = 8.0                      # massief deel boven de schouder
 
 PLUG_R = (POLE_ID - FIT_PLUG) / 2       # kern van de plug
 RIB_R_OUT = (POLE_ID - FIT_RIB) / 2     # buitenmaat over de centreerribben
-RIB_ANGLES = (0.0, 45.0, 135.0, 225.0, 315.0)  # vrij van veerlip (90) en kiel (180)
+RIB_ANGLES = (0.0, 45.0, 135.0, 180.0, 225.0, 315.0)  # vrij van de veerlip op 90
 RIB_ROUND = 2.0
-PLUG_LEN = SNAP_CENTER + 12.0
+# Twee korte banden in plaats van ribben over de volle lengte: dat centreert
+# net zo goed maar scheelt tweederde van de wrijving bij het inschuiven.
+RIB_BANDS = ((6.0, 26.0), (-32.0, -12.0))   # negatief = gerekend vanaf de punt
+PLUG_LEN = SNAP_CENTER + 16.0     # ruimte zodat de veerholte binnen het rechte deel blijft
 PLUG_TIP_CHAMFER = 3.0
 
 # --- veerlip met kliknok ---
@@ -113,14 +119,28 @@ BOSS_PROUD = 3.3                        # hoogte nok boven de plugkern
 BOSS_CHAMFER = False                    # True = onderkant nok afvlakken tegen doorzakken
 BOSS_MAX_OVERHANG = 45.0                # steilste overhang die de nok mag krijgen
 
-# --- steel en printhouding ---
-PRINT_FLAT = 1.5                        # kraag wordt zo diep afgevlakt op het bed
-AXIS_Z = SKIRT_OD / 2 - PRINT_FLAT      # hartlijn van de stok boven het bed
-SHOULDER_Y = -56.0                      # vlak waar de kop van de stok tegenaan komt
+# --- koppeling tussen bovenkant en voet ---
+# De voet wordt apart en rechtop geprint, zodat de plug echt rond wordt. De
+# bovenkant heeft een tong die in de holte van de voet klikt en gelijmd wordt.
+TONGUE_W = 24.0                         # breedte van de tong
+TONGUE_LEN = 20.0                       # hoe diep de tong in de voet steekt
+TONGUE_LEAD = 1.5                       # afschuining onder 45 gr aan de punt
+TONGUE_FIT = 0.20                       # speling per zijde, ruimte voor lijm
+ARM_T = 2.4                             # dikte van een veerarm
+ARM_SLOT = 1.6                          # zaagsnede die de armen vrij maakt
+ARM_LEN = 16.0                          # lengte van de veerarmen
+BARB_R = 3.0                            # bolletje op de arm
+BARB_PROUD = 0.8                        # hoeveel het uitsteekt
+BARB_POS = 14.0                         # afstand koppelvlak -> hart bolletje
+BARB_DIMPLE = BARB_PROUD + 0.2          # diepte van het kuiltje in de voet
 
-KEEL = True                             # afbreekbare printsteun onder de plug
-KEEL_W = 1.0
-KEEL_BITE = 0.4                         # hoe diep de kiel in de plug grijpt
+SOCKET_DEPTH = TONGUE_LEN + 1.0
+COLLAR_LEN = SOCKET_DEPTH + 6.0         # koppelvlak tot schouder
+
+# --- steel en printhouding ---
+AXIS_Z = FRAME_T / 2                    # hartlijn stok ligt in het vlak van de lijst
+JOINT_Y = FRAME_BOT                     # koppelvlak: onderkant lijst = bovenkant voet
+SHOULDER_Y = JOINT_Y - COLLAR_LEN       # vlak waar de kop van de stok tegenaan komt
 
 # --- naamplaatje ---
 PLATE_W, PLATE_H, PLATE_DEPTH = 100.0, 16.0, 0.6
@@ -215,18 +235,20 @@ def build_frame() -> Manifold:
 
 
 # --------------------------------------------------------------------------
-# 6. KRAAG, RANDJE EN PLUG  (lokaal: plug langs +Z, veerlip aan +Y)
+# 6. DE VOET  (lokaal: plug langs +Z vanaf het koppelvlak, veerlip aan +Y)
 # --------------------------------------------------------------------------
 
-def build_stem_local(with_tab: bool = True) -> Manifold:
-    collar = Manifold.cylinder(COLLAR_SOLID + SKIRT_DEPTH, SKIRT_OD / 2, SKIRT_OD / 2) \
-        .translate([0.0, 0.0, -COLLAR_SOLID])
+def build_foot(with_tab: bool = True) -> Manifold:
+    """Kraag, randje en plug. Z=0 is het koppelvlak en ligt op het printbed;
+    de plug wijst omhoog. In deze stand is er geen enkele overhang."""
+    z0 = COLLAR_LEN                     # hoogte van de schouder
+    collar = Manifold.cylinder(z0 + SKIRT_DEPTH, SKIRT_OD / 2, SKIRT_OD / 2)
 
     plug_len = PLUG_LEN
     straight = plug_len - PLUG_TIP_CHAMFER
-    plug = Manifold.cylinder(straight, PLUG_R, PLUG_R)
+    plug = Manifold.cylinder(straight, PLUG_R, PLUG_R).translate([0.0, 0.0, z0])
     plug += Manifold.cylinder(PLUG_TIP_CHAMFER, PLUG_R, PLUG_R - PLUG_TIP_CHAMFER) \
-        .translate([0.0, 0.0, straight])
+        .translate([0.0, 0.0, z0 + straight])
 
     body = collar + plug
 
@@ -234,27 +256,30 @@ def build_stem_local(with_tab: bool = True) -> Manifold:
     rib_d = RIB_R_OUT - RIB_ROUND
     for ang in RIB_ANGLES:
         a = math.radians(ang)
-        body += capsule(rib_d * math.sin(a), rib_d * math.cos(a),
-                        6.0, plug_len - 8.0, RIB_ROUND)
+        for lo, hi in RIB_BANDS:
+            za = z0 + (lo if lo >= 0 else plug_len + lo)
+            zb = z0 + (hi if hi >= 0 else plug_len + hi)
+            body += capsule(rib_d * math.sin(a), rib_d * math.cos(a),
+                            za, zb, RIB_ROUND)
 
     # Randje dat over de stok valt: alleen de ringvormige gleuf waar de
     # wand van de stok in schuift, zodat de plug blijft staan.
-    body -= (Manifold.cylinder(SKIRT_DEPTH, SKIRT_ID / 2, SKIRT_ID / 2)
-             - Manifold.cylinder(SKIRT_DEPTH + 2.0, RIB_R_OUT, RIB_R_OUT)
-             .translate([0.0, 0.0, -1.0]))
-    body -= (Manifold.cylinder(2.0, SKIRT_ID / 2, SKIRT_ID / 2 + 1.2)
-             .translate([0.0, 0.0, SKIRT_DEPTH - 2.0])
-             - Manifold.cylinder(SKIRT_DEPTH + 2.0, RIB_R_OUT, RIB_R_OUT)
-             .translate([0.0, 0.0, -1.0]))
+    bore = Manifold.cylinder(SKIRT_DEPTH + 2.0, RIB_R_OUT, RIB_R_OUT) \
+        .translate([0.0, 0.0, z0 - 1.0])
+    body -= (Manifold.cylinder(SKIRT_DEPTH + 1.0, SKIRT_ID / 2, SKIRT_ID / 2)
+             .translate([0.0, 0.0, z0]) - bore)
+    body -= (Manifold.cylinder(2.0, SKIRT_ID / 2 + 1.2, SKIRT_ID / 2)
+             .translate([0.0, 0.0, z0 + SKIRT_DEPTH - 2.0]) - bore)
 
     # Buitenrand van het randje licht gebroken.
     body -= (Manifold.cylinder(1.2, SKIRT_OD / 2 + 2.0, SKIRT_OD / 2 + 2.0)
              - Manifold.cylinder(1.2, SKIRT_OD / 2 - 1.2, SKIRT_OD / 2)) \
-        .translate([0.0, 0.0, SKIRT_DEPTH - 1.2])
+        .translate([0.0, 0.0, z0 + SKIRT_DEPTH - 1.2])
 
     if with_tab:
-        body = add_tab(body, SNAP_CENTER, TAB_Z0, TAB_Z1, angle=TAB_ANGLE)
-    return body
+        body = add_tab(body, z0 + SNAP_CENTER, z0 + TAB_Z0, z0 + TAB_Z1,
+                       angle=TAB_ANGLE)
+    return body - build_socket()
 
 
 def add_tab(body: Manifold, boss_z: float, z0: float, z1: float,
@@ -298,40 +323,75 @@ def add_tab(body: Manifold, boss_z: float, z0: float, z1: float,
     return (body - tool) + boss
 
 
-def stem_to_world(m: Manifold) -> Manifold:
-    return m.rotate([90.0, 0.0, 0.0]).translate([0.0, SHOULDER_Y, AXIS_Z])
+def foot_to_world(m: Manifold) -> Manifold:
+    """Zet de voet vanuit de printstand op zijn plek onder de lijst."""
+    return m.rotate([90.0, 0.0, 0.0]).translate([0.0, JOINT_Y, AXIS_Z])
 
 
 # --------------------------------------------------------------------------
 # 7. STEEL EN SAMENSTELLING
 # --------------------------------------------------------------------------
 
+def build_socket() -> Manifold:
+    """Holte in de voet waar de tong van de bovenkant in valt."""
+    hw = TONGUE_W / 2 + TONGUE_FIT
+    ht = FRAME_T / 2 + TONGUE_FIT
+    sock = box(-hw, hw, -ht, ht, -1.0, SOCKET_DEPTH)
+    # Kuiltjes waar de bolletjes van de veerarmen in klikken.
+    for sx in (-1.0, 1.0):
+        sock += Manifold.sphere(BARB_R + 0.4).translate(
+            [sx * (hw + BARB_R + 0.4 - BARB_DIMPLE), 0.0, BARB_POS])
+    return sock
+
+
+# --------------------------------------------------------------------------
+# 7. DE BOVENKANT: LIJST, HALS EN TONG
+# --------------------------------------------------------------------------
+
+def build_tongue() -> Manifold:
+    """Tong met twee veerarmen. Lokaal: lengte langs +Z vanaf het koppelvlak."""
+    hw, ht = TONGUE_W / 2, FRAME_T / 2
+    cs = rrect(TONGUE_W, FRAME_T, 3.0)
+    body = slab(cs, 0.0, TONGUE_LEN - TONGUE_LEAD)
+    body += Manifold.extrude(
+        cs, TONGUE_LEAD, 0, 0.0,
+        (1 - 2 * TONGUE_LEAD / TONGUE_W, 1 - 2 * TONGUE_LEAD / FRAME_T)) \
+        .translate([0.0, 0.0, TONGUE_LEN - TONGUE_LEAD])
+
+    # Zaagsneden die de twee veerarmen vrij maken.
+    inner = hw - ARM_T
+    for sx in (-1.0, 1.0):
+        lo, hi = sorted((sx * (inner - ARM_SLOT), sx * inner))
+        body -= box(lo, hi, -ht - 1.0, ht + 1.0,
+                    TONGUE_LEN - ARM_LEN, TONGUE_LEN + 2.0)
+
+    # Bolletjes die in de kuiltjes van de voet klikken.
+    for sx in (-1.0, 1.0):
+        bump = Manifold.sphere(BARB_R).translate(
+            [sx * (hw + BARB_PROUD - BARB_R), 0.0, BARB_POS])
+        body += bump.trim_by_plane([sx, 0.0, 0.0], hw - 1.2)
+    return body
+
+
+def tongue_to_world(m: Manifold) -> Manifold:
+    return m.rotate([90.0, 0.0, 0.0]).translate([0.0, JOINT_Y, AXIS_Z])
+
+
 def build_neck() -> Manifold:
-    top = box(-48.0, 48.0, -34.0, -30.0, 0.0, FRAME_T)
-    collar = stem_to_world(
-        Manifold.cylinder(COLLAR_SOLID, SKIRT_OD / 2, SKIRT_OD / 2)
-        .translate([0.0, 0.0, -COLLAR_SOLID]))
-    return Manifold.batch_hull([top, collar])
+    """Overgang van de brede onderbalk naar het koppelvlak van de voet."""
+    wide = box(-52.0, 52.0, -30.0, -26.0, 0.0, FRAME_T)
+    face = box(-18.5, 18.5, JOINT_Y, JOINT_Y + 3.0, 0.0, FRAME_T)
+    return Manifold.batch_hull([wide, face]).trim_by_plane([0.0, 1.0, 0.0], JOINT_Y)
 
 
-def build_keel() -> Manifold:
-    """Dunne wand onder de plug die op het bed begint; na het printen afknippen.
-
-    Zonder deze kiel zweeft de plug boven het bed omdat de kraag dikker is.
-    Hij zit op 180 graden, waar geen centreerrib loopt, dus de passing in de
-    buis blijft ongemoeid."""
-    top = AXIS_Z - PLUG_R + KEEL_BITE
-    return box(-KEEL_W / 2, KEEL_W / 2,
-               SHOULDER_Y - PLUG_LEN + 3.0, SHOULDER_Y - SKIRT_DEPTH - 1.0,
-               0.0, top)
+def build_top() -> Manifold:
+    """Deel 1: de lijst met hals en tong. Print plat op de achterkant."""
+    return build_frame() + build_neck() + tongue_to_world(build_tongue())
 
 
 def build_holder() -> Manifold:
-    part = build_frame() + build_neck() + stem_to_world(build_stem_local())
-    if KEEL:
-        part += build_keel()
-    # Vlak afsnijden op bedhoogte: geeft een printvlak onder de kraag.
-    return part.trim_by_plane([0.0, 0.0, 1.0], 0.0)
+    """Beide delen in elkaar, voor tekeningen en de 3D-viewer."""
+    return build_top() + foot_to_world(build_foot())
 
 
 def build_clip() -> Manifold:
@@ -348,12 +408,6 @@ def build_clip() -> Manifold:
     return bar
 
 
-def build_gauge() -> Manifold:
-    """Pasmal: alleen kraag + plug, om passing en klikpositie te testen."""
-    stem = build_stem_local()
-    return stem.translate([0.0, 0.0, COLLAR_SOLID])
-
-
 # --------------------------------------------------------------------------
 # 8. EXPORT
 # --------------------------------------------------------------------------
@@ -361,9 +415,9 @@ def build_gauge() -> Manifold:
 def main() -> None:
     os.makedirs(STL_DIR, exist_ok=True)
     items = {
-        "testglashouder": build_holder(),
+        "bovenkant": build_top(),
+        "voet": build_foot(),
         "glasklem": build_clip(),
-        "pasmal-stok": build_gauge(),
     }
     for name, m in items.items():
         bb = m.bounding_box()
@@ -372,6 +426,8 @@ def main() -> None:
         print(f"{name:16s} {size[0]:7.1f} x {size[1]:7.1f} x {size[2]:7.1f} mm"
               f"   {m.volume() / 1000:8.1f} cm3   {m.num_tri():7d} tri  genus={m.genus()}")
     print(f"\nklikgat hart op {SNAP_CENTER:.2f} mm vanaf de schouder")
+    print(f"tong {TONGUE_W} x {FRAME_T} x {TONGUE_LEN} mm in een holte van "
+          f"{TONGUE_W + 2*TONGUE_FIT} x {FRAME_T + 2*TONGUE_FIT} mm")
 
 
 if __name__ == "__main__":

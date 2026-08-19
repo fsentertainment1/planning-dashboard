@@ -110,17 +110,18 @@ def main() -> None:
     render(holder + clip, os.path.join(OUT, "02-voorkant-met-steel.png"), azim=70, elev=-55)
     render(holder + clip + glass, os.path.join(OUT, "03-met-glas.png"), azim=255, elev=72)
 
-    stem = T.stem_to_world(T.build_stem_local())
-    neck = T.build_neck() + stem
-    render(neck.trim_by_plane([0.0, 0.0, 1.0], 0.0),
-           os.path.join(OUT, "04-kraag-en-plug.png"), azim=140, elev=-24, size=(1700, 760))
+    foot = T.foot_to_world(T.build_foot())
+    render(foot, os.path.join(OUT, "04-voet.png"), azim=140, elev=-24, size=(1700, 820))
 
     # Detail van de veerlip met kliknok.
-    tab = stem ^ T.box(-40, 40, T.SHOULDER_Y - T.PLUG_LEN - 3, T.SHOULDER_Y - 38, 0, 60)
+    tab = foot ^ T.box(-40, 40, T.SHOULDER_Y - T.PLUG_LEN - 3, T.SHOULDER_Y - 38, -10, 60)
     render(tab, os.path.join(OUT, "06-veerlip.png"), azim=25, elev=18, size=(1500, 850))
 
-    render(holder, os.path.join(OUT, "05-bedzijde.png"), azim=110, elev=70,
-           size=(1500, 1000))
+    # De koppeling: tong van de bovenkant en de holte in de voet.
+    win = T.box(-30, 30, T.JOINT_Y - T.COLLAR_LEN - 2, T.JOINT_Y + 26, -30, 30)
+    joint = (T.build_top() + foot) ^ win
+    render(joint.trim_by_plane([0.0, 0.0, -1.0], -T.AXIS_Z),
+           os.path.join(OUT, "05-koppeling.png"), azim=200, elev=-18, size=(1500, 900))
 
 
 if __name__ == "__main__":

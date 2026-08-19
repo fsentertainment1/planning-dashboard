@@ -1,8 +1,17 @@
 # Testglashouder voor fire-beam testglas op een Solo teststok
 
-Houder voor een rood testglas van 150 × 150 × 3 mm, met een steel die op de
-teststok past: een kort randje valt **over** de stok, de lange plug gaat **in**
-de stok en een geprinte veerlip klikt in het gat Ø12,7 van de stok.
+Houder voor een rood testglas van 150 × 150 × 3 mm. Een kort randje valt **over**
+de stok, de lange plug gaat **in** de stok en een geprinte veerlip klikt in het
+gat Ø12,7 van de stok.
+
+Het geheel bestaat uit **twee geprinte delen**, zodat elk deel in zijn eigen
+beste stand op het bed kan liggen:
+
+- de **bovenkant** (lijst met hals en tong) print plat op zijn rug;
+- de **voet** (kraag, randje en plug) print rechtop met de plug omhoog, zodat de
+  plug echt rond wordt in plaats van vervormd.
+
+De tong van de bovenkant klikt in de holte van de voet en wordt vastgelijmd.
 
 ![doorsnede](renders/maatschets.png)
 
@@ -10,16 +19,16 @@ de stok en een geprinte veerlip klikt in het gat Ø12,7 van de stok.
 
 | Bestand | Wat het is |
 |---|---|
-| `stl/pasmal-stok.stl` | **Print dit eerst.** Alleen de kraag + plug, om de passing en de klikpositie te testen. |
-| `stl/testglashouder.stl` | De houder zelf, één stuk. |
+| `stl/voet.stl` | **Print dit eerst.** Kraag, randje en plug. Meteen ook je pasmal: hiermee test je de passing op de stok voordat je de grote print start. |
+| `stl/bovenkant.stl` | De lijst met de tong. |
 | `stl/glasklem.stl` | Latje dat na het glas in de sleuf schuift en het glas op zijn plek houdt. |
 | `testglashouder.py` | Het model. Alle maten staan bovenin en zijn aanpasbaar. |
-| `maatschets.py`, `render.py` | Maken de tekening en de plaatjes opnieuw. |
+| `maatschets.py`, `render.py`, `build_viewer.py` | Maken de tekening, de plaatjes en de 3D-viewer opnieuw. |
 
 Opnieuw genereren na een wijziging:
 
 ```bash
-python3 testglashouder.py && python3 maatschets.py && python3 render.py
+python3 testglashouder.py && python3 maatschets.py && python3 render.py && python3 build_viewer.py
 ```
 
 ## Maten waar het ontwerp op gebouwd is
@@ -37,86 +46,100 @@ Dit zijn jouw metingen. Ze staan bovenin `testglashouder.py`.
 *dichtstbijzijnde rand* van het gat, want zo staat de schuifmaat op je foto.
 Het hart van het gat komt dan op 63,9 + 12,7/2 = **70,25 mm**, en daar zit de
 kliknok. Was de 63,9 mm tot het *hart* van het gat gemeten, zet dan bovenin het
-script `HOLE_MEASURED_TO = "center"` en genereer opnieuw. De pasmal is er juist
-om dit in een half uurtje uit te sluiten.
+script `HOLE_MEASURED_TO = "center"` en genereer opnieuw. Door de voet eerst te
+printen kost het je anderhalf uur in plaats van een hele dag om daarachter te
+komen.
+
+## De passing van de plug
+
+De plug klemt licht: over de centreerribben meet hij Ø28,95 in een buis van
+Ø28,80, dus **0,15 mm klemming op de diameter**. De ribben zijn afgerond en van
+PETG, die vervormen dat laatste stukje netjes weg.
+
+De ribben zitten niet over de volle lengte maar in **twee korte banden** van
+20 mm, vlak achter de schouder en vlak voor de punt. Dat centreert net zo goed
+als een rib over de hele lengte, maar je hoeft maar 40 mm te laten schuren in
+plaats van 72 — anders wordt zo'n plug van 86 mm veel te stroef om erin te
+duwen.
+
+Gaat hij toch te zwaar: schuur de zes ribben licht af, dat zijn kleine richels
+en je bent er in een minuut vanaf. Zit hij te los: zet `FIT_RIB` nog 0,1 lager
+en print de voet opnieuw.
 
 ## Printen
 
-De houder is zo ontworpen dat hij **plat op zijn rug** print, met de vlakke
-achterkant van de lijst op het bed. In die stand loopt de belasting van de
-steel evenwijdig aan de lagen, wat veruit het sterkst is, en zijn er geen
-overhangen boven de 45°.
+### De voet — rechtop, plug omhoog
 
-Om support helemaal te vermijden zit er één ontwerptruc in: onder de plug loopt
-een dunne **afbreekkiel** van 1 mm dik. Zonder die kiel zou de plug 5 mm boven
-het bed zweven, omdat de kraag dikker is dan de plug. De kiel zit op de
-onderkant van de plug, precies daar waar géén centreerrib loopt — je knipt hem
-er na het printen af en de passing in de buis blijft ongemoeid.
+Zet hem neer op het platte koppelvlak (de kant met de holte). In deze stand
+loopt de plug als een gewone staande cilinder omhoog: perfect rond, geen enkele
+overhang op de buitenkant, en de ringvormige gleuf van het randje wijst omhoog
+en heeft dus ook geen support nodig.
+
+Er zitten maar twee overhangen in, allebei ingesloten en aan alle kanten
+vastgemaakt: het plafond van de koppelholte (11,6 mm overbrugging) en het
+plafond van de veerholte binnenin de plug (13,7 mm). Dat zijn nette bruggen,
+daar hoeft geen support in.
+
+De **kliknok** is een gave bol. Aan de kant die naar het bed wijst loopt hij op
+tot 62 graden overhang, over een plekje van ongeveer 7 mm². Ook dat zonder
+support printen: die flank wordt een tikje ruw en dat haal je er met twee halen
+van een vijltje af. Support is daar juist een slecht idee, want hij zit vlak
+naast de zaagsnede van 1,6 mm rond de veerlip — support die daarin kruipt lijmt
+de lip vast en dan veert er niets meer. Wil je die flank toch strak uit de
+printer, zet dan `BOSS_CHAMFER = True` (zie onderaan).
+
+### De bovenkant — plat op zijn rug
+
+Met de vlakke achterkant van de lijst op het bed. Zo loopt de belasting van de
+steel evenwijdig aan de lagen, wat veruit het sterkst is. De voorlip boven de
+glassleuf is onder 45 graden afgeschuind, dus ook hier geen support.
+
+Ik heb dit laag voor laag nagerekend: over 57 lagen zweeft er in totaal 43 mm²,
+verdeeld over zes lagen, en het breedste plekje is 2,3 mm. Dat is niets.
 
 ### Instellingen (Bambu Studio, H2S, 0.4 nozzle)
 
 | Instelling | Waarde | Waarom |
 |---|---|---|
-| Materiaal | **PETG HF** | Taaier dan PLA en blijft veren. PLA scheurt op den duur bij de veerlip, en zakt door in een warme bus. ASA als hij echt buiten leeft. |
-| Laaghoogte | 0,20 mm | Neem 0,12 mm als je de ronding van de kliknok zo strak mogelijk wilt. |
-| Wanden | **4** | De veerlip is 2,2 mm dik; met 4 wanden is hij massief en veert netjes. |
+| Materiaal | **PETG HF** | Taaier dan PLA en blijft veren. PLA scheurt op den duur bij de veerlip en bij de veerarmen van de tong, en zakt door in een warme bus. |
+| Laaghoogte | 0,20 mm | Neem 0,12 mm voor de voet als je de ronding van de kliknok zo strak mogelijk wilt. |
+| Wanden | **4** | De veerlip is 2,2 mm dik, de veerarmen 2,4 mm; met 4 wanden zijn ze massief. |
 | Boven / onder | 4 / 4 | |
-| Infill | 15–20 % gyroid | De plug en de hals zijn dikke stukken; meer heeft geen zin. |
-| **Support** | **uit** | Niet nodig dankzij de kiel. |
-| Brim | uit | Het contactvlak is al ruim 40 cm². |
-| Elephant foot | 0,15 mm (standaard) | Belangrijk: de achterkant en het kraagvlakje liggen allebei op het bed. |
-| Naad | Aligned / achter | Zo komt de naad niet op een centreerrib. |
+| Infill | 15–20 % gyroid | De plug en de kraag zijn dikke stukken; meer heeft geen zin. |
+| **Support** | **uit** | Bij beide delen niet nodig. |
+| Brim | uit bij de bovenkant, **aan bij de voet** | De voet is 113 mm hoog op een voetje van Ø40; een brim houdt hem netjes staan. |
+| Elephant foot | 0,15 mm (standaard) | Belangrijk voor het koppelvlak van de voet, dat moet vlak blijven. |
 
-Leg de houder **diagonaal of over de lengte van het bed**: hij is 310 × 171 mm,
-dus op de 350 × 320 mm van de H2S past hij ruim. Reken op ruwweg 90–120 g PETG
-en 7–10 uur; Bambu Studio geeft je het echte getal.
-
-De pasmal en de glasklem print je gewoon apart. De pasmal zet je rechtop, op het
-platte vlak van de kraag, met de plug omhoog — dan is er ook daar geen support
-nodig. De glasklem legt plat.
-
-### Waar zitten de overhangen echt
-
-Ik heb het printen laag voor laag nagerekend in plaats van het te schatten. Van
-de 192 lagen zijn er drie plekken die aandacht verdienen, en geen daarvan heeft
-support nodig:
-
-| Plek | Wat het is | Waarom het goed gaat |
-|---|---|---|
-| Onderkant van de kraag en de plug | De ronding loopt vanaf het bed snel naar buiten | Klassiek liggend rondje; het eerste millimetertje wordt wat ruw. Precies daar loopt géén centreerrib, dus de passing merkt er niets van. |
-| Dak boven de veerlip | De holte waarin de lip veert, sluit zich | Een overbrugging van ongeveer 10 mm, aan beide kanten vastgemaakt. Daar is bruggen voor uitgevonden. |
-| Onderrand van de veerlip | Een strook van 2,4 mm die 1,3 mm boven de plugwand begint | Zakt hooguit tot op de wand eronder. Loop er één keer met een mesje langs (stap 2 hieronder) en de lip beweegt vrij. |
-
-De **kliknok** is een gave bol. Aan de kant die naar het bed wijst loopt hij
-daardoor op tot 62 graden overhang, over een plekje van ongeveer 7 mm². Print
-dat gewoon zonder support: die onderflank wordt een tikje ruw en dat haal je er
-met twee halen van een vijltje af. Support is daar juist een slecht idee, want
-hij zit vlak naast de zaagsnede van 1,6 mm rond de veerlip — support die daarin
-kruipt, lijmt de lip vast en dan veert er niets meer.
-
-Wil je die flank toch strak uit de printer hebben, zet dan
-`BOSS_CHAMFER = True`. De onderkant van de nok wordt dan afgevlakt tot maximaal
-`BOSS_MAX_OVERHANG` graden (45 geeft een duidelijk vlakje, 60 een klein vlakje
-van zo'n 7 % van de bol). Op de werking maakt het niets uit: de insteekhelling
-en de klemhelling liggen langs de as van de plug en blijven altijd rond.
+Bovenkant: 171 × 232 mm, past ruim op de 350 × 320 mm van de H2S. Voet: Ø40 ×
+113 mm. Reken samen op ruwweg 90–120 g PETG; Bambu Studio geeft je het echte
+getal.
 
 ### Na het printen
 
-1. Knip de kiel onder de plug eraf met een zijkniptang en schaaf de restjes weg
-   met een mesje. Er mag niets meer uitsteken.
-2. Loop met een mesje één keer langs de zaagsnede rond de veerlip, zodat hij
-   echt vrij beweegt. Druk hem een paar keer in — hij moet soepel terugveren.
-3. Ontbraam de mond van het randje en de punt van de plug.
+1. Loop met een mesje één keer langs de zaagsnede rond de veerlip in de plug,
+   zodat hij echt vrij beweegt. Druk hem een paar keer in — hij moet soepel
+   terugveren. Doe hetzelfde bij de twee veerarmen van de tong.
+2. Ontbraam de mond van het randje en de punt van de plug.
+3. Vijl de onderflank van de kliknok glad als daar een braampje zit.
 
-## Volgorde van in elkaar zetten
+## In elkaar zetten
 
-1. Schuif het testglas van bovenaf tussen de twee oren in de sleuf, tot het op
+1. **Pas eerst zonder lijm.** Duw de voet op de stok tot de kop tegen de
+   schouder komt; de kliknok moet hoorbaar in het gat klikken en er 0,8 mm
+   buiten uitsteken. Klopt dat niet, pas dan de maten aan voordat je verder
+   gaat. Losmaken doe je door de nok in te drukken.
+2. **Klik de bovenkant in de voet.** De tong gaat 20 mm de holte in; de twee
+   bolletjes op de veerarmen klikken in de kuiltjes. Controleer of de lijst
+   haaks staat.
+3. **Lijmen.** Trek hem er nog één keer af, breng lijm aan op de zijkanten van
+   de tong en druk hem terug tot hij klikt. Voor PETG werkt **2-componenten
+   epoxy** het beste; secondelijm kan ook maar is brosser. Er zit 0,2 mm
+   speling rondom, precies bedoeld als lijmspleet. Laat uitharden met de lijst
+   plat op tafel.
+4. Schuif het testglas van bovenaf tussen de twee oren in de sleuf, tot het op
    de onderbalk rust.
-2. Schuif de glasklem er daarachteraan in, tot de nokjes in de kuiltjes klikken.
+5. Schuif de glasklem er daarachteraan in, tot de nokjes in de kuiltjes klikken.
    Aan het duimgreepje trek je hem er weer uit als het glas vervangen moet.
-3. Duw de plug in de stok tot de kop van de stok tegen de schouder komt. De
-   kliknok klikt hoorbaar in het gat en steekt er 0,8 mm buiten uit.
-4. Losmaken: nok indrukken met een duim of een pen en de houder eraf trekken.
 
 ## Als de passing niet klopt
 
@@ -125,14 +148,17 @@ opnieuw.
 
 | Wat je merkt | Wat je aanpast |
 |---|---|
-| Plug gaat te stroef in de buis | `FIT_RIB` groter (bijv. 0,4) |
-| Plug wiebelt in de buis | `FIT_RIB` kleiner (bijv. 0,15) |
+| Plug gaat te stroef in de buis | `FIT_RIB` hoger (bijv. 0,0 of 0,15) |
+| Plug wiebelt in de buis | `FIT_RIB` lager (bijv. −0,3) |
 | Randje klemt op de stok | `FIT_SKIRT` groter |
 | Kliknok valt naast het gat | `HOLE_MEASURED_TO` omzetten, of `HOLE_FROM_TIP` corrigeren |
 | Kliknok veert te zwaar | `TAB_T` kleiner (bijv. 1,9) of `TAB_LEN` groter |
 | Veerlip zit vast aan de plug | Mesje door de zaagsnede halen; zie hierboven |
+| Tong past te strak of te los | `TONGUE_FIT` |
+| Tong klikt niet vast | `BARB_PROUD` groter (bijv. 1,0) |
 | Glas zit te klem of rammelt | `GLASS_FIT_XY` en `GLASS_FIT_T` |
 | Ander glasformaat | `GLASS_W`, `GLASS_H`, `GLASS_T` |
+| Onderflank kliknok te ruw | `BOSS_CHAMFER = True`, hoek via `BOSS_MAX_OVERHANG` |
 
 ## Eigen opdruk
 
