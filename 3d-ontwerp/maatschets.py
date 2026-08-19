@@ -13,8 +13,8 @@ import testglashouder as T
 
 W, H = 1420.0, 940.0
 CX = 585.0                     # hartlijn van de stok op het doek
-SCALE = 4.1                    # px per mm
-TOP_Y = T.SHOULDER_Y + 26.0    # bovenrand van de tekening (in model-mm)
+SCALE = 3.6                    # px per mm
+TOP_Y = T.JOINT_Y + 6.0        # bovenrand van de tekening (in model-mm)
 TOP_PX = 150.0
 
 LEFT_TEXT = 415.0
@@ -72,7 +72,11 @@ def dim_h(y: float, xa: float, xb: float, text: str, dy: float) -> str:
 
 
 def main() -> None:
-    section = T.build_holder().slice(T.AXIS_Z)
+    # Alleen het gebied rond de koppeling en de plug tekenen; de lijst zelf
+    # valt buiten beeld.
+    window = T.box(-52.0, 52.0, T.SHOULDER_Y - T.PLUG_LEN - 14.0, TOP_Y,
+                   -60.0, 60.0)
+    section = (T.build_holder() ^ window).slice(T.AXIS_Z)
 
     top = T.SHOULDER_Y                       # schouder = kop van de stok
     tip = top - T.PLUG_LEN                   # punt van de plug
@@ -114,7 +118,7 @@ def main() -> None:
 
     # --- het onderdeel ---
     p.append(f'<path class="part" d="{path_of(section)}"/>')
-    p.append(seg(0, TOP_Y - 2, 0, bot - 2, "ctr"))
+    p.append(seg(0, TOP_Y - 1, 0, bot - 2, "ctr"))
     p.append(seg(-T.SKIRT_OD / 2 - 8, top, T.SKIRT_OD / 2 + 8, top))
 
     # --- maten ---
@@ -134,8 +138,8 @@ def main() -> None:
                     -T.RIB_R_OUT - 1.2, top, 196.0, "left"))
     p.append(leader("centreerribben bepalen de passing",
                     -T.PLUG_R, top - 34.0, 430.0, "left"))
-    p.append(leader("afbreekkiel onder de plug &#8211; na het printen afknippen",
-                    -1.0, tip + 14.0, 610.0, "left"))
+    p.append(leader("koppelholte: hier klikt de tong van de bovenkant in",
+                    -8.0, T.JOINT_Y - T.SOCKET_DEPTH / 2, 150.0, "left"))
     p.append(leader("veerlip met kliknok, klikt in het gat &#216;12,7",
                     T.RIB_R_OUT, hole, 470.0, "right"))
     p.append(leader("nok steekt 0,8 mm uit: indrukken om los te maken", T.RIB_R_OUT + 3.3, hole - 6.0,
@@ -147,10 +151,13 @@ def main() -> None:
     rows = [
         ("stok buiten / binnen", f"&#216;{T.POLE_OD} / &#216;{T.POLE_ID}"),
         ("boring randje", f"&#216;{T.SKIRT_ID:.1f} (+{T.FIT_SKIRT} speling)"),
-        ("plug over ribben", f"&#216;{2*T.RIB_R_OUT:.2f} (&#8722;{T.FIT_RIB} speling)"),
+        ("plug over ribben", f"&#216;{2*T.RIB_R_OUT:.2f} "
+         + (f"({abs(T.FIT_RIB)} klemming)" if T.FIT_RIB < 0
+            else f"({T.FIT_RIB} speling)")),
         ("plugkern", f"&#216;{2*T.PLUG_R:.1f}"),
         ("klikgat stok", f"&#216;{T.HOLE_D} op {T.SNAP_CENTER:.2f} vanaf de kop"),
         ("testglas", f"{T.GLASS_W:.0f} &#215; {T.GLASS_H:.0f} &#215; {T.GLASS_T:.0f}"),
+        ("tong in de voet", f"{T.TONGUE_W:.0f} &#215; {T.FRAME_T:.1f} &#215; {T.TONGUE_LEN:.0f}"),
     ]
     y = 762.0
     p.append(f'<text class="keyb" x="800" y="{y:.0f}">Kernmaten</text>')
