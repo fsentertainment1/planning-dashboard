@@ -75,6 +75,24 @@ De pasmal en de glasklem print je gewoon apart. De pasmal zet je rechtop, op het
 platte vlak van de kraag, met de plug omhoog — dan is er ook daar geen support
 nodig. De glasklem legt plat.
 
+### Waar zitten de overhangen echt
+
+Ik heb het printen laag voor laag nagerekend in plaats van het te schatten. Van
+de 192 lagen zijn er drie plekken die aandacht verdienen, en geen daarvan heeft
+support nodig:
+
+| Plek | Wat het is | Waarom het goed gaat |
+|---|---|---|
+| Onderkant van de kraag en de plug | De ronding loopt vanaf het bed snel naar buiten | Klassiek liggend rondje; het eerste millimetertje wordt wat ruw. Precies daar loopt géén centreerrib, dus de passing merkt er niets van. |
+| Dak boven de veerlip | De holte waarin de lip veert, sluit zich | Een overbrugging van ongeveer 10 mm, aan beide kanten vastgemaakt. Daar is bruggen voor uitgevonden. |
+| Onderrand van de veerlip | Een strook van 2,4 mm die 1,3 mm boven de plugwand begint | Zakt hooguit tot op de wand eronder. Loop er één keer met een mesje langs (stap 2 hieronder) en de lip beweegt vrij. |
+
+De **kliknok** zelf is bewust vlak afgesneden onder 45 graden aan de kant die
+naar het bed wijst. Zonder die afschuining loopt hij daar op tot 62 graden en
+zou hij gaan doorzakken; nu is 45 graden de steilste hoek op de hele nok. De
+insteekhelling en de klemhelling liggen langs de as van de plug en blijven dus
+ongemoeid. Zet `BOSS_CHAMFER = False` als je liever een ronde bol hebt.
+
 ### Na het printen
 
 1. Knip de kiel onder de plug eraf met een zijkniptang en schaaf de restjes weg
@@ -105,6 +123,7 @@ opnieuw.
 | Randje klemt op de stok | `FIT_SKIRT` groter |
 | Kliknok valt naast het gat | `HOLE_MEASURED_TO` omzetten, of `HOLE_FROM_TIP` corrigeren |
 | Kliknok veert te zwaar | `TAB_T` kleiner (bijv. 1,9) of `TAB_LEN` groter |
+| Veerlip zit vast aan de plug | Mesje door de zaagsnede halen; zie hierboven |
 | Glas zit te klem of rammelt | `GLASS_FIT_XY` en `GLASS_FIT_T` |
 | Ander glasformaat | `GLASS_W`, `GLASS_H`, `GLASS_T` |
 

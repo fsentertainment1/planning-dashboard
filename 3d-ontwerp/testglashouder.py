@@ -110,6 +110,7 @@ TAB_Z0 = SNAP_CENTER - 20.25            # wortel van de lip
 TAB_Z1 = TAB_Z0 + TAB_LEN               # vrij uiteinde
 BOSS_SPHERE_R = 5.5
 BOSS_PROUD = 3.3                        # hoogte nok boven de plugkern
+BOSS_CHAMFER = True                     # onderkant nok onder 45 graden afsnijden
 
 # --- steel en printhouding ---
 PRINT_FLAT = 1.5                        # kraag wordt zo diep afgevlakt op het bed
@@ -269,9 +270,25 @@ def add_tab(body: Manifold, boss_z: float, z0: float, z1: float,
         Manifold.cylinder(z1 + TAB_GAP - (z0 - 4.0), PLUG_R - TAB_T, PLUG_R - TAB_T) \
         .translate([0.0, 0.0, z0 - 4.0])
 
-    boss = Manifold.sphere(BOSS_SPHERE_R).translate(
-        [0.0, PLUG_R + BOSS_PROUD - BOSS_SPHERE_R, boss_z])
+    d = PLUG_R + BOSS_PROUD - BOSS_SPHERE_R
+    boss = Manifold.sphere(BOSS_SPHERE_R).translate([0.0, d, boss_z])
     boss = boss.trim_by_plane([0.0, 1.0, 0.0], PLUG_R - TAB_T)
+
+    # De onderkant van de nok wijst bij het printen recht naar beneden en zou
+    # daar doorzakken. Snijd hem af onder 45 graden, vanaf de lijn waar de bol
+    # uit de plug tevoorschijn komt: dan is er nergens een overhang steiler dan
+    # 45 graden en is er nog steeds geen support nodig. De insteekhelling en de
+    # klemhelling liggen langs de as van de plug en blijven dus ongemoeid.
+    if BOSS_CHAMFER:
+        y_e = (PLUG_R ** 2 - BOSS_SPHERE_R ** 2 + d ** 2) / (2 * d)
+        p_e = math.sqrt(max(PLUG_R ** 2 - y_e ** 2, 0.0))
+        a = math.radians(angle)
+        down = (math.sin(a), -math.cos(a))   # richting naar het printbed
+        nx, ny = down[0], down[1] + 1.0      # bissectrice van omlaag en naar buiten
+        ln = math.hypot(nx, ny) or 1.0
+        nx, ny = nx / ln, ny / ln
+        k = (p_e * down[0]) * nx + (y_e + p_e * down[1]) * ny
+        boss = boss.trim_by_plane([-nx, -ny, 0.0], -k)
 
     tool = (cut + pocket).rotate([0.0, 0.0, -angle])
     boss = boss.rotate([0.0, 0.0, -angle])
