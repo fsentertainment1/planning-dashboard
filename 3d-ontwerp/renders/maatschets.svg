@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 940"
+  width="1420" height="940" font-family="Inter, Helvetica, Arial, sans-serif">
+<defs><marker id="a" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto">
+<path d="M1,4.5 L8,1.8 L8,7.2 Z" fill="#8a8a8a"/></marker></defs>
+<style>
+  .part { fill:#d9382f; fill-opacity:.14; stroke:#c02a22; stroke-width:1.7; }
+  .pole { fill:none; stroke:#2c3340; stroke-width:1.5; stroke-dasharray:8 4; }
+  .ctr  { stroke:#a3a3a3; stroke-width:.9; stroke-dasharray:14 4 3 4; }
+  .thin { stroke:#9aa0a8; stroke-width:.8; }
+  .dim  { stroke:#8a8a8a; stroke-width:1; }
+  .lead { fill:none; stroke:#b6bcc4; stroke-width:1; }
+  .dot  { fill:#c02a22; }
+  .lbl  { font-size:14px; fill:#2c3340; }
+  .note { font-size:14px; fill:#4a535e; }
+  .ttl  { font-size:22px; fill:#14181e; font-weight:600; }
+  .sub  { font-size:14px; fill:#6b7480; }
+  .key  { font-size:13.5px; fill:#4a535e; }
+  .keyb { font-size:13.5px; fill:#14181e; font-weight:600; }
+</style>
+<rect width="100%" height="100%" fill="#fbfaf8"/>
+<text class="ttl" x="40" y="52">Testglashouder &#183; doorsnede kraag en plug</text>
+<text class="sub" x="40" y="78">Snede door de hartlijn van de stok en de veerlip.
+ Stippellijn = de stok. Alle maten in mm.</text>
+<line class="pole" x1="517.8" y1="256.6" x2="517.8" y2="634.8"/>
+<line class="pole" x1="526.0" y1="256.6" x2="526.0" y2="634.8"/>
+<line class="pole" x1="526.0" y1="570.7" x2="517.8" y2="570.7"/>
+<line class="pole" x1="526.0" y1="518.6" x2="517.8" y2="518.6"/>
+<line class="pole" x1="652.2" y1="256.6" x2="652.2" y2="634.8"/>
+<line class="pole" x1="644.0" y1="256.6" x2="644.0" y2="634.8"/>
+<line class="pole" x1="644.0" y1="570.7" x2="652.2" y2="570.7"/>
+<line class="pole" x1="644.0" y1="518.6" x2="652.2" y2="518.6"/>
+<line class="pole" x1="517.8" y1="256.6" x2="652.2" y2="256.6"/>
+<path class="part" d="M 632.35,591.16 L 627.71,591.16 L 623.73,591.16 L 620.26,591.16 L 617.19,591.16 L 614.44,591.16 L 611.96,591.16 L 609.70,591.16 L 607.62,591.16 L 605.68,591.16 L 603.88,591.16 L 603.67,591.16 L 585.00,591.16 L 585.00,587.88 L 585.00,587.46 L 585.00,584.60 L 585.00,523.10 L 585.00,461.60 L 585.00,454.44 L 585.00,445.20 L 604.06,445.20 L 605.82,445.20 L 607.78,445.20 L 609.89,445.20 L 612.18,445.20 L 614.69,445.20 L 617.48,445.20 L 620.60,445.20 L 624.14,445.20 L 628.21,445.20 L 632.97,445.20 L 632.97,584.60 L 635.66,584.60 L 638.91,584.60 L 641.99,581.52 L 641.99,565.28 L 642.94,564.85 L 644.25,564.15 L 645.50,563.37 L 646.70,562.52 L 647.84,561.58 L 648.92,560.57 L 649.92,559.49 L 650.86,558.35 L 651.72,557.15 L 652.50,555.90 L 653.19,554.60 L 653.80,553.25 L 654.32,551.87 L 654.75,550.46 L 655.09,549.02 L 655.33,547.57 L 655.47,546.10 L 655.52,544.62 L 655.47,543.15 L 655.33,541.68 L 655.09,540.23 L 654.75,538.79 L 654.32,537.38 L 653.80,536.00 L 653.19,534.65 L 652.50,533.35 L 651.72,532.10 L 650.86,530.90 L 649.92,529.76 L 648.92,528.68 L 647.84,527.67 L 646.70,526.73 L 645.50,525.88 L 644.25,525.10 L 642.94,524.40 L 641.99,523.97 L 641.99,305.80 L 642.78,305.80 L 643.15,305.80 L 643.28,305.80 L 643.40,305.80 L 643.53,305.80 L 643.53,256.60 L 653.88,256.60 L 653.88,297.60 L 658.80,305.80 L 659.73,305.80 L 660.76,305.80 L 661.79,305.80 L 662.65,305.80 L 663.51,305.80 L 664.21,305.80 L 664.90,305.80 L 665.42,305.80 L 665.95,305.80 L 666.30,305.80 L 666.65,305.80 L 666.82,305.80 L 667.00,305.80 L 662.08,300.88 L 663.51,300.88 L 664.38,300.88 L 664.90,300.88 L 665.42,300.88 L 665.95,300.88 L 666.47,300.88 L 666.65,300.88 L 667.00,300.88 L 667.00,256.60 L 685.15,242.23 L 698.00,231.84 L 707.46,224.02 L 714.61,217.94 L 720.12,213.09 L 724.41,209.16 L 727.79,205.93 L 730.44,203.23 L 732.53,200.95 L 734.14,199.03 L 735.38,197.38 L 736.28,195.98 L 736.90,194.77 L 737.28,193.74 L 737.45,192.85 L 737.45,181.26 L 737.45,171.64 L 737.42,171.02 L 737.20,170.50 L 736.82,170.07 L 736.28,169.71 L 735.59,169.42 L 734.75,169.20 L 733.76,169.05 L 732.62,168.96 L 731.32,168.93 L 438.68,168.93 L 437.38,168.96 L 436.24,169.05 L 435.25,169.20 L 434.41,169.42 L 433.72,169.71 L 433.18,170.07 L 432.80,170.50 L 432.58,171.02 L 432.55,171.64 L 432.55,183.23 L 432.55,192.85 L 432.72,193.74 L 433.10,194.77 L 433.72,195.98 L 434.62,197.38 L 435.86,199.03 L 437.47,200.95 L 439.56,203.23 L 442.21,205.93 L 445.59,209.16 L 449.88,213.09 L 455.39,217.94 L 462.54,224.02 L 472.00,231.84 L 484.85,242.23 L 503.00,256.60 L 503.00,300.88 L 503.35,300.88 L 503.53,300.88 L 504.05,300.88 L 504.58,300.88 L 505.10,300.88 L 505.62,300.88 L 506.49,300.88 L 507.92,300.88 L 503.00,305.80 L 503.18,305.80 L 503.35,305.80 L 503.70,305.80 L 504.05,305.80 L 504.58,305.80 L 505.10,305.80 L 505.79,305.80 L 506.49,305.80 L 507.35,305.80 L 508.21,305.80 L 509.24,305.80 L 510.27,305.80 L 511.20,305.80 L 516.12,297.60 L 516.12,256.60 L 526.47,256.60 L 526.47,305.80 L 526.72,305.80 L 526.97,305.80 L 527.22,305.80 L 528.01,305.80 L 528.01,581.52 L 540.31,593.83 L 540.41,593.83 L 540.50,593.83 L 540.69,593.83 L 540.88,593.83 L 541.17,593.83 L 541.45,593.83 L 541.83,593.83 L 542.21,593.83 L 542.68,593.83 L 543.15,593.83 L 543.71,593.83 L 544.27,593.83 L 544.92,593.83 L 545.57,593.83 L 546.30,593.83 L 547.03,593.83 L 547.84,593.83 L 548.65,593.83 L 549.55,593.83 L 550.44,593.83 L 551.40,593.83 L 552.36,593.83 L 553.40,593.83 L 554.43,593.83 L 555.53,593.83 L 556.63,593.83 L 557.79,593.83 L 558.96,593.83 L 560.17,593.83 L 561.39,593.83 L 562.65,593.83 L 563.92,593.83 L 565.23,593.83 L 566.55,593.83 L 567.90,593.83 L 569.25,593.83 L 570.63,593.83 L 572.02,593.83 L 573.43,593.83 L 574.85,593.83 L 576.28,593.83 L 577.72,593.83 L 579.17,593.83 L 580.62,593.83 L 582.08,593.83 L 583.54,593.83 L 585.00,593.83 L 586.46,593.83 L 587.92,593.83 L 589.38,593.83 L 590.83,593.83 L 592.28,593.83 L 593.72,593.83 L 595.15,593.83 L 596.57,593.83 L 597.98,593.83 L 599.37,593.83 L 600.75,593.83 L 602.10,593.83 L 603.45,593.83 L 604.77,593.83 L 606.08,593.83 L 607.35,593.83 L 608.61,593.83 L 609.83,593.83 L 611.04,593.83 L 612.21,593.83 L 613.37,593.83 L 614.47,593.83 L 615.57,593.83 L 616.60,593.83 L 617.64,593.83 L 618.60,593.83 L 619.56,593.83 L 620.45,593.83 L 621.35,593.83 L 622.16,593.83 L 622.97,593.83 L 623.70,593.83 L 624.43,593.83 L 625.08,593.83 L 625.73,593.83 L 626.29,593.83 L 626.85,593.83 L 627.32,593.83 L 627.79,593.83 L 628.17,593.83 L 628.55,593.83 L 628.83,593.83 L 629.12,593.83 L 629.31,593.83 L 629.50,593.83 L 629.59,593.83 L 629.69,593.83 Z"/>
+<line class="ctr" x1="585.0" y1="158.2" x2="585.0" y2="643.0"/>
+<line class="thin" x1="470.2" y1="256.6" x2="699.8" y2="256.6"/>
+<line class="dim" x1="790.0" y1="256.6" x2="790.0" y2="544.6" marker-start="url(#a)" marker-end="url(#a)"/><text class="lbl" x="800.0" y="400.6" text-anchor="start" dominant-baseline="middle">70.25</text>
+<line class="dim" x1="445.6" y1="256.6" x2="445.6" y2="305.8" marker-start="url(#a)" marker-end="url(#a)"/><text class="lbl" x="435.6" y="281.2" text-anchor="end" dominant-baseline="middle">12</text>
+<line class="dim" x1="699.8" y1="256.6" x2="699.8" y2="593.8" marker-start="url(#a)" marker-end="url(#a)"/><text class="lbl" x="709.8" y="425.2" text-anchor="start" dominant-baseline="middle">82.2</text>
+<line class="dim" x1="503.0" y1="195.1" x2="667.0" y2="195.1" marker-start="url(#a)" marker-end="url(#a)"/><text class="lbl" x="585.0" y="186.1" text-anchor="middle">&#216;40.0</text>
+<line class="dim" x1="526.0" y1="626.6" x2="644.0" y2="626.6" marker-start="url(#a)" marker-end="url(#a)"/><text class="lbl" x="585.0" y="646.6" text-anchor="middle">&#216;28.8 (stok binnen)</text>
+<polyline class="lead" points="503.0,281.2 433.0,250.0 415.0,250.0"/><circle class="dot" cx="503.0" cy="281.2" r="2.4"/><text class="note" x="415.0" y="250.0" text-anchor="end" dominant-baseline="middle">randje valt 12 mm over de stok</text>
+<polyline class="lead" points="521.6,256.6 433.0,196.0 415.0,196.0"/><circle class="dot" cx="521.6" cy="256.6" r="2.4"/><text class="note" x="415.0" y="196.0" text-anchor="end" dominant-baseline="middle">schouder &#8211; hier stopt de stok</text>
+<polyline class="lead" points="528.0,396.0 433.0,430.0 415.0,430.0"/><circle class="dot" cx="528.0" cy="396.0" r="2.4"/><text class="note" x="415.0" y="430.0" text-anchor="end" dominant-baseline="middle">centreerribben bepalen de passing</text>
+<polyline class="lead" points="580.9,536.4 433.0,610.0 415.0,610.0"/><circle class="dot" cx="580.9" cy="536.4" r="2.4"/><text class="note" x="415.0" y="610.0" text-anchor="end" dominant-baseline="middle">afbreekkiel onder de plug &#8211; na het printen afknippen</text>
+<polyline class="lead" points="643.5,544.6 782.0,470.0 800.0,470.0"/><circle class="dot" cx="643.5" cy="544.6" r="2.4"/><text class="note" x="800.0" y="470.0" text-anchor="start" dominant-baseline="middle">veerlip met kliknok, klikt in het gat &#216;12,7</text>
+<polyline class="lead" points="657.1,569.2 782.0,530.0 800.0,530.0"/><circle class="dot" cx="657.1" cy="569.2" r="2.4"/><text class="note" x="800.0" y="530.0" text-anchor="start" dominant-baseline="middle">nok steekt 0,8 mm uit: indrukken om los te maken</text>
+<polyline class="lead" points="585.0,593.8 782.0,636.0 800.0,636.0"/><circle class="dot" cx="585.0" cy="593.8" r="2.4"/><text class="note" x="800.0" y="636.0" text-anchor="start" dominant-baseline="middle">plugpunt afgeschuind, loopt vanzelf in</text>
+<text class="keyb" x="800" y="762">Kernmaten</text>
+<text class="key" x="800" y="788">stok buiten / binnen</text>
+<text class="keyb" x="1065" y="788">&#216;32.8 / &#216;28.8</text>
+<text class="key" x="800" y="810">boring randje</text>
+<text class="keyb" x="1065" y="810">&#216;33.6 (+0.8 speling)</text>
+<text class="key" x="800" y="832">plug over ribben</text>
+<text class="keyb" x="1065" y="832">&#216;28.55 (&#8722;0.25 speling)</text>
+<text class="key" x="800" y="854">plugkern</text>
+<text class="keyb" x="1065" y="854">&#216;27.8</text>
+<text class="key" x="800" y="876">klikgat stok</text>
+<text class="keyb" x="1065" y="876">&#216;12.7 op 70.25 vanaf de kop</text>
+<text class="key" x="800" y="898">testglas</text>
+<text class="keyb" x="1065" y="898">150 &#215; 150 &#215; 3</text>
+</svg>
