@@ -65,10 +65,10 @@ GLASS_FIT_T = 0.6       # extra speling op de dikte van de glassleuf
 
 # --- lijst ---
 REBATE = 5.0            # hoeveel de lip over het glas heen valt
-RAIL = 10.0             # massief materiaal buiten de glasrand
+RAIL = 12.0             # massief materiaal buiten de glasrand
 BACK_LIP = 3.0          # dikte achterlip (ligt op het bed)
 SLOT_T = GLASS_T + GLASS_FIT_T
-FRONT_LIP = 5.0         # dikte voorlip, afgeschuind onder 45 graden
+FRONT_LIP = 7.0         # dikte voorlip; onderste REBATE mm is 45 gr afgeschuind
 FRAME_T = BACK_LIP + SLOT_T + FRONT_LIP
 
 SLOT_W = GLASS_W + GLASS_FIT_XY         # sleufbreedte
@@ -76,23 +76,32 @@ SLOT_X = SLOT_W / 2                     # buitenrand sleuf
 WINDOW_X = SLOT_X - REBATE              # binnenrand lip = raamopening
 FRAME_X = SLOT_X + RAIL                 # buitenrand lijst
 
-EAR_H = 22.0                            # oren steken boven het glas uit
+EAR_H = 28.0                            # oren steken boven het glas uit
 FRAME_TOP = GLASS_H + EAR_H
-BOTTOM_RAIL = 40.0                      # brede onderbalk waar de steel aan zit
+BOTTOM_RAIL = 46.0                      # brede onderbalk waar de steel aan zit
 FRAME_BOT = -BOTTOM_RAIL
 WINDOW_BOT = 5.0                        # lip onder het glas
 CORNER_R = 8.0
 
 # --- glasklem ---
-CLIP_Y0 = GLASS_H + 1.0
-CLIP_Y1 = FRAME_TOP - 6.0
-CLIP_T = SLOT_T - 0.3
-CLIP_BUMP = 0.7                         # nokje dat in de kuiltjes klikt
-CLIP_BUMP_Y = (CLIP_Y0 + CLIP_Y1) / 2
+# De vorige klem had zijn nokjes op de twee uiteinden. Om die naar binnen te
+# krijgen moest de hele lat in de lengte samengedrukt worden, en dat kan niet:
+# hij klikte dus nooit echt vast en viel eruit zodra je de houder omdraaide.
+# Nu hangen er twee veerarmen aan het balkje, die buigen zijwaarts weg -- de
+# richting waarin een balkje wel meegeeft.
+CLIP_T = SLOT_T - 0.15                  # dikte, vult de sleuf bijna helemaal
+CLIP_TOP = 0.8                          # hoeveel de klem onder de oren blijft
+CLIP_BAR_H = 8.0                        # hoogte van het balkje bovenin
+CLIP_ARM_T = 2.4                        # dikte van een veerarm
+CLIP_ARM_LEN = 18.0                     # lengte van een veerarm
+CLIP_BUMP_R = 1.6                       # nokje aan de buitenkant van de arm
+CLIP_BUMP_PROUD = 0.6
+CLIP_DIMPLE_R = CLIP_BUMP_R + 0.3       # kuiltje in de wand van de sleuf
+CLIP_GRIP_W, CLIP_GRIP_H = 30.0, 5.0    # duimgreepje boven de oren
 
 # --- kraag, randje en plug ---
 SKIRT_ID = POLE_OD + FIT_SKIRT          # randje valt over de stok
-SKIRT_WALL = 3.2
+SKIRT_WALL = 2.2                        # slanke buitenring over de stok
 SKIRT_OD = SKIRT_ID + 2 * SKIRT_WALL
 SKIRT_DEPTH = 12.0                      # hoe ver het randje over de stok valt
 
@@ -135,7 +144,14 @@ BARB_POS = 14.0                         # afstand koppelvlak -> hart bolletje
 BARB_DIMPLE = BARB_PROUD + 0.2          # diepte van het kuiltje in de voet
 
 SOCKET_DEPTH = TONGUE_LEN + 1.0
-COLLAR_LEN = SOCKET_DEPTH + 6.0         # koppelvlak tot schouder
+COLLAR_LEN = SOCKET_DEPTH + 8.0         # koppelvlak tot schouder
+
+# Het koppelvlak: de voet loopt van een rondje bij de schouder taps toe naar
+# deze afgeronde rechthoek, precies zo breed als de hals van de bovenkant.
+# Daardoor loopt de zijkant van de hals zonder richel door in de voet.
+JOINT_W = 30.0
+JOINT_T = FRAME_T + 6.0
+JOINT_R = 7.0
 
 # --- steel en printhouding ---
 AXIS_Z = FRAME_T / 2                    # hartlijn stok ligt in het vlak van de lijst
@@ -214,7 +230,7 @@ def build_frame() -> Manifold:
 
     # 45-graden afschuining onder de voorlip: printbaar zonder support.
     steps = 25
-    step_h = FRONT_LIP / steps
+    step_h = REBATE / steps
     chamfer = []
     for i in range(steps):
         t = i * step_h
@@ -223,10 +239,11 @@ def build_frame() -> Manifold:
                             z0, z0 + step_h + 0.01))
     body -= Manifold.batch_boolean(chamfer, OpType.Add)
 
-    # Kuiltjes waar de glasklem in vastklikt.
+    # Kuiltjes in de zijwand van de sleuf, waar de veerarmen van de klem in
+    # klikken. Staande cilinders, dus printen zonder overhang.
     for sx in (-1.0, 1.0):
-        body -= Manifold.sphere(1.6).translate(
-            [sx * SLOT_X, CLIP_BUMP_Y, BACK_LIP + SLOT_T / 2])
+        body -= Manifold.cylinder(SLOT_T + 0.4, CLIP_DIMPLE_R, CLIP_DIMPLE_R) \
+            .translate([sx * clip_bump_x(), clip_bump_y(), BACK_LIP - 0.2])
 
     # Verzonken vlakje voor je eigen tekst of logo.
     body -= slab(rrect(PLATE_W, PLATE_H, 2.0, cy=PLATE_Y),
@@ -242,7 +259,14 @@ def build_foot(with_tab: bool = True) -> Manifold:
     """Kraag, randje en plug. Z=0 is het koppelvlak en ligt op het printbed;
     de plug wijst omhoog. In deze stand is er geen enkele overhang."""
     z0 = COLLAR_LEN                     # hoogte van de schouder
-    collar = Manifold.cylinder(z0 + SKIRT_DEPTH, SKIRT_OD / 2, SKIRT_OD / 2)
+    # Kraag: van de afgeronde rechthoek van het koppelvlak vloeiend naar het
+    # ronde profiel bij de schouder, zodat er geen richel bij de overgang zit.
+    taper_end = z0 - 5.0
+    collar = Manifold.batch_hull([
+        slab(rrect(JOINT_W, JOINT_T, JOINT_R), 0.0, 2.0),
+        slab(CrossSection.circle(SKIRT_OD / 2, 96), taper_end, taper_end + 2.0)])
+    collar += Manifold.cylinder(z0 + SKIRT_DEPTH - taper_end, SKIRT_OD / 2,
+                                SKIRT_OD / 2).translate([0.0, 0.0, taper_end])
 
     plug_len = PLUG_LEN
     straight = plug_len - PLUG_TIP_CHAMFER
@@ -337,10 +361,14 @@ def build_socket() -> Manifold:
     hw = TONGUE_W / 2 + TONGUE_FIT
     ht = FRAME_T / 2 + TONGUE_FIT
     sock = box(-hw, hw, -ht, ht, -1.0, SOCKET_DEPTH)
-    # Kuiltjes waar de bolletjes van de veerarmen in klikken.
+    # Ondiepe sleufjes waar de bolletjes van de veerarmen in klikken. Bewust
+    # geen bolvormige kuilen: die zouden door de slanke kraag heen breken.
     for sx in (-1.0, 1.0):
-        sock += Manifold.sphere(BARB_R + 0.4).translate(
-            [sx * (hw + BARB_R + 0.4 - BARB_DIMPLE), 0.0, BARB_POS])
+        lo, hi = sorted((sx * (hw - 1.2), sx * (hw + BARB_DIMPLE)))
+        deep = box(lo, hi, -5.5, 5.5, BARB_POS - 2.0, BARB_POS + 2.0)
+        lo2, hi2 = sorted((sx * (hw - 1.2), sx * (hw - 0.05)))
+        flat = box(lo2, hi2, -5.5, 5.5, BARB_POS - 5.0, BARB_POS + 5.0)
+        sock += Manifold.batch_hull([deep, flat])
     return sock
 
 
@@ -378,9 +406,12 @@ def tongue_to_world(m: Manifold) -> Manifold:
 
 
 def build_neck() -> Manifold:
-    """Overgang van de brede onderbalk naar het koppelvlak van de voet."""
-    wide = box(-52.0, 52.0, -30.0, -26.0, 0.0, FRAME_T)
-    face = box(-18.5, 18.5, JOINT_Y, JOINT_Y + 3.0, 0.0, FRAME_T)
+    """Overgang van de brede onderbalk naar het koppelvlak van de voet.
+
+    De flare loopt door tot hoog in de onderbalk, zodat de kracht van de lijst
+    over een breed vlak wordt ingeleid in plaats van op een smalle hals."""
+    wide = box(-62.0, 62.0, -22.0, -18.0, 0.0, FRAME_T)
+    face = tongue_to_world(slab(rrect(JOINT_W, FRAME_T, 5.0), -3.0, 0.0))
     return Manifold.batch_hull([wide, face]).trim_by_plane([0.0, 1.0, 0.0], JOINT_Y)
 
 
@@ -394,18 +425,42 @@ def build_holder() -> Manifold:
     return build_top() + foot_to_world(build_foot())
 
 
+def clip_bump_y() -> float:
+    """Hoogte waarop de nokjes van de glasklem vastklikken."""
+    return FRAME_TOP - CLIP_TOP - CLIP_BAR_H - CLIP_ARM_LEN + 4.0
+
+
+def clip_bump_x() -> float:
+    """Hart van nokje en kuiltje; beide op dezelfde hartlijn, dus ze passen."""
+    return SLOT_X - 0.15 - CLIP_BUMP_R + CLIP_BUMP_PROUD
+
+
 def build_clip() -> Manifold:
-    """Klemlat die na het glas in dezelfde sleuf schuift en vastklikt."""
-    h = CLIP_Y1 - CLIP_Y0
-    bar = slab(rrect(SLOT_W - 0.4, h, 2.0, cy=CLIP_Y0 + h / 2), 0.0, CLIP_T)
+    """Balkje met twee veerarmen dat boven het glas in de sleuf klikt.
+
+    Staat hier op zijn plek in de samenstelling; main() zet hem voor het
+    printen plat op Z = 0."""
+    z0 = BACK_LIP
+    top = FRAME_TOP - CLIP_TOP
+    half = SLOT_X - 0.15
+    bar_lo = top - CLIP_BAR_H
+    arm_lo = bar_lo - CLIP_ARM_LEN
+
+    shape = rrect(2 * half, CLIP_BAR_H, 2.0, cy=bar_lo + CLIP_BAR_H / 2)
     for sx in (-1.0, 1.0):
-        bar += Manifold.sphere(1.3).translate(
-            [sx * (SLOT_X - 0.8), CLIP_BUMP_Y, CLIP_T / 2])
-    bar = bar.trim_by_plane([0.0, 0.0, 1.0], 0.0)
-    bar = bar.trim_by_plane([0.0, 0.0, -1.0], -CLIP_T)
-    # Duimgreep om de klem er weer uit te trekken.
-    bar += slab(rrect(26.0, 7.0, 2.0, cy=CLIP_Y1 - 4.0), 0.0, CLIP_T + 3.0)
-    return bar
+        shape += rrect(CLIP_ARM_T, CLIP_ARM_LEN + 2.0, 1.0,
+                       cx=sx * (half - CLIP_ARM_T / 2),
+                       cy=arm_lo + (CLIP_ARM_LEN + 2.0) / 2)
+    # Duimgreepje: steekt net boven de oren uit zodat je hem eruit kunt trekken.
+    shape += rrect(CLIP_GRIP_W, CLIP_GRIP_H + 4.0, 2.0,
+                   cy=top + CLIP_GRIP_H - (CLIP_GRIP_H + 4.0) / 2)
+    clip = slab(shape, z0, z0 + CLIP_T)
+
+    # Nokjes aan de buitenkant van de armen.
+    for sx in (-1.0, 1.0):
+        clip += Manifold.cylinder(CLIP_T, CLIP_BUMP_R, CLIP_BUMP_R).translate(
+            [sx * clip_bump_x(), clip_bump_y(), z0])
+    return clip
 
 
 # --------------------------------------------------------------------------
@@ -417,7 +472,7 @@ def main() -> None:
     items = {
         "bovenkant": build_top(),
         "voet": build_foot(),
-        "glasklem": build_clip(),
+        "glasklem": build_clip().translate([0.0, 0.0, -BACK_LIP]),
     }
     for name, m in items.items():
         bb = m.bounding_box()

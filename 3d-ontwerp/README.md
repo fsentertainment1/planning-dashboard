@@ -11,7 +11,10 @@ beste stand op het bed kan liggen:
 - de **voet** (kraag, randje en plug) print rechtop met de plug omhoog, zodat de
   plug echt rond wordt in plaats van vervormd.
 
-De tong van de bovenkant klikt in de holte van de voet en wordt vastgelijmd.
+De tong van de bovenkant klikt in de holte van de voet en wordt vastgelijmd. De
+voet loopt vanaf de schouder taps toe van rond naar een afgeronde rechthoek die
+precies zo breed is als de hals, zodat de zijkant van de hals zonder richel
+doorloopt in de voet.
 
 ![doorsnede](renders/maatschets.png)
 
@@ -21,7 +24,7 @@ De tong van de bovenkant klikt in de holte van de voet en wordt vastgelijmd.
 |---|---|
 | `stl/voet.stl` | **Print dit eerst.** Kraag, randje en plug. Meteen ook je pasmal: hiermee test je de passing op de stok voordat je de grote print start. |
 | `stl/bovenkant.stl` | De lijst met de tong. |
-| `stl/glasklem.stl` | Latje dat na het glas in de sleuf schuift en het glas op zijn plek houdt. |
+| `stl/glasklem.stl` | Balkje met twee veerarmen dat na het glas in de sleuf klikt en het glas op zijn plek houdt. |
 | `testglashouder.py` | Het model. Alle maten staan bovenin en zijn aanpasbaar. |
 | `maatschets.py`, `render.py`, `build_viewer.py` | Maken de tekening, de plaatjes en de 3D-viewer opnieuw. |
 
@@ -50,6 +53,34 @@ script `HOLE_MEASURED_TO = "center"` en genereer opnieuw. Door de voet eerst te
 printen kost het je anderhalf uur in plaats van een hele dag om daarachter te
 komen.
 
+## Stevigheid van de bovenkant
+
+De lijst is **13,6 mm dik** (was 11,6) en de rails naast het glas zijn **12 mm**
+breed (was 10). Buigstijfheid loopt met de derde macht van de dikte, dus dat
+alleen al scheelt ruim 60 %; met de bredere rails erbij is de lijst ongeveer
+twee keer zo stijf als de vorige versie.
+
+De hals loopt nu vanaf 124 mm breed hoog in de onderbalk vloeiend naar het
+koppelvlak. Daardoor komt de kracht van de lijst over een breed vlak binnen in
+plaats van op een smalle hals — dat is precies de plek waar zo'n houder anders
+afbreekt. De tong in de voet is meteen 13,6 mm dik geworden in plaats van 11,6,
+dus ook de gelijmde verbinding zelf is fors sterker.
+
+## De glasklem
+
+De vorige klem had zijn nokjes op de twee uiteinden van de lat. Om die naar
+binnen te krijgen moest de hele lat in de lengte samengedrukt worden, en dat kan
+een balkje van 150 mm niet: hij klikte dus nooit echt vast en viel eruit zodra
+je de houder omdraaide.
+
+Nu hangen er twee **veerarmen** van 18 mm aan het balkje, met de nokjes op hun
+vrije uiteinden. Die armen buigen zijwaarts weg, de richting waarin een balkje
+wel meegeeft — bij het indrukken rekt het materiaal maar 0,7 %, ruim binnen wat
+PETG aankan. Ze klikken in kuiltjes in de zijwand van de sleuf. Boven de oren
+steekt een duimgreepje uit om hem er weer uit te trekken.
+
+De oren zijn 6 mm langer geworden om die armen ruimte te geven.
+
 ## De passing van de plug
 
 De plug klemt licht: over de centreerribben meet hij Ø28,95 in een buis van
@@ -76,7 +107,7 @@ overhang op de buitenkant, en de ringvormige gleuf van het randje wijst omhoog
 en heeft dus ook geen support nodig.
 
 Er zitten maar twee overhangen in, allebei ingesloten en aan alle kanten
-vastgemaakt: het plafond van de koppelholte (11,6 mm overbrugging) en het
+vastgemaakt: het plafond van de koppelholte (13,6 mm overbrugging) en het
 plafond van de veerholte binnenin de plug (13,7 mm). Dat zijn nette bruggen,
 daar hoeft geen support in.
 
@@ -94,8 +125,9 @@ Met de vlakke achterkant van de lijst op het bed. Zo loopt de belasting van de
 steel evenwijdig aan de lagen, wat veruit het sterkst is. De voorlip boven de
 glassleuf is onder 45 graden afgeschuind, dus ook hier geen support.
 
-Ik heb dit laag voor laag nagerekend: over 57 lagen zweeft er in totaal 43 mm²,
-verdeeld over zes lagen, en het breedste plekje is 2,3 mm. Dat is niets.
+Ik heb dit laag voor laag nagerekend: over 68 lagen zweeft er in totaal 42 mm²,
+verdeeld over vijf lagen, en het breedste plekje is 2,3 mm. Dat is niets. De
+glasklem heeft helemaal geen zwevend gebied.
 
 ### Instellingen (Bambu Studio, H2S, 0.4 nozzle)
 
@@ -107,11 +139,11 @@ verdeeld over zes lagen, en het breedste plekje is 2,3 mm. Dat is niets.
 | Boven / onder | 4 / 4 | |
 | Infill | 15–20 % gyroid | De plug en de kraag zijn dikke stukken; meer heeft geen zin. |
 | **Support** | **uit** | Bij beide delen niet nodig. |
-| Brim | uit bij de bovenkant, **aan bij de voet** | De voet is 113 mm hoog op een voetje van Ø40; een brim houdt hem netjes staan. |
+| Brim | uit bij de bovenkant, **aan bij de voet** | De voet is 115 mm hoog op een voetje van Ø38; een brim houdt hem netjes staan. |
 | Elephant foot | 0,15 mm (standaard) | Belangrijk voor het koppelvlak van de voet, dat moet vlak blijven. |
 
-Bovenkant: 171 × 232 mm, past ruim op de 350 × 320 mm van de H2S. Voet: Ø40 ×
-113 mm. Reken samen op ruwweg 90–120 g PETG; Bambu Studio geeft je het echte
+Bovenkant: 175 × 244 mm, past ruim op de 350 × 320 mm van de H2S. Voet: Ø38 ×
+115 mm. Reken samen op ruwweg 90–120 g PETG; Bambu Studio geeft je het echte
 getal.
 
 ### Na het printen
@@ -138,8 +170,9 @@ getal.
    plat op tafel.
 4. Schuif het testglas van bovenaf tussen de twee oren in de sleuf, tot het op
    de onderbalk rust.
-5. Schuif de glasklem er daarachteraan in, tot de nokjes in de kuiltjes klikken.
-   Aan het duimgreepje trek je hem er weer uit als het glas vervangen moet.
+5. Duw de glasklem er daarachteraan in, tot de nokjes hoorbaar in de kuiltjes
+   klikken. Draai de houder om om te controleren dat hij blijft zitten. Aan het
+   duimgreepje trek je hem er weer uit als het glas vervangen moet.
 
 ## Als de passing niet klopt
 
@@ -156,6 +189,9 @@ opnieuw.
 | Veerlip zit vast aan de plug | Mesje door de zaagsnede halen; zie hierboven |
 | Tong past te strak of te los | `TONGUE_FIT` |
 | Tong klikt niet vast | `BARB_PROUD` groter (bijv. 1,0) |
+| Glasklem klikt te zwaar of te licht | `CLIP_BUMP_PROUD` (nu 0,6) |
+| Buitenring van de voet te dik of te dun | `SKIRT_WALL` (nu 2,2) |
+| Lijst nog te slap | `FRONT_LIP` en `RAIL` groter |
 | Glas zit te klem of rammelt | `GLASS_FIT_XY` en `GLASS_FIT_T` |
 | Ander glasformaat | `GLASS_W`, `GLASS_H`, `GLASS_T` |
 | Onderflank kliknok te ruw | `BOSS_CHAMFER = True`, hoek via `BOSS_MAX_OVERHANG` |
