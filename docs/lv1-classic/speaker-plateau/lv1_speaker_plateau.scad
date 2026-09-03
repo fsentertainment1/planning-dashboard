@@ -12,7 +12,7 @@
 //  Rendermodus: zet PART hieronder.
 // =====================================================================
 
-PART = "all";   // "saddle" | "platform" | "pad" | "all"
+PART = "all";   // "saddle" | "platform" | "pad" | "knob" | "all"
 
 // ---------- gemeten kepgeometrie (bovenrand schermklep) ---------------
 lid_t          = 36.0;   // totale dikte van de klep
@@ -38,6 +38,13 @@ ins_d      = 6.4;   // boring voor M5 heat-set insert
 ins_h      = 9.5;   // diepte van die boring
 boss_d     = 22;    // verdikking rond de schroef aan de buitenzijde
 boss_l     = 13;
+
+// ---------- vleugelknop op de klemschroef ----------------------------
+knob_d     = 34;    // buitenmaat van de knop
+knob_h     = 13;
+knob_hex   = 8.3;   // sleutelwijdte kop M5 zeskantbout (DIN 933)
+knob_hex_h = 4.2;   // diepte van de kopverzinking
+knob_flut  = 6;     // aantal vingergrepen
 
 // montagevlak bovenop het zadel (horizontaal als de klep op lid_angle staat)
 pad_x0     = -45;   // voorkant montagevlak t.o.v. bovenrand klep
@@ -210,6 +217,32 @@ module platform() {
 }
 
 // =====================================================================
+//  vleugelknop voor de klemschroef
+// =====================================================================
+//  De kop van een M5 zeskantbout valt in de verzinking bovenin; de
+//  schacht steekt er onderdoor naar het smeltinzetstuk in het zadel.
+//  Handvast aandraaien, geen gereedschap nodig.
+
+module clamp_knob() {
+    difference() {
+        union() {
+            cylinder(d = knob_d, h = knob_h - 3);
+            translate([0, 0, knob_h - 3]) cylinder(d1 = knob_d, d2 = knob_d - 5, h = 3);
+        }
+        // vingergrepen rondom
+        for (i = [0 : knob_flut - 1])
+            rotate([0, 0, i * 360 / knob_flut])
+                translate([knob_d / 2 + 3, 0, -1])
+                    cylinder(d = 12, h = knob_h + 2);
+        // verzinking voor de boutkop
+        translate([0, 0, knob_h - knob_hex_h])
+            cylinder(d = knob_hex / cos(30), h = knob_hex_h + 1, $fn = 6);
+        // doorvoer voor de schacht
+        translate([0, 0, -1]) cylinder(d = scr_d, h = knob_h + 2);
+    }
+}
+
+// =====================================================================
 //  drukplaatje (TPU)
 // =====================================================================
 
@@ -253,6 +286,7 @@ module assembly() {
 if (PART == "saddle")        saddle();
 else if (PART == "platform") platform();
 else if (PART == "pad")      pressure_pad();
+else if (PART == "knob")     clamp_knob();
 else if (PART == "demo")     { assembly(); % mock_lid(); }
 else if (PART == "none")     ;   // niets - voor losse testbestanden
 else                         assembly();

@@ -13,17 +13,37 @@ plus een klemschroef met een zachte drukplaat.
 | `LV1_saddle.stl` | 2 | PETG of ASA |
 | `LV1_platform.stl` | 1 | PETG of ASA |
 | `LV1_pad.stl` | 2 | TPU 95A |
+| `LV1_knob.stl` | 2 | PETG of ASA |
 
 Bijkomend:
 
 - 4 × M4 smeltinzetstuk (heat-set, Ø5.7 × 8 mm) + 4 × M4×20 verzonken bout
-- 2 × M5 smeltinzetstuk (Ø6.4 × 9.5 mm) + 2 × M5×30 duimschroef of inbus
+- 2 × M5 smeltinzetstuk (Ø6.4 × 9.5 mm) + 2 × **M5×30 zeskantbout** (DIN 933,
+  kop SW8) — die kop valt in de geprinte knop
 - zelfklevend vilt van 1 mm voor de binnenkant van de kep (voorlip, topvlak,
   achterpoot)
 
 Geen inzetstukken in huis? Zet in de `.scad` `m4_ins_d = 3.5` en `ins_d = 4.3`
 en draai de bouten direct in het kunststof. Dat houdt bij deze belasting prima,
 maar is minder vaak los te draaien.
+
+## Vleugelknop op de klemschroef
+
+![knop](preview-knop.png)
+
+`LV1_knob.stl` is een knop van Ø34 × 13 mm met zes vingergrepen. Bovenin zit een
+zeskantverzinking (SW 8,3 × 4,2 mm) waar de kop van een M5×30 zeskantbout in
+valt; de schacht steekt er onderdoor naar het smeltinzetstuk in het zadel. Kop
+erin drukken, druppel secondelijm erbij, klaar. Handvast aandraaien is genoeg —
+je hebt geen gereedschap meer nodig om het plateau erop of eraf te halen.
+
+Liever gekocht dan geprint: een **vleugelbout M5×30 (DIN 316)** of een
+kartelmoer past net zo goed; dan sla je de knop over.
+
+De vier M4-bouten tussen plateau en zadels zijn wél verzonken inbus. Die zitten
+onder de speaker en zet je één keer vast. Wil je ook die met de hand los kunnen
+draaien, zeg het — dan draai ik ze om (inzetstuk in het plateau, bout van
+onderaf) en krijg je er ook knoppen op.
 
 ## Hoe het werkt
 
@@ -57,6 +77,7 @@ minder negatief (bijv. `-40`) en schuif `pad_x0` / `pad_x1` even ver mee.
   laagrichting loopt dan langs de poten in plaats van er dwars doorheen; dat is
   precies de richting waarin de belasting staat. Steun aan.
 - **Plateau:** plat op de plaat, bodem naar beneden. Geen steun nodig.
+- **Knoppen:** plat op de plaat, verzinking naar boven. Geen steun nodig.
 - **Instellingen:** 0,2 mm laag, 5 wanden, 4 boven/onder, 40 % gyroid.
 - Onderdeelmaten: zadel 70 × 60 × 90 mm, plateau 130 × 230 × 14 mm. Past ruim op
   de plaat.
@@ -95,6 +116,7 @@ Renderen:
 openscad -o LV1_saddle.stl   -D 'PART="saddle"'   lv1_speaker_plateau.scad
 openscad -o LV1_platform.stl -D 'PART="platform"' lv1_speaker_plateau.scad
 openscad -o LV1_pad.stl      -D 'PART="pad"'      lv1_speaker_plateau.scad
+openscad -o LV1_knob.stl     -D 'PART="knob"'     lv1_speaker_plateau.scad
 ```
 
 `PART="demo"` laat het geheel zien met een vervangende klep erbij.
