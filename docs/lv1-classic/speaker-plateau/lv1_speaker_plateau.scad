@@ -12,7 +12,7 @@
 //  Rendermodus: zet PART hieronder.
 // =====================================================================
 
-PART = "all";   // "saddle" | "platform" | "pad" | "knob" | "all"
+PART = "all";   // "saddle" | "platform" | "pad" | "screw" | "all"
 
 // ---------- gemeten kepgeometrie (bovenrand schermklep) ---------------
 lid_t          = 36.0;   // totale dikte van de klep
@@ -31,19 +31,23 @@ grip_rear  = 55;    // hoe ver de achterpoot langs de klep omlaag grijpt
 grip_front = 14;    // voorlip - kort, zodat het scherm vrij blijft
 fillet     = 3;     // afronding buitenkant
 
-// klemschroef in de achterpoot: M5 met smeltinzetstuk (heat-set insert)
-scr_d      = 5.4;   // doorvoergat M5 door de rest van de wand
+// klemschroef in de achterpoot: volledig geprint, knop en draad in een stuk.
+// Grove vierkante draad - M5 is te fijn om betrouwbaar te printen.
 scr_z      = -36;   // hoogte t.o.v. topvlak van de klep
-ins_d      = 6.4;   // boring voor M5 heat-set insert
-ins_h      = 9.5;   // diepte van die boring
-boss_d     = 22;    // verdikking rond de schroef aan de buitenzijde
-boss_l     = 13;
+thr_minor  = 5.0;   // straal kern van de draad
+thr_major  = 7.0;   // straal buitenkant van de draad
+thr_pitch  = 4.0;   // spoed
+thr_sector = 150;   // hoekbreedte van de draadgang (bepaalt de gangdikte)
+thr_play   = 0.4;   // radiale speling in de moerdraad
+thr_len    = 30;    // lengte van de schacht
+boss_d     = 26;    // verdikking rond de schroef aan de buitenzijde
+boss_l     = 16;
+padpkt_d   = 20;    // uitsparing in de poot voor het drukplaatje
+padpkt_h   = 4;
 
-// ---------- vleugelknop op de klemschroef ----------------------------
+// ---------- knop ------------------------------------------------------
 knob_d     = 34;    // buitenmaat van de knop
-knob_h     = 13;
-knob_hex   = 8.3;   // sleutelwijdte kop M5 zeskantbout (DIN 933)
-knob_hex_h = 4.2;   // diepte van de kopverzinking
+knob_h     = 14;
 knob_flut  = 6;     // aantal vingergrepen
 
 // montagevlak bovenop het zadel (horizontaal als de klep op lid_angle staat)
@@ -118,6 +122,34 @@ module rounded_box(size, origin, r) {
 }
 
 // =====================================================================
+//  geprinte schroefdraad
+// =====================================================================
+//  Een 2D-profiel (kern + een sector die uitsteekt) wordt geextrudeerd
+//  met een slag van 360 graden per spoed. De uitstekende sector volgt
+//  daardoor een schroeflijn en vormt een vierkante draadgang.
+
+module thread_pie(r, a) {
+    polygon(concat([[0, 0]],
+                   [for (i = [0 : a / 32 : a]) [r * cos(i), r * sin(i)]]));
+}
+
+module thread_profile(rmin, rmaj, a) {
+    union() {
+        circle(r = rmin);
+        intersection() {
+            circle(r = rmaj);
+            thread_pie(rmaj + 1, a);
+        }
+    }
+}
+
+module printed_thread(rmin, rmaj, a, pitch, len) {
+    linear_extrude(height = len, twist = -360 * len / pitch,
+                   slices = ceil(len / pitch * 40), convexity = 12)
+        thread_profile(rmin, rmaj, a);
+}
+
+// =====================================================================
 //  zadel
 // =====================================================================
 
@@ -173,13 +205,16 @@ module saddle_screw_boss() {
 }
 
 module saddle_screw() {
-    // schroefas loopt dwars door de achterpoot, haaks op het achtervlak
+    // schroefas loopt dwars door de achterpoot, haaks op het achtervlak.
+    // De moerdraad loopt van de buitenkant van de verdikking tot in de kep.
+    depth = wall + clr + boss_l;
     translate([0, 0, scr_z]) rotate([0, -90, 0]) {
-        // doorvoer tot in de kepholte
-        translate([0, 0, -2]) cylinder(d = scr_d, h = wall + clr + boss_l + 4);
-        // boring voor het inzetstuk, van buiten af
-        translate([0, 0, wall + clr + boss_l - ins_h])
-            cylinder(d = ins_d, h = ins_h + 1);
+        // moerdraad
+        translate([0, 0, -1])
+            printed_thread(thr_minor + thr_play, thr_major + thr_play,
+                           thr_sector + 20, thr_pitch, depth + 2);
+        // uitsparing voor het drukplaatje, in het binnenvlak van de poot
+        translate([0, 0, clr]) cylinder(d = padpkt_d, h = padpkt_h);
     }
 }
 
@@ -217,28 +252,31 @@ module platform() {
 }
 
 // =====================================================================
-//  vleugelknop voor de klemschroef
+//  klemschroef met knop - een geprint geheel
 // =====================================================================
-//  De kop van een M5 zeskantbout valt in de verzinking bovenin; de
-//  schacht steekt er onderdoor naar het smeltinzetstuk in het zadel.
-//  Handvast aandraaien, geen gereedschap nodig.
+//  Knop en schroefdraad zijn een geprint geheel - geen bout nodig.
+//  Print hem staand: knop plat op de plaat, draad omhoog. Geen steun.
 
-module clamp_knob() {
-    difference() {
-        union() {
-            cylinder(d = knob_d, h = knob_h - 3);
-            translate([0, 0, knob_h - 3]) cylinder(d1 = knob_d, d2 = knob_d - 5, h = 3);
+module clamp_screw() {
+    union() {
+        // knop
+        difference() {
+            union() {
+                cylinder(d = knob_d, h = knob_h - 3);
+                translate([0, 0, knob_h - 3])
+                    cylinder(d1 = knob_d, d2 = knob_d - 5, h = 3);
+            }
+            for (i = [0 : knob_flut - 1])
+                rotate([0, 0, i * 360 / knob_flut])
+                    translate([knob_d / 2 + 3, 0, -1])
+                        cylinder(d = 12, h = knob_h + 2);
         }
-        // vingergrepen rondom
-        for (i = [0 : knob_flut - 1])
-            rotate([0, 0, i * 360 / knob_flut])
-                translate([knob_d / 2 + 3, 0, -1])
-                    cylinder(d = 12, h = knob_h + 2);
-        // verzinking voor de boutkop
-        translate([0, 0, knob_h - knob_hex_h])
-            cylinder(d = knob_hex / cos(30), h = knob_hex_h + 1, $fn = 6);
-        // doorvoer voor de schacht
-        translate([0, 0, -1]) cylinder(d = scr_d, h = knob_h + 2);
+        // schacht met draad
+        translate([0, 0, knob_h - 0.5])
+            printed_thread(thr_minor, thr_major, thr_sector, thr_pitch, thr_len);
+        // aanzet: eerste millimeters zonder draad, makkelijker invoeren
+        translate([0, 0, knob_h - 0.5 + thr_len])
+            cylinder(d1 = thr_minor * 2, d2 = thr_minor * 2 - 2, h = 2);
     }
 }
 
@@ -248,11 +286,10 @@ module clamp_knob() {
 
 module pressure_pad() {
     difference() {
-        union() {
-            cylinder(d = 18, h = 3);
-            translate([0, 0, 3]) cylinder(d1 = 18, d2 = 14, h = 1.5);
-        }
-        translate([0, 0, 2.6]) sphere(d = 5.6);
+        cylinder(d = padpkt_d - 1.2, h = 5);
+        // ondiepe centrering voor de vlakke punt van de schroef
+        translate([0, 0, 5 - 1.5])
+            cylinder(d = thr_minor * 2 + 0.6, h = 1.6);
     }
 }
 
@@ -286,7 +323,7 @@ module assembly() {
 if (PART == "saddle")        saddle();
 else if (PART == "platform") platform();
 else if (PART == "pad")      pressure_pad();
-else if (PART == "knob")     clamp_knob();
+else if (PART == "screw")    clamp_screw();
 else if (PART == "demo")     { assembly(); % mock_lid(); }
 else if (PART == "none")     ;   // niets - voor losse testbestanden
 else                         assembly();

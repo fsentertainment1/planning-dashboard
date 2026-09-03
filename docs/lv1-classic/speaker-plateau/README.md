@@ -13,13 +13,12 @@ plus een klemschroef met een zachte drukplaat.
 | `LV1_saddle.stl` | 2 | PETG of ASA |
 | `LV1_platform.stl` | 1 | PETG of ASA |
 | `LV1_pad.stl` | 2 | TPU 95A |
-| `LV1_knob.stl` | 2 | PETG of ASA |
+| `LV1_clamp_screw.stl` | 2 | PETG of ASA |
 
 Bijkomend:
 
 - 4 × M4 smeltinzetstuk (heat-set, Ø5.7 × 8 mm) + 4 × M4×20 verzonken bout
-- 2 × M5 smeltinzetstuk (Ø6.4 × 9.5 mm) + 2 × **M5×30 zeskantbout** (DIN 933,
-  kop SW8) — die kop valt in de geprinte knop
+- verder niets — de klemschroeven zijn volledig geprint
 - zelfklevend vilt van 1 mm voor de binnenkant van de kep (voorlip, topvlak,
   achterpoot)
 
@@ -27,23 +26,27 @@ Geen inzetstukken in huis? Zet in de `.scad` `m4_ins_d = 3.5` en `ins_d = 4.3`
 en draai de bouten direct in het kunststof. Dat houdt bij deze belasting prima,
 maar is minder vaak los te draaien.
 
-## Vleugelknop op de klemschroef
+## Klemschroef met knop — één geprint geheel
 
-![knop](preview-knop.png)
+![klemschroef](preview-klemschroef.png)
 
-`LV1_knob.stl` is een knop van Ø34 × 13 mm met zes vingergrepen. Bovenin zit een
-zeskantverzinking (SW 8,3 × 4,2 mm) waar de kop van een M5×30 zeskantbout in
-valt; de schacht steekt er onderdoor naar het smeltinzetstuk in het zadel. Kop
-erin drukken, druppel secondelijm erbij, klaar. Handvast aandraaien is genoeg —
-je hebt geen gereedschap meer nodig om het plateau erop of eraf te halen.
+`LV1_clamp_screw.stl` is knop en schroefdraad in één stuk: een knop van Ø34 × 14
+mm met zes vingergrepen, met daaraan een schacht van 30 mm. Geen bout, geen
+moer, geen smeltinzetstuk — je draait hem zo in het zadel.
 
-Liever gekocht dan geprint: een **vleugelbout M5×30 (DIN 316)** of een
-kartelmoer past net zo goed; dan sla je de knop over.
+De draad is bewust grof: **vierkante draad, Ø14 buiten, Ø10 kern, spoed 4 mm**.
+M5 is te fijn om betrouwbaar te printen en strippt te snel in kunststof. Deze
+draad heeft in het zadel 18 mm ingrijping, ruim genoeg voor handvast aandraaien.
+De tegendraad zit direct in de verdikking op de achterpoot.
+
+Print hem **staand: knop plat op de plaat, draad omhoog.** Geen steun nodig, en
+de draadgangen komen er dan schoon uit. De eerste keer indraaien loopt wat
+stroef — even heen en weer draaien snijdt hem vrij.
 
 De vier M4-bouten tussen plateau en zadels zijn wél verzonken inbus. Die zitten
 onder de speaker en zet je één keer vast. Wil je ook die met de hand los kunnen
 draaien, zeg het — dan draai ik ze om (inzetstuk in het plateau, bout van
-onderaf) en krijg je er ook knoppen op.
+onderaf) en zet ik er dezelfde knop op.
 
 ## Hoe het werkt
 
@@ -77,7 +80,7 @@ minder negatief (bijv. `-40`) en schuif `pad_x0` / `pad_x1` even ver mee.
   laagrichting loopt dan langs de poten in plaats van er dwars doorheen; dat is
   precies de richting waarin de belasting staat. Steun aan.
 - **Plateau:** plat op de plaat, bodem naar beneden. Geen steun nodig.
-- **Knoppen:** plat op de plaat, verzinking naar boven. Geen steun nodig.
+- **Klemschroeven:** knop plat op de plaat, draad omhoog. Geen steun nodig.
 - **Instellingen:** 0,2 mm laag, 5 wanden, 4 boven/onder, 40 % gyroid.
 - Onderdeelmaten: zadel 70 × 60 × 90 mm, plateau 130 × 230 × 14 mm. Past ruim op
   de plaat.
@@ -109,6 +112,8 @@ aanpassingen:
 | `plat_x`, `plat_y` | maat van het plateau |
 | `plat_x_front` | hoe ver het plateau naar voren over het scherm steekt |
 | `grip_rear`, `grip_front` | hoe ver de poten langs de klep grijpen |
+| `thr_pitch`, `thr_major` | spoed en buitenmaat van de geprinte draad |
+| `thr_play` | speling tussen schroef en tegendraad (nu 0,4 mm) |
 
 Renderen:
 
@@ -116,7 +121,7 @@ Renderen:
 openscad -o LV1_saddle.stl   -D 'PART="saddle"'   lv1_speaker_plateau.scad
 openscad -o LV1_platform.stl -D 'PART="platform"' lv1_speaker_plateau.scad
 openscad -o LV1_pad.stl      -D 'PART="pad"'      lv1_speaker_plateau.scad
-openscad -o LV1_knob.stl     -D 'PART="knob"'     lv1_speaker_plateau.scad
+openscad -o LV1_clamp_screw.stl -D 'PART="screw"' lv1_speaker_plateau.scad
 ```
 
 `PART="demo"` laat het geheel zien met een vervangende klep erbij.
