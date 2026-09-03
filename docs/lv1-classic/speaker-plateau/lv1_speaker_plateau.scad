@@ -40,8 +40,8 @@ boss_d     = 22;    // verdikking rond de schroef aan de buitenzijde
 boss_l     = 13;
 
 // montagevlak bovenop het zadel (horizontaal als de klep op lid_angle staat)
-pad_x0     = -10;   // voorkant montagevlak t.o.v. bovenrand klep
-pad_x1     =  60;   // achterkant
+pad_x0     = -45;   // voorkant montagevlak t.o.v. bovenrand klep
+pad_x1     =  25;   // achterkant
 pad_t      = 9;     // dikte
 pad_top    = 30;    // hoogte bovenkant t.o.v. midden topvlak klep
 m4_free    = 4.5;
@@ -55,7 +55,8 @@ plat_y       = 230;    // breedte (langs de console)
 plat_x       = 130;    // diepte
 plat_t       = 5;      // bodemdikte
 plat_lip     = 9;      // opstaande rand
-plat_x_front = -15;    // voorrand plateau t.o.v. bovenrand klep
+plat_x_front = -70;    // voorrand plateau t.o.v. bovenrand klep
+                       // negatief = naar voren, over het scherm heen
 strap_w      = 25;     // sleuf voor spanband
 strap_h      = 4;
 

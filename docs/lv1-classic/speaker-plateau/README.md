@@ -40,8 +40,14 @@ heeft:
   is haaks uitgerekend voor `lid_angle = 60°`.
 
 Het plateau (230 × 130 mm, opstaande rand 9 mm, twee sleuven voor een spanband)
-ligt met zijn zwaartepunt vlak boven de bovenrand van de klep, zodat het extra
-moment op het schermscharnier zo klein mogelijk blijft.
+steekt **70 mm naar voren over het scherm** en 60 mm naar achteren. Het
+zwaartepunt ligt daardoor vrijwel boven de bovenrand van de klep, en dat houdt
+het extra moment op het schermscharnier zo klein mogelijk.
+
+De voorrand hangt op ongeveer 76 mm haaks boven het schermoppervlak, dus hij
+raakt het beeld niet. Vanuit de bedienpositie zie je hem wel in de bovenrand
+van je blikveld. Wil je hem minder ver over het scherm: zet `plat_x_front`
+minder negatief (bijv. `-40`) en schuif `pad_x0` / `pad_x1` even ver mee.
 
 ## Printen (Bambu Lab H2S)
 
@@ -52,7 +58,7 @@ moment op het schermscharnier zo klein mogelijk blijft.
   precies de richting waarin de belasting staat. Steun aan.
 - **Plateau:** plat op de plaat, bodem naar beneden. Geen steun nodig.
 - **Instellingen:** 0,2 mm laag, 5 wanden, 4 boven/onder, 40 % gyroid.
-- Onderdeelmaten: zadel 88 × 60 × 90 mm, plateau 130 × 230 × 14 mm. Past ruim op
+- Onderdeelmaten: zadel 70 × 60 × 90 mm, plateau 130 × 230 × 14 mm. Past ruim op
   de plaat.
 
 ## Voor je print — controleer dit eerst
@@ -80,6 +86,7 @@ aanpassingen:
 | `clr` | speling in de kep (nu 1,2 mm: 0,4 speling + 0,8 voor vilt) |
 | `saddle_pitch` | hart-op-hart afstand tussen de zadels |
 | `plat_x`, `plat_y` | maat van het plateau |
+| `plat_x_front` | hoe ver het plateau naar voren over het scherm steekt |
 | `grip_rear`, `grip_front` | hoe ver de poten langs de klep grijpen |
 
 Renderen:
