@@ -39,7 +39,8 @@ thr_major  = 7.0;   // straal buitenkant van de draad
 thr_pitch  = 4.0;   // spoed
 thr_sector = 150;   // hoekbreedte van de draadgang (bepaalt de gangdikte)
 thr_play   = 0.4;   // radiale speling in de moerdraad
-thr_len    = 30;    // lengte van de schacht
+thr_len    = 22;    // lengte van de schacht - zo ver dat de schroef het
+                    // drukplaatje bereikt met ~4 mm slag over, niet meer
 boss_d     = 26;    // verdikking rond de schroef aan de buitenzijde
 boss_l     = 16;
 padpkt_d   = 20;    // uitsparing in de poot voor het drukplaatje

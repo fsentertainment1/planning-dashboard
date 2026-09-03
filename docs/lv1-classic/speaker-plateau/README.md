@@ -6,6 +6,11 @@ plus een klemschroef met een zachte drukplaat.
 
 ![zijaanzicht](preview-zijaanzicht.png)
 
+Alle onderdelen bij elkaar — plateau, twee zadels, twee klemschroeven, twee
+drukplaatjes:
+
+![onderdelen](preview-onderdelen.png)
+
 ## Onderdelen
 
 | Bestand | Aantal | Materiaal |
@@ -125,6 +130,8 @@ openscad -o LV1_clamp_screw.stl -D 'PART="screw"' lv1_speaker_plateau.scad
 ```
 
 `PART="demo"` laat het geheel zien met een vervangende klep erbij.
+`render_views.scad` maakt de plaatjes in deze README (`SHOW="full"` of
+`SHOW="parts"`).
 
 ## Waar je op moet letten in gebruik
 
